@@ -91,6 +91,24 @@ body {
   background-color: black;
   padding-left: 20px;
 }
+.leftcolumnsite {   
+  float: left;
+  width: 35%;
+  background-color: transparent;
+}
+
+/* Right column */
+.rightcolumnsite {
+  float: left;
+  width: 65%;
+  height: 100%;
+  background-color: transparent;
+  padding-left: 20px;
+}
+
+
+
+
 
 /* Fake image */
 .fakeimg {
@@ -112,6 +130,10 @@ body {
 
 }
 
+
+
+
+
 /* Clear floats after the columns */
 .row:after {
   content: "";
@@ -129,7 +151,7 @@ body {
 .footer {
   padding: 20px;
   text-align: center;
-  background: #333;
+  background: black;
   margin-top: 20px;
 }
 
