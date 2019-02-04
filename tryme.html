@@ -4,7 +4,7 @@
   <meta charset="utf-8"/>
 
 
-
+<script src="tryme.js"></script>
 <link rel="stylesheet" href="styles.css">
 
 </head>
@@ -16,7 +16,7 @@
  <!-- <img src="images/galaxy.jpg" height="400px" width="1350px"> -->
    <h1 class="headtxt"><a href="index.html" style="color: white;text-decoration: none;">Penrose Trip</a></h1>
 
-  <p>&quot;El único sentido verdadero de la vida es encontrar el modo de difrutarla.&quot;</p> 
+  <p>&quot;El único sentido <a href="" style="color: white;text-decoration: none;" onclick="setVisible()">verdadero</a> de la vida es encontrar el modo de difrutarla.&quot;</p> 
 </div>
 
 <div class="topnav">
@@ -29,12 +29,53 @@
 
 <div class="row">
   <div class="leftcolumn">
-    <div id="title_" class="card" style="background-color: #0f130a;">
-      <!-- <h3 class="title">VIDEOS</h3>
-      <p style="font-size: 15px; text-align: center;">Estos son videos variados, en su mayoría de animación, hechos por gente comprometida con el malviaje y la terrible alucinación. <br>Vealos con cautela y sin sobresaltarse innecesariamente.</p> -->
+    <div id="title_tryme" class="card" style="background-color: #0f130a;">
+      <h3 class="title">TRY ME</h3>
+      <p style="font-size: 15px; text-align: center;">Chismoseando Javascript.</p>
     </div>
 
-    
+    <div class="card">
+      <h2>KEY GENERATOR</h2>
+
+      <table style="width: 50%">
+        
+        <tr>
+          <td>Nombre de usuario: </td>
+          <td> <input id="kg_name" type="input" name="name"></td>
+          <td><abbr title="sin tildes o espacios">?</abbr></td>
+        </tr>
+
+        <tr>
+          <td>Contraseña (4 digitos) : </td>
+          <td><input id="kg_ctr" type="password" name="ctr"></td>
+          <td><abbr title="4 digitos entre 0 y 9 sin espacios">?</abbr></td>
+        </tr>
+
+        <tr>
+          <td>Confirmar contraseña : </td>
+          <td><input id="kg_ctr2" type="password" name="ctr2"></td>
+          <td></td>
+        </tr>
+        
+        <tr>
+          <td><button type="button" onclick="generar_key_usuario()">Validar</button></td>
+          <td></td>
+          <td></td>
+        </tr>
+
+
+      </table>
+
+      <h4>OUTPUT:</h4>
+      <p id="kg_output" style="border-color: white;"></p>
+    </div>
+
+    <div id="secret" class="card" style="visibility: hidden;">
+      <h2>WTF</h2>
+      
+
+
+    </div>
 
 
 
@@ -61,11 +102,12 @@
   </div>
 </div>
 
-<div id="ftr" class="footer" style="font-size: xx-small; line-height: 0.2">
+<div id="ftr" class="footer" style="font-size: xx-small; line-height: 1">
   <hr style="color: white;">
   <h4>Información y disclaimers</h4>
   <p>La mayoría del contenido de esta página NO es original. Cualquier uso de material ajeno esta debidamente referenciado y bajo ninguna circunstancia se desea el plagio o alguna otra actividad moralmente cuestionable.</p>
   <p style="font-size: 7px;">Creado por David Paipa  2019</p>
+  
 </div>
 
 </body>
