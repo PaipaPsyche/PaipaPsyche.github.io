@@ -36,7 +36,7 @@ function check_user(){
 		}
 		var ans=ANS.join("");
 
-		if (ans=="SNtZDjlnhVlFBlD"){
+		if (ans=="xhfxB9hFLL7ZHDV"){
 
 			setVisible_personal(name);
 			document.getElementById("cu_output").innerHTML = "KEY ***********FBlD for ".concat(name);
