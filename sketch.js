@@ -1,30 +1,30 @@
 new p5();
 let H = 600;
 let W = 1200;
-let G = -5;
+let G = -9.8;
 let R = 3;
 let CONT = 0;
 let XTARGET = 710;
-let PMUT = 0.1;
-let N = 100;
+let PMUT = 0.05;
+let N = 200;
 let P = [];
 let GEN = [];
 let generation = 0;
-let dt = 0.0005;
-let decimal_places = 4;
-let PROP = 0.5;
-let SIGMA = 15;
-let PREC=0.98;
+let dt = 0.002;
+let decimal_places = 3;
+let PROP = 0.4;
+let SIGMA = 10;
+let PREC=0.95;
 
 let FOA;
 let FOAscore = 0;
 let FOAdist = 0;
 
 
-let standby = 100;
+let standby = 80;
 let c_standby = 0;
 
-let PDISPLAY = 0.4;
+let PDISPLAY = 0.5;
 let DELTAY= 100;
 
 
@@ -136,7 +136,7 @@ class particula {
 
 
       let score = this.rate(XTARGET).toFixed(2);
-      let grad = score * H * 0.6;
+      let grad = score * H * 0.4;
 
 
 
@@ -179,7 +179,7 @@ class particula {
 
 
 function particula_random() {
-  return new particula(random() * W/10, random() * PI / 2);
+  return new particula(random() * W/12, random() * PI / 2);
 }
 
 function resetP(P) {
@@ -313,6 +313,21 @@ function marcador_sup(x, lev, texto1, texto2, colores) {
 
 }
 
+function mean_att(P){
+
+  let sumaV = 0;
+  let sumaT = 0;
+  for (let i = 0; i < P.length; i++) {
+    sumaV += P[i].vo;
+    sumaT += P[i].theta;
+  }
+  let RV = sumaV / P.length;
+  let RT = sumaT / P.length;
+
+
+  return [RV,RT];
+}
+
 
 
 
@@ -374,14 +389,19 @@ function draw() {
     textSize(14);
     fill(0);
     noStroke();
-    text("Score promedio = " + s.toFixed(decimal_places), 0, 60);
+    text("Score promedio = " + s.toFixed(decimal_places), 0, 80);
 
-    text("Score 'Fittest of all' = " + FOAscore.toFixed(decimal_places), 0, 80);
+    text("Score 'Fittest of all' = " + FOAscore.toFixed(decimal_places), 0, 100);
+    text( N+" lanzamientos por generacion", 0, 60);
+
+    textSize(10);
+    text("Vo promedio = "+mean_att(P)[0].toFixed(decimal_places)+" m/s",0,115);
+    text("Theta promedio = "+(mean_att(P)[1]*180/PI).toFixed(decimal_places-1)+" °",0,130);
 
 
 
     marcador_sup(d, 0, d.toFixed(decimal_places) + " m", "promedio", [0, 0, 255]);
-    marcador_sup(FOAdist, 1, FOAdist.toFixed(decimal_places) + " m", "FOA", [255, 0, 0]);
+    marcador_sup(FOAdist, 1, FOAdist.toFixed(decimal_places-1) + " m", "FOA", [255, 0, 0]);
 
   }
 
