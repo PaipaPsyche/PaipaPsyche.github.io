@@ -10,10 +10,11 @@ let N = 100;
 let P = [];
 let GEN = [];
 let generation = 0;
-let dt = 0.001;
+let dt = 0.0005;
 let decimal_places = 4;
 let PROP = 0.5;
 let SIGMA = 15;
+let PREC=0.98;
 
 let FOA;
 let FOAscore = 0;
@@ -25,6 +26,9 @@ let c_standby = 0;
 
 let PDISPLAY = 0.4;
 let DELTAY= 100;
+
+
+
 
 
 
@@ -341,7 +345,7 @@ function draw() {
     GEN[generation] = [promedioD, promedioS];
     generation += 1;
 
-    if (promedioS > 0.98) {
+    if (promedioS > PREC) {
 
       noLoop();
     } else {
