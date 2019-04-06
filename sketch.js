@@ -21,7 +21,7 @@ let FOAscore = 0;
 let FOAdist = 0;
 
 
-let standby = 80;
+let standby = 50;
 let c_standby = 0;
 
 let PDISPLAY = 0.5;
