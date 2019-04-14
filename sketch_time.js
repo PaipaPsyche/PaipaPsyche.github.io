@@ -10,8 +10,8 @@ let dtc = 1;
 let torture = 0;
 let limit = 200;
 
-let text_normal = ["Hernan","04:20","Alexandria","Gibbs","Black Hole","12:45","01:22","Dic. 7 2018","Mar. 20 2352","Google","Anhedonia","Billy","Toronto","Bethe-Bloch","Escylla","Charibdis","Apollo 11","Polar","Keops","Nazi","Batman"];
-let text_bad=["NO!","AAHH","STOP","STOP! NOW!","STOOOP","NO NO NO","HURTS!","PLEASE","DONT","IT HURTS", "KILL ME", "END IT!", "NO NO NO", "NOOOOOO"];
+let text_normal = ["Hernan","04:20","Alexandria","Gibbs","Black Hole","12:45","01:22","Nov. 2 1943","May. 5 331","Oct. 30 14323","Dic. 7 2018","Mar. 20 2352","Google","Anhedonia","Billy","Toronto","Bethe-Bloch","Escylla","Charibdis","Apollo 11","Polar","Keops","Nazi","Batman"];
+let text_bad=["NO!","AAHH","STOP","STOP! NOW!","STOOOP","NO NO NO","HURTS!","PLEASE","DONT","WHY?", "KILL ME", "END IT!", "NO NO NO", "NOOOOOO"];
 
 
 
@@ -34,7 +34,7 @@ class floatingText{
     this.X = xx;
     this.Y = yy;
 
-    this.Tsize=random()*50;
+    this.Tsize=random()*50+10;
 
 
     this.VY=2*(random()*2-1);
@@ -48,15 +48,15 @@ class floatingText{
     if(m=="bad" & this.mood=="normal"){
       this.mood="bad";
       this.T=text_bad[floor(random()*text_bad.length)];
-      this.VX=this.VX*5;
-      this.VY=this.VY*5;
+      this.VX=this.VX*2;
+      this.VY=this.VY*2;
     }
 
     else if (m=="normal" & this.mood=="bad"){
       this.mood="normal";
       this.T=text_normal[floor(random()*text_normal.length)];
-      this.VX=this.VX/5;
-      this.VY=this.VY/5;
+      this.VX=this.VX/2;
+      this.VY=this.VY/2;
 
 
     }
@@ -90,7 +90,7 @@ class floatingText{
   paint(){
 
 
-    let font = 200*(torture/limit);
+    let font = 200*(torture/limit)+10;
     fill(255*torture/limit);
 
     let rr=0;
@@ -98,6 +98,9 @@ class floatingText{
     textSize(font+rr+this.Tsize);
 
     stroke(255*torture/limit);
+    if(mouseIsPressed & torture/limit >0.5 & random()<0.04 ){
+      fill(255,0,0);
+    }
     text(this.T,this.X,this.Y);
   }
 
@@ -170,7 +173,11 @@ paint(){
 
   noFill();
 
+  strokeWeight(3);
+  if(mouseIsPressed){strokeWeight(3*random()+1);}
   circle(this.X,this.Y,this.R*ran);
+  strokeWeight(1);
+
 
   fill(0);
   angleMode(DEGREES);
@@ -230,7 +237,7 @@ function setup() {
 }
 
 function edit_word(val){
-  if (val==1){
+  if (val==1 & t.length < 2*Nwords){
     if (random() < 0.6){t[t.length]=new floatingText("bad",random()*W,random()*H);}
     else{t[t.length]=new floatingText("normal",random()*W,random()*H);}
 
@@ -241,8 +248,7 @@ function edit_word(val){
 
 
   }
-   W = windowWidth;
-   H = windowHeight;
+
 
 
 }
@@ -344,7 +350,8 @@ function draw() {
 
   }
 
-
+  W = windowWidth;
+  H = windowHeight;
 
 
 
