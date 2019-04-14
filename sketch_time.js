@@ -8,17 +8,17 @@ let dtc = 1;
 
 
 let torture = 0;
-let limit = 500;
+let limit = 200;
 
-let text_normal = ["Billy","Toronto","Bethe-Bloch","Escylla","Charibdis","Apollo 11","Polar","Keops","Nazi","Batman"];
-let text_bad=["NO!","AAHH","STOP","PLEASE","DONT","IT HURTS", "KILL ME", "END IT!", "NO NO NO", "NOOOOOO"];
+let text_normal = ["Hernan","04:20","Alexandria","Gibbs","Black Hole","12:45","01:22","Dic. 7 2018","Mar. 20 2352","Google","Anhedonia","Billy","Toronto","Bethe-Bloch","Escylla","Charibdis","Apollo 11","Polar","Keops","Nazi","Batman"];
+let text_bad=["NO!","AAHH","STOP","STOP! NOW!","STOOOP","NO NO NO","HURTS!","PLEASE","DONT","IT HURTS", "KILL ME", "END IT!", "NO NO NO", "NOOOOOO"];
 
 
 
 
 
 class floatingText{
-  constructor(mood){
+  constructor(mood,xx,yy){
     this.T=" ";
     this.mood=mood;
 
@@ -31,14 +31,14 @@ class floatingText{
     }
 
 
-    this.X = random()*W;
-    this.Y = random()*H;
+    this.X = xx;
+    this.Y = yy;
+
+    this.Tsize=random()*50;
 
 
-
-
-    this.VY=random();
-    this.VX=random();
+    this.VY=2*(random()*2-1);
+    this.VX=2*(random()*2-1);
 
 
 
@@ -48,14 +48,20 @@ class floatingText{
     if(m=="bad" & this.mood=="normal"){
       this.mood="bad";
       this.T=text_bad[floor(random()*text_bad.length)];
+      this.VX=this.VX*5;
+      this.VY=this.VY*5;
     }
 
     else if (m=="normal" & this.mood=="bad"){
       this.mood="normal";
       this.T=text_normal[floor(random()*text_normal.length)];
+      this.VX=this.VX/5;
+      this.VY=this.VY/5;
 
 
     }
+
+
 
 
   }
@@ -72,15 +78,25 @@ class floatingText{
     this.X=(this.X+this.VX*dtc*m ) % W;
     this.Y=(this.Y+this.VY*dtc*m ) % H;
 
+    if(random()<0.05){
+      this.X=this.X+2*(random()*2-1);
+      this.Y=this.Y+2*(random()*2-1);
+
+    }
+
   }
 
 
   paint(){
 
 
-    let font = 15 + 100*(torture/limit);
+    let font = 200*(torture/limit);
     fill(255*torture/limit);
-    textSize(font);
+
+    let rr=0;
+    if(mouseIsPressed){rr=random()*50*torture/limit;}
+    textSize(font+rr+this.Tsize);
+
     stroke(255*torture/limit);
     text(this.T,this.X,this.Y);
   }
@@ -124,8 +140,17 @@ if(mouseIsPressed & random()<map(mouseY,0,H,0,1)){
   m=-1;
 }
 
-this.X=max(this.X+this.VX*dtc*m,0 ) % W;
-this.Y=max(this.Y+this.VY*dtc*m,0 ) % H;
+this.X=this.X+this.VX*dtc*m;
+this.Y=this.Y+this.VY*dtc*m;
+
+if(this.X < 0){this.X=W-1;}
+if(this.X > W){this.X=1;}
+if(this.Y < 0){this.Y=H-1;}
+if(this.Y > W){this.Y=1;}
+
+
+
+
 
 }
 
@@ -159,12 +184,17 @@ paint(){
   let angrotm=(ang_m-90)*ran%360;
   rotate(angrotm);
   rect(0,0,0.9*this.R*ran,0.01*this.R*ran);
-//  rotate(-angrotm);
+  let nang = 360-angrotm;
+  rotate(nang);
 
   let angroth=(ang_h-90)*ran%360;
-  rotate(angroth-angrotm);
+
+  rotate(angroth);
   rect(0,0,0.5*this.R*ran,0.01*this.R*ran);
+  nang = 360-angroth;
+  rotate(nang);
   //rotate(-angroth);
+  translate(-this.X,-this.Y);
 
 }
 
@@ -176,27 +206,47 @@ paint(){
 }
   let t = [];
   let r = [];
-  let Nclocks= 100 ;
-  let Nwords = 4;
+  let Nclocks= 20 ;
+  let Nwords = 50 ;
 function setup() {
   createCanvas(W, H);
   frameRate(15);
 
 
   for(let i = 0;i<Nclocks;i++){
-  r[i] = new clock(W/4+random()*W/4,H/4+random()*H/4,floor(random()*12),floor(random()*60),random(),random()*150 + 20);
-    r[i].VX=random()*2;
-    r[i].VY=random()*2;
+  r[i] = new clock(random()*W,random()*H,floor(random()*12),floor(random()*60),random(),random()*150 + 20);
+    r[i].VX=3*(random()*2 - 1);
+    r[i].VY=3*(random()*2 -1);
 
   }
 
 
 
-  for(let q = 0;q<3*Nwords;q++){
-  t[q] = new floatingText("normal");
+  for(let q = 0;q<Nwords;q++){
+  t[q] = new floatingText("normal",random()*W,random()*H);
   }
+
 
 }
+
+function edit_word(val){
+  if (val==1){
+    if (random() < 0.6){t[t.length]=new floatingText("bad",random()*W,random()*H);}
+    else{t[t.length]=new floatingText("normal",random()*W,random()*H);}
+
+
+  }
+  else if (val==-1) {
+    t.pop();
+
+
+  }
+   W = windowWidth;
+   H = windowHeight;
+
+
+}
+
 
 
 
@@ -208,7 +258,7 @@ let color3 = 0;
 
 function draw() {
 
-  dtc = map(mouseX,0,W,0.1,1);
+  dtc = map(mouseX,0,W,0,10);
 
   Tstep_exp = map(mouseY,0,H,-2,1);
   Tstep=pow(10,Tstep_exp);
@@ -229,6 +279,10 @@ function draw() {
     let add = floor(map_tstep+map_dtc);
     torture = torture + add;
 
+  if(random()<torture/limit){
+    edit_word(1);
+
+  }
 
 
 
@@ -244,30 +298,39 @@ function draw() {
 
   }
   else{
-  if(torture < limit & torture >=0){torture --;}
+  if(torture < limit & torture >=0){
+    torture --;
+    if(random()<1-torture/limit & t .length >= Nwords){
+      edit_word(-1);
+
+    }
+
+  }
 
 
 
   }
 
   background(color);
+
+  //console.log(r[0].X,W,r[0].Y,H);
+
+  for(let k = 0;k<t.length;k++){
+    if(mouseIsPressed & random()<dtc/100){
+      t[k].changemood("bad");
+    }
+    if(!mouseIsPressed & random()<0.05) {
+      t[k].changemood("normal");
+    }
+
+    t[k].move();
+    t[k].paint();
+
+  }
   for(let j = 0;j<r.length;j++){
     r[j].paint();
     r[j].move();
   }
-
-  for(let k = 0;k<t.length;k++){
-    if(mouseIsPressed){
-      t[k].changemood("bad");
-    }
-    else{
-      t[k].changemood("normal");
-    }
-    t[k].paint();
-    t[k].move();
-  }
-
-
 
 
   if(torture == limit){
