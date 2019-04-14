@@ -45,12 +45,12 @@ class floatingText{
   }
 
   changemood(m){
-    if(m=="bad"){
+    if(m=="bad" & this.mood=="normal"){
       this.mood="bad";
       this.T=text_bad[floor(random()*text_bad.length)];
     }
 
-    else{
+    else if (m=="normal" & this.mood=="bad"){
       this.mood="normal";
       this.T=text_normal[floor(random()*text_normal.length)];
 
@@ -177,9 +177,10 @@ paint(){
   let t = [];
   let r = [];
   let Nclocks= 100 ;
-  let Nwords = 20;
+  let Nwords = 4;
 function setup() {
   createCanvas(W, H);
+  frameRate(15);
 
 
   for(let i = 0;i<Nclocks;i++){
