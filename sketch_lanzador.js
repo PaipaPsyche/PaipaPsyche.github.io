@@ -1,10 +1,10 @@
 new p5();
-let H = 600;
-let W = 1200;
+let W = windowWidth;
+let H = windowHeight;
 let G = -9.8;
 let R = 3;
 let CONT = 0;
-let XTARGET = 710;
+let XTARGET = floor(random()*W);
 let PMUT = 0.05;
 let N = 200;
 let P = [];
