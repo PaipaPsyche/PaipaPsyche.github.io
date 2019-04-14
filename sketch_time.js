@@ -156,13 +156,15 @@ paint(){
 
 
 
-
-  rotate((ang_m-90)*ran%360);
+  let angrotm=(ang_m-90)*ran%360;
+  rotate(angrotm);
   rect(0,0,0.9*this.R*ran,0.01*this.R*ran);
+//  rotate(-angrotm);
 
-  rotate((ang_h-ang_m)*ran%360);
+  let angroth=(ang_h-90)*ran%360;
+  rotate(angroth-angrotm);
   rect(0,0,0.5*this.R*ran,0.01*this.R*ran);
-
+  //rotate(-angroth);
 
 }
 
@@ -181,7 +183,7 @@ function setup() {
 
 
   for(let i = 0;i<Nclocks;i++){
-  r[i] = new clock(W/4+random()*W/4,H/4+random()*H/4,floor(random()*12),floor(random()*60),random()*2,random()*150 + 20);
+  r[i] = new clock(W/4+random()*W/4,H/4+random()*H/4,floor(random()*12),floor(random()*60),random(),random()*150 + 20);
     r[i].VX=random()*2;
     r[i].VY=random()*2;
 

@@ -338,6 +338,10 @@ function mean_att(P){
 
 function draw() {
   CONT = 0;
+  exp_dt = map(mouseX,0,W,-5,-1);
+  dt=pow(10,exp_dt);
+
+
   background(220);
 
   textSize(14);
