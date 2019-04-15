@@ -3,6 +3,9 @@ let W = windowWidth;
 let H = windowHeight;
 let Rnuc = 5;
 let pRad =0.005;
+let exp_i = -3;
+let exp_f= 0;
+let ESCALAS=["Tenths ","Hundreds ","Thousands ","Millions ","Hundreds of Billions ","Trillions ","Billions of Trillions ","Trillions of Trillions ","Billions of trillions of trillions ","Trillions of Trillions of Trillions of Trillions "]
 
 
 
@@ -42,7 +45,7 @@ class atomo{
     let th = random()*2*3.141592;
     line(this.X+0.2*newR*cos(th),this.Y+0.2*newR*sin(th),this.X+newR*cos(th),this.Y+newR*sin(th));
     stroke(0);
-    console.log(this.E);
+
   }
 
   }
@@ -52,8 +55,8 @@ class atomo{
 
   paint(){
     this.decaer();
-    this.X=this.X+(2*random()-1)*0.005/this.Pdecay;
-    this.Y=this.Y+(2*random()-1)*0.005/this.Pdecay;
+    this.X=this.X+(2*random()-1)*0.05/this.Pdecay;
+    this.Y=this.Y+(2*random()-1)*0.05/this.Pdecay;
     let c_prot=0;
     //nuecleones
     for(let i = 0; i < this.A;i++){
@@ -92,36 +95,61 @@ class atomo{
 
 
 
+function escala(exp,ini,fin){
+
+  let n = int(floor(map(exp,ini,fin,0,ESCALAS.length))) ;
+
+  return ESCALAS[n];
 
 
 
+}
+
+
+
+
+
+let Natomos = floor(random()*15)+2;
+let ATOMOS =[];
 
 
 function setup() {
   createCanvas(W, H);
   frameRate(20);
+  for(let j =0;j<Natomos;j++){
+    ATOMOS[j]=new atomo(W/5 + random()*3*W/5,H/5 + random()*3*H/5,floor(random()*50)+1);
+  }
 
 }
-
-let Natomos = 5;
-let ATOMOS =[];
-for(let j =0;j<Natomos;j++){
-  ATOMOS[j]=new atomo(W/5 + random()*3*W/5,H/5 + random()*3*H/5,floor(random()*50)+1);
-}
-
-
 
 
 function draw() {
-  let fr = map(mouseX,0,W,0.0001,0.1);
-  pRad = fr;
+
+  let fr = map(mouseX,0,W,exp_i,exp_f);
+  frameRate(30);
+
+  pRad = pow(10,fr);
+
+  let texto = escala(fr,exp_i,exp_f);
+
+
   background(0);
   stroke(255);
-  text("pRad = "+pRad.toFixed(4),10,10);
+  text("Approximate Time Scale (per milisecond of simulation) : "+texto+"of years.",10,10);
   noStroke();
 
 for(let j =0;j<Natomos;j++){
   ATOMOS[j].paint();
 
 }
+
+
+
+
+}
+
+function mouseClicked(){
+  background(0);
+  setup();
+  background(0);
 }

@@ -118,12 +118,12 @@
 
 
 
-        <h3> Lanzador Genetico en p5.js </h3>
+        <h2> Lanzador Genetico en p5.js </h2>
 
         <table style="width: 100%">
 
           <tr>
-            <td><a href="lanzador.html"><img src="images/p5.jpg" width="150px" ></a> </td>
+            <td><a href="lanzador.html"><img src="images/p5.jpg" width="200px" ></a> </td>
             <td>
               <p>Se tiene un cañón que dispara un proyectil con determianda velocidad inicial a
                determinado angulo de elevación. El objetivo es lanzar un proyectil a una distancia
@@ -137,12 +137,16 @@
                 cuyo objetivo es ser en promedio mejor que la generacion anterior.
               </p>
 
-              <p>La idea del algoritmo genetico es qe si bien el cañon no hace calculos para deteminar
+              <p>La idea del algoritmo genetico es que si bien el cañon no hace calculos para deteminar
                 los parametros optimos, si puede evaluar cada lanzamiento con el fin de determianr su
-                desempeño y determinar si vale la pena que herede sus caracteristicas a la siguiente genración.</p>
+                desempeño y determinar si vale la pena que herede sus caracteristicas a la siguiente generación.</p>
 
 
                 <p><b>CONTROLES : </b> La posicion en X del cursor determina la velociad del tiempo.
+                </p>
+
+                <p><b>NOTA : </b> La simulación se detiene cuando el promedio de puntajes es cerrcano a 0.95/1. Es decir,
+                  cuando el algoritmo alcanza un 95% de exactitud.
                 </p>
              </td>
           </tr>
@@ -156,20 +160,77 @@
 
 
       <div class="card">
-        <h3> Collider en p5.js </h3>
+        <h2> Collider en p5.js </h2>
+
+        <table style="width: 100%">
+
+          <tr>
+            <td><a href="collider.html"><img src="images/p5.jpg" width="200px" ></a> </td>
+            <td>
+              <p>De la mecánica cuántica, la física de particulas y en especial de la Teoría Cuántica de
+                 Campos (QFT) se sabe que el espacio tiene energía que se manifiesta como una simetría
+                 temporal del espaciotiempo. En consecuencia, el espacio está repleto de pares de partículas
+                 virtuales que se crean a partir de la nada, particula y anti-particula, para eventualmente
+                  colisionar y aniquilarse para volver a la nada. La simulación está en condiciones periódicas, es
+                  decir, lo que sale por un borde de la pantalla, entra por el opuesto.
+              </p>
 
 
+              <p><i> ¿Es posible volver a la nada absoluta a partir de un estado de caos aleatorio?</i>
+              </p>
 
-        <a href="collider.html"><img src="images/p5.jpg" width="100px" ></a>
+              <p>Durante la simulación se genrarán un numero finito de parejas, de esta forma en un futuro eventualmente
+              no quedará ninguna particula pues todas se habran encontrado con su par.</p>
+
+
+                <p><b>CONTROLES : </b> La posicion en X del cursor determina la velociad del tiempo.
+                La posicion Y del cursor determina la probabilidad que en el instante siguiente se genere un nuevo par, siendo
+                el borde inferior de la pantalla la mayor probabilidad.
+                </p>
+
+
+             </td>
+          </tr>
+
+        </table>
+
+
 
       </div>
 
       <div class="card">
-        <h3> Atomo en p5.js </h3>
+        <h2> Atomo en p5.js </h2>
+
+        <table style="width: 100%">
+
+          <tr>
+            <td><a href="atomo.html"><img src="images/p5.jpg" width="200px" ></a> </td>
+            <td>
+              <p>Los átomos, en especial los pesados no son eternos. La física atómica y nuclear han
+                determiando que entre más masivo es un átomo , mas probabilidad tiene de decaer en elementos
+                de menor masa atómica. Esto se debe a que el núcleo del átomo tiene la misma carga positiva y
+                entre más protones tenga dicho núcleo más van a quererse separar. Los neutrones ayudan a estabilizar
+                el núcleo sin embargo, muchas veces no es suficiente.
+                            </p>
+
+
+              <p>Esta simulacion genera un determinado numero de átomos aleatorios y permite ver el deterioro progresivo
+                de estos en funcion de su masa.
+              </p>
 
 
 
-        <a href="atomo.html"><img src="images/p5.jpg" width="100px" ></a>
+
+                <p><b>CONTROLES : </b> La posicion en X del cursor determina la escala de tiempo con la
+                  que avanza la simulación. Es decir, cuanto tiempo simulado pasa por milisegundo.
+                  El click del cursor reinicia la simulación con parámetros aleatorios. 
+
+
+             </td>
+          </tr>
+
+        </table>
+
 
       </div>
 
@@ -179,7 +240,7 @@
 
 
 
-        <a href="time.html"><img src="images/p5.jpg" width="100px" ></a>
+        <a href="time.html"><img src="images/p5.jpg" width="200px" ></a>
 
       </div>
 
