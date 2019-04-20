@@ -14,13 +14,13 @@ let Nmoons=3;
 let pAnillo = 0.2;
 let pNum = 0.1;
 let pHered = 0.1;
-let long_name = 1;
-let pCiv=0.5;
+let long_name = 2;
+let pCiv=0.1;
 
 let SILABAS =["v","sk","gn","s","ph","th","sh","z","h","n","nsk","str","mn","pt","gr","thr","br","fr","y","k","c","tr","cr","gl","kr","t","p","b","m","g","l","r"];
 let VOCALES = ["ua","ia","a","e","i","o","u","ee","oo","ae","au","ie","ao","oa","io"];
 let GREEK=["Alpha","Beta","Gamma","Delta","Omicron","Omega","Ypsilon","Phi","Sigma"]
-
+let SCALES=[" millones de"," billones de"," trillones de","",""]
 
 class random_name{
   constructor(n){
@@ -138,7 +138,8 @@ class system{
 
     this.Rsun=this.DR*(random()+0.2);
     this.Wsun=80+40*random();
-    this.Dtierra=floor(random()*10000);
+    this.Dtierra=floor(random()*100000);
+    this.scales=SCALES[floor(random()*SCALES.length)];
 
     this.Tsun=floor(random()*3);
 
@@ -198,7 +199,7 @@ class system{
     text("Sistema "+this.NAME,20,40);
     textSize(12);
 
-    text("A "+this.Dtierra+" años luz de la tierra",20,60);
+    text("A "+this.Dtierra+this.scales+" años luz de la tierra",20,60);
     if(this.CIV.length==1){
 
       text("Civilización "+this.nameciv+" presente en "+this.CIV[0].NAME,20,80);
