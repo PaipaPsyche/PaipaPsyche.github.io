@@ -3,10 +3,9 @@ let W = windowWidth;
 let H = windowHeight;
 let Rnuc = 5;
 let pRad =0.005;
-let exp_i = -3;
-let exp_f= 0;
+let exp_i = -4;
+let exp_f= -1;
 let ESCALAS=["Tenths ","Hundreds ","Thousands ","Millions ","Hundreds of Billions ","Trillions ","Billions of Trillions ","Trillions of Trillions ","Billions of trillions of trillions ","Trillions of Trillions of Trillions of Trillions "]
-
 
 
 class atomo{
@@ -55,8 +54,8 @@ class atomo{
 
   paint(){
     this.decaer();
-    this.X=this.X+(2*random()-1)*0.05/this.Pdecay;
-    this.Y=this.Y+(2*random()-1)*0.05/this.Pdecay;
+    this.X=this.X+(2*random()-1)*0.001/this.Pdecay;
+    this.Y=this.Y+(2*random()-1)*0.001/this.Pdecay;
     let c_prot=0;
     //nuecleones
     for(let i = 0; i < this.A;i++){
@@ -80,9 +79,14 @@ class atomo{
       fill(255);
       circle(x,y,2);
 
-      text(this.Z,this.X,this.Y)
-
+      //text(this.Z,this.X,this.Y)
     }
+//   if(this.PROT>0){
+//   let name = DATA["elements"][this.PROT-1].name;
+//   let mass =DATA["elements"][this.PROT-1].atomic_mass;
+//   text(name,this.X,this.Y+2*(this.R+5));
+//   text(mass,this.X,this.Y+2*(this.R+5)+10);
+// }
 
 
   }
@@ -113,7 +117,12 @@ let Natomos = floor(random()*15)+2;
 let ATOMOS =[];
 
 
+
+
+
+
 function setup() {
+
   createCanvas(W, H);
   frameRate(20);
   for(let j =0;j<Natomos;j++){

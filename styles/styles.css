@@ -5,7 +5,7 @@
 body, html {
   height: 100%;
   margin: 0;
-  background: black; 
+  background: black;
 }
 
 body {
@@ -20,10 +20,10 @@ body {
 
 .bg {
   /* The image used */
-  background-image: url("images/BG.jpg");
+  background-image: url("../pages/images/BG.jpg");
 
   /* Full height */
-  height: 40%; 
+  height: 40%;
 
   /* Center and scale the image nicely */
   background-position: center;
@@ -37,7 +37,7 @@ body {
   padding: 30px;
   text-align: center;
 
-  
+
 }
 
 .header h1 {
@@ -78,7 +78,7 @@ body {
 
 /* Create two unequal columns that floats next to each other */
 /* Left column */
-.leftcolumn {   
+.leftcolumn {
   float: left;
   width: 75%;
   background-color: black;
@@ -91,7 +91,7 @@ body {
   background-color: black;
   padding-left: 20px;
 }
-.leftcolumnsite {   
+.leftcolumnsite {
   float: left;
   width: 35%;
   background-color: transparent;
@@ -174,7 +174,7 @@ th,td{
 
 /* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other */
 @media screen and (max-width: 800px) {
-  .leftcolumn, .rightcolumn {   
+  .leftcolumn, .rightcolumn {
     width: 100%;
     padding: 0;
   }

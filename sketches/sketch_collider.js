@@ -190,6 +190,6 @@ function draw() {
   }
 
   }
-    console.log(P);
+
 
 }

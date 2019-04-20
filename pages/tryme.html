@@ -7,9 +7,9 @@
   <script src="p5.min.js"></script>
       <script src="p5.dom.min.js"></script>
       <script src="p5.sound.min.js"></script>
-      <link rel="stylesheet" type="text/css" href="style.css">
+      <link rel="stylesheet" type="text/css" href="../styles/styles.css">
       <script src="tryme.js"></script>
-<link rel="stylesheet" href="styles.css">
+
 
 </head>
 <body>
@@ -123,7 +123,7 @@
         <table style="width: 100%">
 
           <tr>
-            <td><a href="lanzador.html"><img src="images/p5.jpg" width="200px" ></a> </td>
+            <td><a href="tryme/lanzador.html"><img src="images/p5.jpg" width="200px" ></a> </td>
             <td>
               <p>Se tiene un cañón que dispara un proyectil con determianda velocidad inicial a
                determinado angulo de elevación. El objetivo es lanzar un proyectil a una distancia
@@ -165,7 +165,7 @@
         <table style="width: 100%">
 
           <tr>
-            <td><a href="collider.html"><img src="images/p5.jpg" width="200px" ></a> </td>
+            <td><a href="tryme/collider.html"><img src="images/p5.jpg" width="200px" ></a> </td>
             <td>
               <p>De la mecánica cuántica, la física de particulas y en especial de la Teoría Cuántica de
                  Campos (QFT) se sabe que el espacio tiene energía que se manifiesta como una simetría
@@ -204,7 +204,7 @@
         <table style="width: 100%">
 
           <tr>
-            <td><a href="atomo.html"><img src="images/p5.jpg" width="200px" ></a> </td>
+            <td><a href="tryme/atomo.html"><img src="images/p5.jpg" width="200px" ></a> </td>
             <td>
               <p>Los átomos, en especial los pesados no son eternos. La física atómica y nuclear han
                 determiando que entre más masivo es un átomo , mas probabilidad tiene de decaer en elementos
@@ -215,7 +215,8 @@
 
 
               <p>Esta simulacion genera un determinado numero de átomos aleatorios y permite ver el deterioro progresivo
-                de estos en funcion de su masa.
+                de estos en funcion de su masa. Estos se van a degradar con el paso del tiempo por eventos de decaimiento
+                nuclear arbitrarios.
               </p>
 
 
@@ -223,7 +224,7 @@
 
                 <p><b>CONTROLES : </b> La posicion en X del cursor determina la escala de tiempo con la
                   que avanza la simulación. Es decir, cuanto tiempo simulado pasa por milisegundo.
-                  El click del cursor reinicia la simulación con parámetros aleatorios. 
+                  El click del cursor reinicia la simulación con parámetros aleatorios.
 
 
              </td>
@@ -236,16 +237,132 @@
 
 
       <div class="card">
-        <h3> Torture Time en p5.js </h3>
+        <h2> Torture Time en p5.js </h2>
+        <table style="width: 100%">
+
+          <tr>
+            <td>  <a href="tryme/time.html"><img src="images/p5.jpg" width="200px" ></a> </td>
+            <td>
+              <p>El tiempo es un concepto abstracto con el que nos hemos familiarizado a pesar
+                de no comprender muy bien. Si bien el tiempo solo es otra propiedad de la realidad
+                en donde vivimos, es casi seguro que cualquier humano alguna vez ha sufrido por culpa
+                de este.
+              </p>
+
+
+              <p>En este ambiente vemos lo que sería el concepto de tiempo de forma gráfica: un popurrí
+                de eventos y conceptos aplicados alineas del tiempo que no van precisamente al mismo compás.
+              </p>
 
 
 
-        <a href="time.html"><img src="images/p5.jpg" width="200px" ></a>
+
+                <p><b>CONTROLES : </b> La posicion en X del cursor determina la <i>progresión temporal
+                  del tiempo</i> mientras que  la posicion en Y del cursor afecta la progresión de cada
+                  reloj. Mantener el click (sobretodo cuando estos dos ultimos efectos están al máximo)
+                  tortura al tiempo en sí mismo.</p>
+                  <p><i>Payback is a bitch...</i>
+                  </p>
+
+
+             </td>
+          </tr>
+
+        </table>
+
+
+
+
+
+      </div>
+
+
+      <div class="card">
+        <h2> 2D Wave en p5.js </h2>
+        <table style="width: 100%">
+
+          <tr>
+            <td>  <a href="tryme/wave.html"><img src="images/p5.jpg" width="200px" ></a> </td>
+            <td>
+              <p>Cuando se estudian las ondas eventualmente uno se encuentra con que se
+                pueden describir como osciladores estáticos circulares con desfase asociado a su
+                posicion dentro del sistema. Esto se logra con demostraciones matematicas simples
+                cuyo objetivo es exponer una verdad simple pero poderosa sobre las ondas, y es que
+                en general no transportan materia, sino energía.
+              </p>
+
+
+              <p>En esta ocasión,  el espacio se llena con osciladores circulares estáticos cuyo
+                desfase se relaciona con su distancia al centro de la pantalla. Esto hace que cualquier
+                onda a gran escala que se evidencia en el modelo será de caracter radial.
+                </p>
+
+
+
+
+
+                <p><b>CONTROLES : </b> La posicion X del cursor determina la flecha del tiempo en la
+                  simulacion, permitiendo ir hacia atras, adelante o incluso dejar estático el tiempo. La
+                posicion Y del cursor determina la fase relativa entre vecinos, lo que modifica la la forma de
+                la onda en si misma.</p>
+                  <p><i></i>
+                  </p>
+
+
+             </td>
+          </tr>
+
+        </table>
+
+
+
+
 
       </div>
 
 
 
+
+
+      <div class="card">
+        <h2> Sistema Planetario en p5.js </h2>
+        <table style="width: 100%">
+
+          <tr>
+            <td>  <a href="tryme/sistema.html"><img src="images/p5.jpg" width="200px" ></a> </td>
+            <td>
+              <p>En el universo existen miles de trillones de estrellas, cada una con posibilidad de tener
+                un sistema planetario que la orbite y por extensión, la minuscula posibilidad de contener
+                una civilización inteligente.
+              </p>
+
+
+              <p> En este caso no se tiene rigor cientifico en cuanto al valor de la simulación pues se trata
+                de un generador de sistemas solares aleatorio. Las distancias gráficas como los radios de los astros
+                están lejanos de ser adecuados, pero solo por esta vez entreguemonos a la ciencia ficción.
+                </p>
+
+
+
+
+
+                <p><b>CONTROLES : </b> La posicion del cursor en X determina la dirección y avance del tiempo. La posicion del cursor en Y dicta
+                  la velocidad con la que avanza el tiempo. La tecla ENTER alinea los planetas y la Tecla BACKSPACE genera un estado aleatorio de este sistema solar.
+               Para explorar un nuevo sistema solar basta con hacer CLICK o simplemente recargar la página. </p>
+                  <p><i></i>
+                  </p>
+
+
+             </td>
+          </tr>
+
+        </table>
+
+
+
+
+
+      </div>
 
 
 

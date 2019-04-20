@@ -13,6 +13,22 @@ let limit = 200;
 let text_normal = ["Hernan","04:20","Alexandria","Gibbs","Black Hole","12:45","01:22","Nov. 2 1943","May. 5 331","Oct. 30 14323","Dic. 7 2018","Mar. 20 2352","Google","Anhedonia","Billy","Toronto","Bethe-Bloch","Escylla","Charibdis","Apollo 11","Polar","Keops","Nazi","Batman"];
 let text_bad=["NO!","AAHH","STOP","STOP! NOW!","STOOOP","NO NO NO","HURTS!","PLEASE","DONT","WHY?", "KILL ME", "END IT!", "NO NO NO", "NOOOOOO"];
 
+//color
+let t_color=0;
+let dt_color=0.5;
+
+let w1=3+random()*5;
+let w2=5+random()*5;
+let w3=7+random()*5;
+
+
+let p1=7+random()*10;
+let p2=5+random()*10;
+let p3=3+random()*10;
+
+//song
+
+
 
 
 
@@ -216,6 +232,8 @@ paint(){
   let Nclocks= 20 ;
   let Nwords = 50 ;
 function setup() {
+
+  //song.play();
   createCanvas(W, H);
   frameRate(15);
 
@@ -257,9 +275,6 @@ function edit_word(val){
 
 
 
-let color1 = 0;
-let color2 = 0;
-let color3 = 0;
 
 
 function draw() {
@@ -273,15 +288,20 @@ function draw() {
   map_tstep=map(mouseY,0,H,0,1);
   map_dtc=map(mouseX,0,W,0,1);
 
-  color1 = color1 + floor(0.3*dtc+random()*3);
-  color2 = color2 + floor(0.5*dtc+random()*5);
-  color3 = color3 + floor(0.7*dtc+random()*7);
+//  color1 = color1 + floor(0.3*dtc+random()*3);
+//  color2 = color2 + floor(0.5*dtc+random()*5);
+//  color3 = color3 + floor(0.7*dtc+random()*7);
 
 
   let coef = torture/limit;
-  let color = [(40+color1%160)*(1-coef) ,(40+color2%160)*(1-coef),(40+color3%160)*(1-coef)];
+//  let color = [(40+color1%160)*(1-coef) ,(40+color2%160)*(1-coef),(40+color3%160)*(1-coef)];
+
+
+  let newt=t_color+dt_color*(1+10*(mouseX*mouseY/(W*H)))
+  let color=[100+155*(sin(w1*t_color+p1)+1),100+155*(sin(w2*t_color+p2)+1),100+155*(sin(w3*t_color+p3)+1)]
 
   if(mouseIsPressed & torture < limit){
+
     let add = floor(map_tstep+map_dtc);
     torture = torture + add;
 
@@ -304,6 +324,7 @@ function draw() {
 
   }
   else{
+
   if(torture < limit & torture >=0){
     torture --;
     if(random()<1-torture/limit & t .length >= Nwords){
@@ -317,6 +338,7 @@ function draw() {
 
   }
 
+  t_color=newt;
   background(color);
 
   //console.log(r[0].X,W,r[0].Y,H);
@@ -352,6 +374,20 @@ function draw() {
 
   W = windowWidth;
   H = windowHeight;
+
+
+ //  let volume = map(torture/limit, 0, 1, 0.5, 1);
+ //  volume = constrain(volume, 0, 1);
+ //  song.amp(volume);
+ //
+ // // Set the rate to a range between 0.1 and 4
+ // // Changing the rate alters the pitch
+ //  let speed = map(torture/limit, 0, 1, 0, 2);
+ //  speed = constrain(speed, 0.01, 4);
+ //  song.rate(speed);
+
+
+
 
 
 
