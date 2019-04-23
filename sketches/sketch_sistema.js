@@ -13,10 +13,10 @@ let pInv=0.005;
 let Nmoons=3;
 let pAnillo = 0.4;
 let pNum = 0.1;
-let pHered = 0.1;
+let pHered = 0.2;
 let long_name = 2;
 let pCiv=0.25;
-let pEat=0.0007;
+let pEat=0.0009;
 
 let SILABAS =["v","sk","s","ph","th","sh","z","h","n","str","gr","thr","br","fr","y","k","c","tr","cr","gl","kr","t","p","b","m","g","l","r"];
 let VOCALES = ["ua","ia","a","e","i","o","u","ee","oo","ae","au","ie","ao","oa","io"];
@@ -52,7 +52,7 @@ class planet{
 
     this.NAME=new random_name(2+floor(random()*long_name)).TXT;
 
-    this.RP= 2+random()*this.R/55;
+    this.RP= 2+random()*this.R/50;
     this.C =[50+random()*205,50+random()*205,50+random()*205];
     let nmoon=floor(random()*(Nmoons));
     this.MOON=[];
@@ -60,7 +60,7 @@ class planet{
       this.MOON[m]= new planet(this.X,this.Y,this.RP);
       this.MOON[m].MOON=[];
       this.MOON[m].W=1.5*(m+1)*this.W + 4*(2*random()-1);
-      this.MOON[m].R= this.MOON[m].R + 5* m**2;
+      this.MOON[m].R= this.MOON[m].R + 4* m**2;
       this.MOON[m].RING=0;
       this.MOON[m].NAME="";
     }
@@ -86,8 +86,10 @@ class planet{
     let y = this.Y+this.R*sin(this.W*T);
     if(this.falling==1){
       this.R = max(0,this.R-50000/this.R*abs(dT));
-      this.W=min(100,this.W+1/this.R*abs(dT)*(this.W/abs(this.W)));
+      this.W=max(min(100,this.W+1/this.R*abs(dT)*(this.W/abs(this.W))),-100);
       console.log(this.W);
+
+
 
       //this.W=this.W*1.002;
     }
@@ -116,7 +118,21 @@ class planet{
       fill(0,255,0);
       stroke(0);
     }
+    if(this.falling==1){
+      fill(255,0,0);
+      if(random()<0.01){
+        stroke(230);
+        line(x+this.RP,y,W/2,H/2);
+        line(x,y+this.RP,W/2,H/2);
+        line(x-this.RP,y,W/2,H/2);
+        line(x,y-this.RP,W/2,H/2);
+        stroke(0);
+      }
+    }
     text(this.NAME,x-textWidth(this.NAME)/2,y-4*this.RP);
+
+
+
     stroke(0);
 
     if(this.RING==1){
@@ -155,10 +171,12 @@ class system{
     this.Tsun=floor(random()*3);
     this.TXTsun="";
 
-    if(this.Rsun > 15 & random()<0.1){
+    if(this.Rsun > 17 & random()<0.2){
       this.Tsun=3;
       this.TXTsun="Agujero Negro";
     }
+
+
 
     this.CIV=[];
     this.nameciv="";
@@ -168,7 +186,7 @@ class system{
       if(random()<pPlaneta){
 
       this.PLANETS[contador]=new planet(W/2,H/2,this.DR*(p+1));
-      if(random()<pHered){ this.PLANETS[contador].NAME=this.NAME+this.PLANETS[contador].NAME;}
+      if(random()<pHered & this.PLANETS[contador].NAME.split("").length<=6){ this.PLANETS[contador].NAME=this.NAME+this.PLANETS[contador].NAME;}
       else if(random()<pNum){ this.PLANETS[contador].NAME=this.NAME+"-"+(contador+1);}
       else if (random()<pCiv & p>0.2*nP & p<0.6*nP & this.CIV.length<1){
         this.CIV[0]=this.PLANETS[contador];
@@ -208,7 +226,7 @@ class system{
     else if(this.Tsun==1){fill(150+100*sin(T/3),250,230+20*sin(T/5));}
     else if(this.Tsun==2){fill(255,240,80+70*sin(3*T));}
     else if(this.Tsun==3){
-      fill(255,180+40*sin(500*T),0);
+      fill(255,180+40*sin(200*(this.Rsun/12)*T),0);
       circle(W/2,H/2,1.3*(this.Rsun+0.12*this.DR*sin(this.Wsun*T)));
 
       fill(0);
@@ -216,7 +234,7 @@ class system{
       circle(W/2,H/2,1.2*(this.Rsun+0.1*this.DR*sin(this.Wsun*T)));
 
 
-      fill(255,180+40*sin(500*T),0);}
+      fill(255,190+30*sin(500*T),0);}
 
 
 
@@ -234,9 +252,16 @@ class system{
     if(this.PLANETS[p].R < 2*this.Rsun){
       fill(255);
       let plan=this.PLANETS[p];
-      circle(plan.X+plan.R*cos(plan.W*T),plan.Y+plan.R*sin(plan.W*T),5*plan.RP);
+      circle(plan.X+plan.R*cos(plan.W*T),plan.Y+plan.R*sin(plan.W*T),10*plan.RP);
+      if(this.CIV[0] == plan){
+        this.CIV=[];
+        this.nameciv="";
+      }
       this.PLANETS.splice(p,1);
-      this.Rsun=1.2*this.Rsun;
+      this.Rsun=1.35*this.Rsun;
+
+
+
     }
     }
 
@@ -264,6 +289,7 @@ class system{
       stroke(255);
        fill(255);
       if(this.PLANETS[i].CIVI==1){stroke(0,255,0); fill(0,255,0);}
+      if(this.PLANETS[i].falling==1){fill(255,0,0); }
 
       text(this.PLANETS[i].NAME,20,140+i*20);
     }
