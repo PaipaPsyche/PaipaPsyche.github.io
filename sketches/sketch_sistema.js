@@ -18,9 +18,12 @@ let long_name = 2;
 let pCiv=0.25;
 let pEat=0.0009;
 
-let SILABAS =["v","sk","s","ph","th","sh","z","h","n","str","gr","thr","br","fr","y","k","c","tr","cr","gl","kr","t","p","b","m","g","l","r"];
+
+
+
+let SILABAS =["pl","","v","sk","s","ph","th","sh","z","h","n","str","gr","thr","br","fr","y","k","c","tr","cr","gl","kr","t","p","b","m","g","l","r"];
 let VOCALES = ["ua","ia","a","e","i","o","u","ee","oo","ae","au","ie","ao","oa","io"];
-let GREEK=["Alpha","Beta","Gamma","Delta","Omicron","Omega","Ypsilon","Phi","Sigma"]
+let GREEK=["Alpha","Epsilon","Prima","Majora","Minora","Nova","Eta","Lambda","Tau","Beta","Gamma","Delta","Omicron","Omega","Ypsilon","Phi","Sigma"]
 let SCALES=[" millones de"," billones de"," trillones de","",""]
 
 class random_name{
