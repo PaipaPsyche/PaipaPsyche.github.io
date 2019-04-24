@@ -123,7 +123,7 @@ class planet{
     }
     if(this.falling==1){
       fill(255,0,0);
-      if(random()<0.01){
+      if(random()<this.R/250){
         stroke(230);
         line(x+this.RP,y,W/2,H/2);
         line(x,y+this.RP,W/2,H/2);
