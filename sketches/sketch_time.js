@@ -10,7 +10,7 @@ let dtc = 1;
 let torture = 0;
 let limit = 200;
 
-let text_normal = ["Hernan","04:20","Alexandria","Gibbs","Black Hole","12:45","01:22","Nov. 2 1943","May. 5 331","Oct. 30 14323","Dic. 7 2018","Mar. 20 2352","Google","Anhedonia","Billy","Toronto","Bethe-Bloch","Escylla","Charibdis","Apollo 11","Polar","Keops","Nazi","Batman"];
+let text_normal = [day()+"/"+month()+"/"+year(),hour()+":"+minute(),"Luisa","Hernan","04:20","Alexandria","Gibbs","Black Hole","12:45","01:22","Nov. 2 1943","May. 5 331","Oct. 30 14323","Dic. 7 2018","Mar. 20 2352","Google","Anhedonia","Billy","Toronto","Bethe-Bloch","Escylla","Charibdis","Apollo 11","Polar","Keops","Nazi","Batman"];
 let text_bad=["NO!","AAHH","STOP","STOP! NOW!","STOOOP","NO NO NO","HURTS!","PLEASE","DONT","WHY?", "KILL ME", "END IT!", "NO NO NO", "NOOOOOO"];
 
 //color
