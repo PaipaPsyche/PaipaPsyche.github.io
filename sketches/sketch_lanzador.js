@@ -342,7 +342,7 @@ function draw() {
   dt=pow(10,exp_dt);
 
 
-  background(220);
+  background(250);
 
   textSize(14);
   noStroke();
