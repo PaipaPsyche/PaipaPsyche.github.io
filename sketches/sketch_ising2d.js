@@ -4,8 +4,8 @@ new p5();
 let W = windowWidth;
 let H = windowHeight;
 
-let ncols = 50;
-let nrows = 25;
+let ncols = 30;
+let nrows = 15;
 
 let C1;
 let C2;

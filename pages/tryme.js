@@ -1,3 +1,19 @@
+var acc_keys=["C9UHCO9HO9NOTMC","RrjFdVdthRDfNJb"];
+
+function check_key(KEY){
+	var is = false;
+	for(var i = 0;i<acc_keys.length;i++){
+		if(acc_keys[i]==KEY){
+			is = true;
+		}
+	}
+	return is;
+
+}
+
+
+
+
 function check_user(){
 	var keylen=15;
 	var master="abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRTSUVWXYZ".split("");
@@ -5,6 +21,7 @@ function check_user(){
 	var name = document.getElementById("cu_name").value;
 	var ctr = document.getElementById("cu_ctr").value;
 	var l = ctr.length;
+
 	if(l!=4){
 	document.getElementById("cu_output").innerHTML = "La contraseña no es valida.";
 	}
@@ -35,11 +52,12 @@ function check_user(){
 			ANS.push(master[esta]);
 		}
 		var ans=ANS.join("");
+		console.log(ans,acc_keys);
 
-		if (ans=="RrjFdVdthRDfNJb"){
+		if (check_key(ans)){
 
-			setVisible_personal(name);
-			document.getElementById("cu_output").innerHTML = "KEY ***********NJb for ".concat(name);
+			setVisible_personal();
+			document.getElementById("cu_output").innerHTML = "KEY ***********"+ans.split("").slice(-4).join("")+" for ".concat(name);
 		}
 
 
@@ -109,9 +127,10 @@ function generar_key_usuario(){
 
 }
 
-function setVisible_personal(name){
+function setVisible_personal(){
 
-document.getElementById("secret_".concat(name.toLocaleLowerCase())).style.visibility="visible";
+document.getElementById("secret_page").style.visibility="visible";
+console.log("a");
 }
 
 
