@@ -1,4 +1,4 @@
-var acc_keys=["C9UHCO9HO9NOTMC","RrjFdVdthRDfNJb"];
+var acc_keys=["C9UHCO9HO9NOTMC","RrjFdVdthRDfNJb","hK6O9OSBGNVMNSh"];
 
 function check_key(KEY){
 	var is = false;
