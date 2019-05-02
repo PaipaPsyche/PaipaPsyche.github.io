@@ -7,7 +7,8 @@ let H = windowHeight;
 let ncols = 50;
 let nrows = 25;
 
-
+let C1;
+let C2;
 let dx = W/ncols;
 let dy = H/nrows;
 
@@ -58,6 +59,8 @@ switch(){
 function setup(){
 
   createCanvas(W,H);
+  C1=[255*random(),0,255*random()];
+  C2=[255*random(),255,255*random()];
   for(var i  = 0;i<ncols;i++){
     SPINS[i]=[];
     for(var j  = 0;j<nrows;j++){
@@ -201,8 +204,8 @@ function draw(){
       var x = i * dx;
       var y = j* dy;
       stroke(0);
-      F=0;
-      if(SPINS[i][j]==1){F=255;}
+      F=C1;
+      if(SPINS[i][j]==1){F=C2;}
       fill(F);
       rect(x,y,dx,dy);
     }
