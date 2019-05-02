@@ -38,80 +38,7 @@
       <p style="font-size: 15px; text-align: center;">Chismoseando Javascript.</p>
     </div>
 
-    <div class="card">
-      <h2>KEY GENERATOR</h2>
 
-      <table style="width: 50%">
-
-        <tr>
-          <td>Nombre de usuario: </td>
-          <td> <input id="kg_name" type="input" name="name"></td>
-          <td><abbr title="sin tildes o espacios">?</abbr></td>
-        </tr>
-
-        <tr>
-          <td>Contraseña (4 digitos) : </td>
-          <td><input id="kg_ctr" type="password" name="ctr"></td>
-          <td><abbr title="4 digitos entre 0 y 9 sin espacios">?</abbr></td>
-        </tr>
-
-        <tr>
-          <td>Confirmar contraseña : </td>
-          <td><input id="kg_ctr2" type="password" name="ctr2"></td>
-          <td></td>
-        </tr>
-
-        <tr>
-          <td><button type="button" onclick="generar_key_usuario()">Validar</button></td>
-          <td></td>
-          <td></td>
-        </tr>
-
-
-      </table>
-
-      <h4>OUTPUT:</h4>
-      <p id="kg_output" style="border-color: white;"></p>
-    </div>
-
-    <div id="secret" class="card" style="visibility: hidden;">
-      <h2>WTF</h2>
-
-
-
-    </div>
-
-    <div class="card">
-      <h2>KEY CHECK</h2>
-
-
-      <table style="width: 50%">
-
-        <tr>
-          <td>Nombre de usuario: </td>
-          <td> <input id="cu_name" type="input" name="name"></td>
-          <td><abbr title="sin tildes o espacios">?</abbr></td>
-        </tr>
-
-        <tr>
-          <td>Contraseña (4 digitos) : </td>
-          <td><input id="cu_ctr" type="password" name="ctr"></td>
-          <td><abbr title="4 digitos entre 0 y 9 sin espacios">?</abbr></td>
-        </tr>
-
-
-        <tr>
-          <td><button type="button" onclick="check_user()">Check</button></td>
-          <td></td>
-          <td></td>
-        </tr>
-
-
-      </table>
-
-      <h4>OUTPUT:</h4>
-      <p id="cu_output" style="border-color: white;"></p>
-    </div>
 
       <div class="card">
 
@@ -404,6 +331,84 @@
 
 
 
+      </div>
+
+
+
+
+      <div class="card">
+        <h2>KEY GENERATOR</h2>
+
+        <table style="width: 50%">
+
+          <tr>
+            <td>Nombre de usuario: </td>
+            <td> <input id="kg_name" type="input" name="name"></td>
+            <td><abbr title="sin tildes o espacios">?</abbr></td>
+          </tr>
+
+          <tr>
+            <td>Contraseña (4 digitos) : </td>
+            <td><input id="kg_ctr" type="password" name="ctr"></td>
+            <td><abbr title="4 digitos entre 0 y 9 sin espacios">?</abbr></td>
+          </tr>
+
+          <tr>
+            <td>Confirmar contraseña : </td>
+            <td><input id="kg_ctr2" type="password" name="ctr2"></td>
+            <td></td>
+          </tr>
+
+          <tr>
+            <td><button type="button" onclick="generar_key_usuario()">Validar</button></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+
+        </table>
+
+        <h4>OUTPUT:</h4>
+        <p id="kg_output" style="border-color: white;"></p>
+      </div>
+
+      <div id="secret" class="card" style="visibility: hidden;">
+        <h2>WTF</h2>
+
+
+
+      </div>
+
+      <div class="card">
+        <h2>KEY CHECK</h2>
+
+
+        <table style="width: 50%">
+
+          <tr>
+            <td>Nombre de usuario: </td>
+            <td> <input id="cu_name" type="input" name="name"></td>
+            <td><abbr title="sin tildes o espacios">?</abbr></td>
+          </tr>
+
+          <tr>
+            <td>Contraseña (4 digitos) : </td>
+            <td><input id="cu_ctr" type="password" name="ctr"></td>
+            <td><abbr title="4 digitos entre 0 y 9 sin espacios">?</abbr></td>
+          </tr>
+
+
+          <tr>
+            <td><button type="button" onclick="check_user()">Check</button></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+
+        </table>
+
+        <h4>OUTPUT:</h4>
+        <p id="cu_output" style="border-color: white;"></p>
       </div>
 
 
