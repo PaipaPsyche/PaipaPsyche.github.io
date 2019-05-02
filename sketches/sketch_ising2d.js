@@ -4,8 +4,8 @@ new p5();
 let W = windowWidth;
 let H = windowHeight;
 
-let ncols = 40;
-let nrows = 20;
+let ncols = 50;
+let nrows = 25;
 
 
 let dx = W/ncols;
@@ -17,7 +17,11 @@ let SPINS = [];
 //variables de tiempo
 
 //constantes
-
+let J=100;
+let Kb = 1;
+let Tc = (2*J)/(Kb*0.88137);
+let Tp=Tc*(0.4);
+let b = 1/(Kb*Tp);
 
 //variables de control
 
@@ -52,12 +56,13 @@ switch(){
 
 
 function setup(){
+
   createCanvas(W,H);
   for(var i  = 0;i<ncols;i++){
     SPINS[i]=[];
     for(var j  = 0;j<nrows;j++){
-
-      SPINS[i][j]=255*floor(2*random());
+      //SPINS[i][j]=1;
+      SPINS[i][j]=floor(2*random())*2 -1;
 
     }
   }
@@ -97,9 +102,62 @@ function calculoEgrilla(M){
   return -J*H;
 }
 
+function copiar(M){
+  let RET=[];
+  for(let  i =0;i<M.length;i++){
+    RET[i]=M[i];
+  }
+  return RET;
+
+}
+
+
+
+
+
 function deltaErandom(M){
-  let MatR = M;
-  let MatP = M  
+  let MatR = copiar(M); //matriz respuesta
+  let MatP = copiar(M);  // matriz prueba
+
+
+
+  let ret = 0;
+  let irand = floor(random()*ncols);
+  let jrand = floor(random()*nrows);
+
+  let Eini = calculoEgrilla(MatP);
+  let E = Eini;
+
+  let newM = switchXY(MatP,irand,jrand);
+  let Efin = calculoEgrilla(newM);
+
+  let Delta = Efin - Eini;
+  if(Delta<=0){
+    ret = Delta;
+    E=Efin;
+    MatR = copiar(newM);
+    //console.log("CHANGE1");
+  }
+  else{
+    //console.log("hheeeh heeee");
+    p = random();
+    let exponencial = exp(-b*Delta);
+    if(p<exponencial){
+      //console.log(p,exponencial);
+      ret = Delta;
+
+      E=Efin;
+      MatR=copiar(newM);
+      //console.log("CHANGE2");
+    }
+    else{MatR = switchXY(MatR,irand,jrand);}
+  }
+
+  return {"MAT" : MatR, "RET" : ret,"EN":E};
+
+
+
+
 
 
 
@@ -112,11 +170,14 @@ function deltaErandom(M){
 
 
 
-function switchXY(i,j){
-  if(SPINS[i][j]==255){SPINS[i][j]=0;}
-  else{SPINS[i][j]=255;}
+function switchXY(Mat,i,j){
+  let M = copiar(Mat);
+  M[i][j]=-M[i][j];
+  return M;
+
 }
 function mouseClicked(){
+  setup();
   //switchXY(10,10);
 }
 
@@ -127,15 +188,39 @@ function mouseClicked(){
 
 function draw(){
   background(200);
+  J=pow(10,map(mouseX,0,W,-4,5));
 
+  Tc = (2*J)/(Kb*0.88137);
+  Tp=pow(10,map(mouseY,H,0,-4,6));
+  b=1/(Kb*Tp);
+  console.log(J,Tp);
+  let TOSS = deltaErandom(SPINS);
+  SPINS = TOSS["MAT"];
   for(var i  = 0;i<ncols;i++){
     for(var j  = 0;j<nrows;j++){
       var x = i * dx;
       var y = j* dy;
       stroke(0);
-      fill(SPINS[i][j]);
+      F=0;
+      if(SPINS[i][j]==1){F=255;}
+      fill(F);
       rect(x,y,dx,dy);
     }
+
+  let TextoE = "Energy = "+TOSS["EN"].toFixed(4)+" J";
+  let TextoT="Temperature = "+Tp.toFixed(4)+" K";
+
+  noStroke();
+  fill(0,0,0,5);
+  rect(10,5,max(textWidth(TextoT),textWidth(TextoE))+20,70);
+
+
+
+  fill(0,255,0,100);
+  textSize(16);
+  text(TextoT,20,20);
+  text("J = "+J.toFixed(4),20,40);
+  text(TextoE,20,60);
   }
 
 
