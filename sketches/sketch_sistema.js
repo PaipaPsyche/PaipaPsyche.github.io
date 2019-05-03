@@ -26,7 +26,7 @@ let pEat=0.0005;
 
 
 let SILABAS =["pl","v","s","kl","ph","th","sh","z","h","n","thr","str","gr","br","fr","y","k","c","tr","cr","gl","kr","t","p","b","m","g","l","r"];
-let ENDINGS=["rsei","cury","rth","rte","rn","ptuno","rno","rano","sto","lgia","nz","lcani","nucci","tina","ngo","gnikai","ccini","cordia","loide","maritano","rineris","lypso","lkanti","ntico","dici","tafar","nica","nyx","nsk","lucci","bino","nita","tana","mble","ptera","bdis","scylla","dore","loch","schen","klich","nich","niakea","stans","varius","leaux","kour","leau","ngria","nakea","lax","nax","nds","ngis","nt","reen","sis","tät","rok","fari","tanari","gneko","gana","mander","rgen","ruchen","ska","nimedae","keshi","phorus","toris","stein","mark","burg","tröen","land","ntis","phoros","tch","rmir","rsay","ght","mpton","koft","nst","mst","ft","gs","nk","ntic","mp","lish","pture","nger","lette","tion","zung","schaft","ncia","sta","smus","nginus","rnet","ster","star","ridas","ston","tani","ton","nata","sky","nov","rys","riana","berg","ton","tron","rinae","stro","ris","nksy","kov"]
+let ENDINGS=["llus","shiba","ndi","rsei","cury","rth","rte","rn","ptuno","rno","rano","sto","lgia","nz","lcani","nucci","tina","ngo","gnikai","ccini","cordia","loide","maritano","rineris","lypso","lkanti","ntico","dici","tafar","nica","nyx","nsk","lucci","bino","nita","tana","mble","ptera","bdis","scylla","dore","loch","schen","klich","nich","niakea","stans","varius","leaux","kour","leau","ngria","nakea","lax","nax","nds","ngis","nt","reen","sis","tät","rok","fari","tanari","gneko","gana","mander","rgen","ruchen","ska","nimedae","rga","stin","nge","ngi","lton","stralis","hr","keshi","phorus","toris","rly","quila","stein","mark","burg","tröen","land","ntis","phoros","tch","rmir","rsay","ght","mpton","koft","nst","mst","ft","gs","nk","ntic","mp","lish","pture","nger","lette","tion","zung","schaft","ncia","sta","smus","nginus","rnet","ster","star","ridas","ston","tani","ton","nata","sky","nov","rys","riana","berg","ton","tron","rinae","stro","ris","nksy","kov"]
 let VOCALES = ["ua","ia","a","e","i","o","u","ee","oo","ae","ie","oa","io"];
 let GREEK=["Alpha","Epsilon","Nega","Proxima","Magna","Ultima","Central","Prima","Majora","Minora","Nova","Eta","Lambda","Tau","Beta","Gamma","Delta","Omicron","Omega","Ypsilon","Phi","Sigma"]
 let SCALES=[" millones de"," billones de"," trillones de","",""]
@@ -40,7 +40,7 @@ class random_name{
       txt=txt+SILABAS[floor(random()*SILABAS.length)]+VOCALES[floor(random()*VOCALES.length)];
       if(random()<0.2 & i<(n-3)){txt=txt+"-";}
     }
-    if(random()<0.6 & txt.split("").length<=6){
+    if(random()<0.7 & txt.split("").length<=6){
       txt=txt+ENDINGS[floor(random()*ENDINGS.length)];
 
 
@@ -107,6 +107,10 @@ class planet{
 
       //this.W=this.W*1.002;
     }
+
+
+
+
 
 
     for(let m = 0;m<this.MOON.length;m++){
@@ -207,12 +211,12 @@ class system{
 
     let contador = 0;
     for(let p = 0;p<nP;p++){
-      if(random()<pPlaneta){
+      if((random()<pPlaneta | (p==(nP-1) & contador ==0 )) & contador <=8){
 
       this.PLANETS[contador]=new planet(W/2,H/2,this.DR*(p+1));
       if(random()<pHered & this.PLANETS[contador].NAME.split("").length<=4 & this.NAME.split("").length<=6){ this.PLANETS[contador].NAME=this.NAME+this.PLANETS[contador].NAME;}
       else if(random()<pNum){ this.PLANETS[contador].NAME=this.NAME+"-"+(contador+1);}
-      else if (random()<pCiv & p>0.2*nP & p<0.6*nP & this.CIV.length<1){
+      else if (random()<pCiv & p>0.2*nP & p<0.5*nP & this.CIV.length<1){
         this.CIV[0]=this.PLANETS[contador];
         this.PLANETS[contador].CIVI=1;
 
@@ -318,7 +322,32 @@ class system{
       if(this.PLANETS[i].CIVI==1){stroke(0,255,0); fill(0,255,0);}
       if(this.PLANETS[i].falling==1){fill(255,0,0); }
 
-      text(this.PLANETS[i].NAME,20,140+i*20);
+      let multip = 0;
+      if(this.Tsun ==1){multip=2}
+      else if(this.Tsun ==0){multip=0.01}
+      else if(this.Tsun ==3){multip=1}
+      else if(this.Tsun ==3){multip=0.5}
+
+      let Tsup=this.PLANETS[i].falling*80+40 *multip+min(floor(1000000/(this.PLANETS[i].R**2)-0.01*this.PLANETS[i].R),950);
+      let Tinf=this.PLANETS[i].falling*80-30*multip+max(floor(300000/(this.PLANETS[i].R**2)-0.2*this.PLANETS[i].R),-210);
+
+
+      text(this.PLANETS[i].NAME,40,140+i*35);
+      textSize(9);
+      //let long_texto  = max(textWidth("["+floor(Tinf)+"°C   a  "+floor(Tsup)+"°C]"),textWidth(this.PLANETS[i].NAME));
+      text("["+floor(Tinf)+"°C   a  "+floor(Tsup)+"°C]",40,153+i*35);
+      noStroke();
+      fill(this.PLANETS[i].C);
+      circle(20,142+i*35,this.PLANETS[i].RP);
+      if(this.PLANETS[i].RING==1){
+
+      stroke(220);
+      fill(255);
+      strokeWeight(1.2);
+      line(20-1.8*this.PLANETS[i].RP,142+i*35-1.8*this.PLANETS[i].RP,20+1.8*this.PLANETS[i].RP,142+i*35+1.8*this.PLANETS[i].RP);
+      stroke(0);
+      strokeWeight(0.5);
+    }
     }
     stroke(0);
 
