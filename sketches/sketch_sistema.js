@@ -17,6 +17,8 @@ let pHered = 0.2;
 let long_name = 3;
 let pCiv=0.15;
 let pEat=0.0005;
+let nStars;
+let STARS=[];
 
 
 
@@ -64,6 +66,10 @@ class planet{
     this.Y=y;
     this.R=3*r;
 
+
+    this.ATMOS=0.2+1.8*random();
+
+
     this.NAME=new random_name(2+floor(random()*long_name)).TXT;
 
     this.RP= 2+random()*this.R/50;
@@ -99,7 +105,7 @@ class planet{
     let x = this.X+this.R*cos(this.W*T);
     let y = this.Y+this.R*sin(this.W*T);
     if(this.falling==1){
-      this.R = max(0,this.R-50000/this.R*abs(dT));
+      this.R = max(0,this.R-10000/this.R*abs(dT));
       this.W=max(min(100,this.W+1/this.R*abs(dT)*(this.W/abs(this.W))),-100);
       console.log(this.W);
 
@@ -283,6 +289,13 @@ class system{
 
       circle(W/2,H/2,1.2*(this.Rsun+0.1*this.DR*sin(this.Wsun*T)));
 
+      // noFill();
+      // strokeWeight(0.3);
+      // stroke(255*(1+sin(50000*T))/2);
+      // circle(W/2,H/2,1.1*(this.Rsun+0.1*this.DR*sin(this.Wsun*T)))
+      // stroke(255*(1+sin(20000*T))/2);
+      //   circle(W/2,H/2,1.5*(this.Rsun+0.1*this.DR*sin(this.Wsun*T)))
+      // noStroke();
 
       fill(255,190+30*sin(500*T),0);}
 
@@ -319,23 +332,25 @@ class system{
       textSize(12);
       stroke(255);
        fill(255);
-      if(this.PLANETS[i].CIVI==1){stroke(0,255,0); fill(0,255,0);}
-      if(this.PLANETS[i].falling==1){fill(255,0,0); }
+      if(this.PLANETS[i].CIVI==1){noStroke(); fill(0,255,0);}
+      if(this.PLANETS[i].falling==1){noStroke(),fill(255,20,20);this.PLANETS[i].ATMOS=max(0,(1+1/10000)*this.PLANETS[i].ATMOS) }
 
       let multip = 0;
       if(this.Tsun ==1){multip=2}
       else if(this.Tsun ==0){multip=0.01}
       else if(this.Tsun ==3){multip=1}
-      else if(this.Tsun ==3){multip=0.5}
+      else if(this.Tsun ==2){multip=0.5}
 
-      let Tsup=this.PLANETS[i].falling*80+40 *multip+min(floor(1000000/(this.PLANETS[i].R**2)-0.01*this.PLANETS[i].R),950);
-      let Tinf=this.PLANETS[i].falling*80-30*multip+max(floor(300000/(this.PLANETS[i].R**2)-0.2*this.PLANETS[i].R),-210);
+      let Tsup=this.PLANETS[i].falling*10+40 *multip+min(floor(1000000/(this.PLANETS[i].R**2)-0.01*this.PLANETS[i].R),950)+(this.PLANETS[i].ATMOS-1.1)*40;
+      let Tinf=this.PLANETS[i].falling*10-30*multip+max(floor(300000/(this.PLANETS[i].R**2)-0.2*this.PLANETS[i].R),-210)-(this.PLANETS[i].ATMOS-1.1)*40;
 
 
       text(this.PLANETS[i].NAME,40,140+i*35);
-      textSize(9);
+      textSize(10);
+      if(this.PLANETS[i].CIVI==0){fill(0,180,255);}
+      noStroke();
       //let long_texto  = max(textWidth("["+floor(Tinf)+"°C   a  "+floor(Tsup)+"°C]"),textWidth(this.PLANETS[i].NAME));
-      text("["+floor(Tinf)+"°C   a  "+floor(Tsup)+"°C]",40,153+i*35);
+      text("["+floor(min(Tsup,Tinf))+"°C   a  "+floor(max(Tsup,Tinf))+"°C]",40,153+i*35);
       noStroke();
       fill(this.PLANETS[i].C);
       circle(20,142+i*35,this.PLANETS[i].RP);
@@ -362,18 +377,37 @@ function keyPressed() {
   } else if (keyCode ===BACKSPACE){
     T=2000*random();
   }
+  else if(keyCode == SHIFT){
+    c.Tsun=3;
+  }
 }
+
 
 
 
   function setup(){
 
     createCanvas(W,H);
+    nStars=floor(500+random()*1000)
     let np =floor(random()*8)+4;
     pNum=(1-((np-3)/3-1)/3)*random();
     c = new system( np, H/3.8);
 
+    for(let s = 0;s<nStars;s++){
+      let st = [];
+      st[0]=floor(random()*W);
+      st[1]=floor(random()*H);
+      st[2]=random()*3;
+      st[3]=[255,255,255];
+      if(random()<0.01){st[3]=[180,0,0];}
+      if(random()<0.01){st[3]=[0,0,180];}
+      if(random()<0.01){st[3]=[180,180,0];}
+      if(random()<0.01){st[3]=[180,0,180];}
+      STARS[s]=st;
 
+
+
+    }
 
   }
 
@@ -383,6 +417,16 @@ function keyPressed() {
 
 function draw(){
   background(0);
+  for(let s = 0;s<nStars;s++){
+    stroke(STARS[s][3]);
+    let rand  = 0;
+    if(random()<0.0002){rand=1};
+    strokeWeight(max(STARS[s][2]+rand*randomGaussian(),0.1));
+    point(STARS[s][0],STARS[s][1]);
+    noStroke();
+
+  }
+  strokeWeight(0.5);
 
   c.paint();
   if(mouseIsPressed){
