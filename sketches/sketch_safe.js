@@ -121,6 +121,13 @@ function draw() {
   for(let j = 0;j<test.length;j++){
     test[j].paint();
   }
+
+  //agregar ticks binarios
+
+
+
+
+
   if(check()){dT=0;finished();}
 
 
@@ -147,6 +154,10 @@ text("Nivel: "+level,50,50);
 
 
 }
+
+
+
+
 
 
 
