@@ -162,6 +162,7 @@ class planet{
       stroke(0);
 
     }
+    noStroke();
     text(this.NAME,x-textWidth(this.NAME)/2,y-4*this.RP);
 
 
