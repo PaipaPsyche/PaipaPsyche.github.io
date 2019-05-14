@@ -164,7 +164,7 @@ text("Nivel: "+level,50,50);
 function mouseClicked() {
   if (check()) {
     n_ruedas=n_ruedas+floor(random()*2)
-    ticks= ticks+floor(random()*4)
+    ticks= ticks+floor(random()*2)
     level++;
     setup();
   } else {
