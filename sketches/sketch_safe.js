@@ -122,6 +122,23 @@ function draw() {
     test[j].paint();
   }
 
+  let CODES = [];
+  for(let i = 0;i<ticks;i++){
+    let chain="";
+    for(let j=0;j<test.length;j++){
+
+      if(test[j].IS == i){
+        chain=chain+"1";
+      }
+      else{chain=chain+"0";}
+
+    }
+    CODES[i]=chain;
+
+
+
+  }
+
   //agregar ticks binarios
 
 
@@ -146,11 +163,43 @@ function draw() {
 // }
 
 
-strokeWeight(0.5);
+strokeWeight(1);
 fill(0);
 textSize(25);
-
+noStroke();
 text("Nivel: "+level,50,50);
+
+strokeWeight(0.5);
+fill(255,0,0);
+textSize(15);
+text("Factor XY : ["+((mx- W/2)/W).toFixed(2)+","+((my- H/2)/H).toFixed(2)+"]",50,80);
+fill(0,0,255);
+text("Posibilidad de Exito : 1 entre "+(ticks)**n_ruedas,50,100);
+
+
+textSize(15);
+fill(0,180,0);
+text("CODIGOS: ",50,140);
+
+
+
+
+
+
+let exito = "";
+for(let i =0;i<n_ruedas;i++){
+exito=exito+"1";
+}
+
+for (k =0;k<CODES.length;k++){
+fill(0);
+if(CODES[k]==exito){fill(0,255,0);}
+text(CODES[k],50,160+k*20);
+
+
+}
+
+
 
 
 }
@@ -161,10 +210,16 @@ text("Nivel: "+level,50,50);
 
 
 
+
+
+
+
 function mouseClicked() {
   if (check()) {
-    n_ruedas=n_ruedas+floor(random()*2)
-    ticks= ticks+floor(random()*2)
+    if(random()<0.5){n_ruedas=n_ruedas+1+floor(2*random());}
+    else{ticks= ticks+1+floor(random()*3);}
+
+
     level++;
     setup();
   } else {

@@ -440,3 +440,8 @@ function draw(){
   dT = mult * map(mouseX,0,W,-0.0005,0.0005);
 
 }
+// function windowResized() {
+//   W = windowWidth;
+//   H = windowHeight;//P5 window resize function
+//   resizeCanvas( W,H);
+// }
