@@ -12,10 +12,10 @@ let pPlaneta =0.6;
 let pInv=0.004;
 let Nmoons=3;
 let pAnillo = 0.3;
-let pNum = 0.1;
-let pHered = 0.2;
+let pNum = 0.3;
+let pHered = 0.3;
 let long_name = 3;
-let pCiv=0.15;
+let pCiv=0.25;
 let pEat=0.0005;
 let nStars;
 let STARS=[];
@@ -27,8 +27,8 @@ let STARS=[];
 
 
 
-let SILABAS =["pl","v","s","kl","ph","th","sh","z","h","n","thr","str","gr","br","fr","y","k","c","tr","cr","gl","kr","t","p","b","m","g","l","r"];
-let ENDINGS=["llus","shiba","ndi","rsei","cury","rth","rte","rn","ptuno","rno","rano","sto","lgia","nz","lcani","nucci","tina","ngo","gnikai","ccini","cordia","loide","maritano","rineris","lypso","lkanti","ntico","dici","tafar","nica","nyx","nsk","lucci","bino","nita","tana","mble","ptera","bdis","scylla","dore","loch","schen","klich","nich","niakea","stans","varius","leaux","kour","leau","ngria","nakea","lax","nax","nds","ngis","nt","reen","sis","tät","rok","fari","tanari","gneko","gana","mander","rgen","ruchen","ska","nimedae","rga","stin","nge","ngi","lton","stralis","hr","keshi","phorus","toris","rly","quila","stein","mark","burg","tröen","land","ntis","phoros","tch","rmir","rsay","ght","mpton","koft","nst","mst","ft","gs","nk","ntic","mp","lish","pture","nger","lette","tion","zung","schaft","ncia","sta","smus","nginus","rnet","ster","star","ridas","ston","tani","ton","nata","sky","nov","rys","riana","berg","ton","tron","rinae","stro","ris","nksy","kov"]
+let SILABAS =["pl","v","s","ph","th","sh","z","h","n","thr","str","gr","br","fr","y","k","c","tr","cr","gl","t","p","b","m","g","l","r"];
+let ENDINGS=["rys","llus","shiba","ndi","rsei","cury","rth","rte","rn","ptuno","rno","rano","sto","lgia","nz","lcani","nucci","tina","ngo","gnikai","ccini","cordia","loide","maritano","rineris","lypso","lkanti","ntico","dici","tafar","nica","nyx","nsk","lucci","bino","nita","tana","mble","ptera","bdis","scylla","dore","loch","schen","klich","nich","niakea","stans","varius","leaux","kour","leau","ngria","nakea","lax","nax","nds","ngis","nt","reen","sis","tät","rok","fari","tanari","gneko","gana","mander","rgen","ruchen","ska","nimedae","rga","stin","nge","ngi","lton","stralis","hr","keshi","phorus","toris","rly","quila","stein","mark","burg","tröen","land","ntis","phoros","tch","rmir","rsay","ght","mpton","koft","nst","mst","ft","gs","nk","ntic","mp","lish","pture","nger","lette","tion","zung","schaft","ncia","sta","smus","nginus","rnet","ster","star","ridas","ston","tani","ton","nata","sky","nov","rys","riana","berg","ton","tron","rinae","stro","ris","nksy","kov"]
 let VOCALES = ["ua","ia","a","e","i","o","u","ee","oo","ae","ie","oa","io"];
 let GREEK=["Alpha","Epsilon","Nega","Proxima","Magna","Ultima","Central","Prima","Majora","Minora","Nova","Eta","Lambda","Tau","Beta","Gamma","Delta","Omicron","Omega","Ypsilon","Phi","Sigma"]
 let SCALES=[" millones de"," billones de"," trillones de","",""]
@@ -42,7 +42,7 @@ class random_name{
       txt=txt+SILABAS[floor(random()*SILABAS.length)]+VOCALES[floor(random()*VOCALES.length)];
       if(random()<0.2 & i<(n-3)){txt=txt+"-";}
     }
-    if(random()<0.7 & txt.split("").length<=6){
+    if(random()<0.8 & txt.split("").length<=6){
       txt=txt+ENDINGS[floor(random()*ENDINGS.length)];
 
 
@@ -206,7 +206,7 @@ class system{
     this.Tsun=floor(random()*3);
     this.TXTsun="";
 
-    if(this.Rsun > 17 & random()<0.2){
+    if(this.Rsun > 17 & random()<0.3){
       this.Tsun=3;
       this.TXTsun="Agujero Negro";
     }
@@ -239,8 +239,8 @@ class system{
 
       }
     }
-    if(random()<0.2){this.NAME=GREEK[floor(random()*GREEK.length)]+"-"+this.NAME}
-    if(random()<0.5 & this.NAME.split("").length<=2*(long_name+1) ){this.NAME=this.NAME+ROMNUM[floor(random()*ROMNUM.length)]}
+    if(random()<0.3){this.NAME=GREEK[floor(random()*GREEK.length)]+"-"+this.NAME}
+    if(random()<0.55 & this.NAME.split("").length<=2*(long_name+1) ){this.NAME=this.NAME+ROMNUM[floor(random()*ROMNUM.length)]}
 
 
     if(this.Tsun==1 & this.Rsun<=12 & this.Rsun>9){this.TXTsun="Enana blanca";}
