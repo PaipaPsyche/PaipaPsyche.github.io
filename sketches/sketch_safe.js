@@ -26,8 +26,8 @@ class rueda{
     this.IS=0;
 
     //constantes de velocidad: A con Xmouse y B con Ymouse
-    this.CONS_A=maxv*(random()*2-1)/2;
-    this.CONS_B=maxv*(random()*2-1)/2;
+    this.CONS_A=maxv*(random()*2-1)*0.7;
+    this.CONS_B=maxv*(random()*2-1)*0.7;
 
     this.PH = randomGaussian()*10;
 
@@ -99,6 +99,8 @@ class rueda{
 
 function setup() {
   angleMode(DEGREES);
+
+  frameRate(60);
 
   W = windowWidth;
   H = windowHeight;
@@ -172,9 +174,13 @@ text("Nivel: "+level,50,50);
 strokeWeight(0.5);
 fill(255,0,0);
 textSize(15);
-text("Factor XY : ["+((mx- W/2)/W).toFixed(2)+","+((my- H/2)/H).toFixed(2)+"]",50,80);
+text("Factor XY : ["+((mx- W/2)/W).toFixed(3)+","+((my- H/2)/H).toFixed(3)+"]",50,80);
 fill(0,0,255);
-text("Posibilidad de Exito : 1 entre "+(ticks)**n_ruedas,50,100);
+
+text("Posibilidad de Exito : 1 entre "+(ticks)**(n_ruedas+1),50,100);
+textSize(13);
+text("Tiempo estimado :" +round(((ticks)**n_ruedas)*ticks/60)+" segundos ("+round(((ticks)**n_ruedas)*ticks/3600)+" minutos)",50,120);
+(((ticks)**n_ruedas)/60)
 
 
 textSize(15);
@@ -196,6 +202,9 @@ fill(0);
 if(CODES[k]==exito){fill(0,255,0);}
 text(CODES[k],50,160+k*20);
 
+fill(255,0  ,0);
+text(binToDec(CODES[k]),55+textWidth(CODES[k]),160+k*20);
+
 
 }
 
@@ -216,8 +225,8 @@ text(CODES[k],50,160+k*20);
 
 function mouseClicked() {
   if (check()) {
-    if(random()<0.5){n_ruedas=n_ruedas+1+floor(2*random());}
-    else{ticks= ticks+1+floor(random()*3);}
+    if(random()<0.5 & ticks<12){ticks= ticks+1+floor(random()*3);}
+    else{n_ruedas=n_ruedas+1+floor(2*random());}
 
 
     level++;
@@ -237,6 +246,24 @@ function finished(){
   }
 
 }
+
+function binToDec(s){
+let lista=s.split("");
+let nterm=lista.length;
+
+let ans= 0;
+for(let i =0;i<nterm;i++){
+  if(lista[i]==="1"){
+    ans=ans+(2**i);
+  }
+
+
+}
+
+return ans;
+
+}
+
 
 
 function check(){
