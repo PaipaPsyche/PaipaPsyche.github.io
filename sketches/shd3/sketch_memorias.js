@@ -90,6 +90,14 @@ class memoria{
 
     if(this.isInRange()==true){
       fill(255);
+      if(mouseIsPressed){
+        this.C=[200+55*sin(0.2*T),200+55*sin(0.7*T),200+55*sin(0.5*T)];
+      }
+      else{
+        this.C=EMOCIONES[this.E];
+
+      }
+
       textSize(16);
       stroke(0);
     text(this.T,this.X-textWidth(this.T)/2,this.Y);
