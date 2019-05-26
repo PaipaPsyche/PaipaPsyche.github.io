@@ -610,6 +610,14 @@ function anyRange(xx,yy){
 
 
 
+//mobile
+function deviceShaken() {
+  setup();
+  background(0);
+}
+
+
+
 
 
 // function windowResized() {
