@@ -29,7 +29,7 @@ let BUTTONS=[];
 
 
 
-let ELEMS={"Helio":[25,10],"Aluminio":[20,25],"Titanio":[8,5],"Oro":[2,1],"Platino":[2,1],"Yodo":[4,1],"Sodio":[10,8],"Potasio":[10,5],"Cloro":[20,20],"Calcio":[15,10],"Plomo":[2,0.2],"Uranio":[0.5,0.4],"Carbono":[20,10],"Nitrogeno":[9,5],"Silicio":[15,15],"Oxigeno":[20,20],"Azufre":[2,2],"Magnesio":[10,10],"Selenio":[20,10],"Boro":[5,2],"Hierro":[40,30],"Litio":[20,12]}
+let ELEMS={"Helio":[25,10],"Agua":[30,20],"Aluminio":[20,25],"Hidrogeno":[10,8],"Manganeso":[2,1],"Fosforo":[5,4],"Titanio":[8,5],"Oro":[2,1],"Platino":[2,1],"Yodo":[4,1],"Sodio":[10,8],"Potasio":[10,5],"Cloro":[20,20],"Calcio":[15,10],"Plomo":[2,0.2],"Uranio":[0.5,0.4],"Carbono":[20,10],"Nitrogeno":[9,5],"Silicio":[30,25],"Oxigeno":[40,30],"Azufre":[2,2],"Magnesio":[10,10],"Selenio":[20,10],"Boro":[5,2],"Hierro":[40,30],"Litio":[20,12]}
 let elems= Object.keys(ELEMS);
 
 
@@ -178,7 +178,7 @@ class planet{
 
   }
   inRange(xx,yy){
-    let val_inicial=0.8+this.falling*0.05*sin(80*T)*cos(49*T);
+    let val_inicial=0.6+this.falling*0.05*sin(80*T)*cos(49*T);
 
     let mx=val_inicial;
     let my=val_inicial;
@@ -205,7 +205,7 @@ class planet{
     stroke(0);
 
 
-    let val_inicial=0.8+this.falling*0.05*sin(80*T)*cos(49*T);
+    let val_inicial=0.6+this.falling*0.05*sin(80*T)*cos(49*T);
 
     let mx=val_inicial;
     let my=val_inicial;
@@ -554,7 +554,7 @@ class system{
 
       if(Pobs.CIVI==1){
         let add = "";
-        if(this.Wsun > 100){add=" de paso";}
+        if(this.Wsun > 100 & this.Tciv>0 ){add=" de paso";}
         push();
         fill(255);
         stroke(255);
@@ -604,6 +604,7 @@ class system{
           text("Tipo de estrella : "+this.TXTsun,xxx,yyy+58);
           text("Temperatura (a 1.2 radios Solares) = "+((this.Tsun+1)*this.Rsun*this.Wsun*10).toFixed(0)+" K",xxx,yyy+78);
           text("Radio estelar : "+(10**map(this.Rsun,1,30,-0.5,3.5)*0.00465247).toFixed(3)+" UA ("+(10**map(this.Rsun,1,30,-0.5,3.5)).toFixed(3)+" Rsun)",xxx,yyy+98);
+          if(this.DYS>0){text("Esfera de Dyson presente (Civilización "+this.nameciv+")",xxx,yyy+118);}
     }
 
 
@@ -654,7 +655,7 @@ function keyPressed() {
     nStars=floor(500+random()*1000)
     let np =floor(random()*8)+4;
     pNum=(1-((np-3)/3-1)/3)*random();
-    c = new system( np, min(W,H)/4 );
+    c = new system( np, min(W,H)/6 );
 
     for(let s = 0;s<nStars;s++){
       let st = [];
