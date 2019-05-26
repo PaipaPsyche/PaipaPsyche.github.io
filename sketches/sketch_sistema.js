@@ -18,6 +18,9 @@ let long_name = 3;
 let pCiv=0.25;
 let pEat=0.0007;
 let nStars;
+
+let Pobs="";
+
 let STARS=[];
 
 
@@ -25,24 +28,27 @@ let STARS=[];
 
 
 
+let ELEMS={"Helio":[25,10],"Cloro":[20,20],"Calcio":[15,10],"Plomo":[2,0.2],"Uranio":[0.5,0.4],"Carbono":[20,10],"Nitrogeno":[9,5],"Silicio":[15,15],"Oxigeno":[20,20],"Azufre":[2,2],"Magnesio":[10,10],"Selenio":[20,10],"Boro":[5,2],"Hierro":[40,30],"Litio":[20,12]}
+let elems= Object.keys(ELEMS);
 
 
 let SILABAS =["pl","v","s","ph","th","sh","z","h","n","thr","str","gr","br","fr","y","k","c","tr","cr","gl","t","p","b","m","g","l","r"];
-let ENDINGS=["rys","llus","shiba","ndi","rsei","cury","rth","rte","scus","nte","","rn","ptuno","rno","rano","sto","lgia","nz","lcani","nucci","tina","ngo","gnikai","ccini","cordia","loide","maritano","rineris","lypso","lkanti","ntico","dici","tafar","nica","nyx","nsk","lucci","bino","nita","tana","mble","ptera","bdis","scylla","dore","loch","schen","klich","nich","niakea","stans","varius","leaux","kour","leau","ngria","nakea","lax","nax","nds","ngis","nt","reen","sis","tät","rok","fari","tanari","gneko","gana","mander","rgen","ruchen","ska","nimedae","rga","stin","nge","ngi","lton","stralis","hr","keshi","phorus","toris","rly","quila","stein","mark","burg","tröen","land","ntis","phoros","tch","rmir","rsay","ght","mpton","koft","nst","mst","ft","gs","nk","ntic","mp","lish","pture","nger","lette","tion","zung","schaft","ncia","sta","smus","nginus","rnet","ster","star","ridas","ston","tani","ton","nata","sky","nov","rys","riana","berg","ton","tron","rinae","stro","ris","nksy","kov"]
-let VOCALES = ["ua","ia","a","e","i","o","u","ee","oo","ae","ie","oa","io"];
-let GREEK=["Alpha","Epsilon","Nega","Proxima","Magna","Ultima","Central","Prima","Majora","Minora","Nova","Eta","Lambda","Tau","Beta","Gamma","Delta","Omicron","Omega","Ypsilon","Phi","Sigma"]
+let ENDINGS=["rys","llus","shiba","ndi","rsei","cury","rth","rte","scus","nte","","rn","ptuno","rno","rano","sto","lgia","nz","lcani","rd","nucci","tina","ngo","gnikai","ccini","cordia","loide","maritano","rineris","lypso","lkanti","ntico","dici","tafar","nica","nyx","nsk","lucci","bino","nita","tana","mble","ptera","bdis","scylla","dore","loch","schen","klich","nich","niakea","stans","varius","leaux","kour","leau","ngria","nakea","lax","nax","nds","ngis","nt","reen","sis","tät","rok","fari","tanari","gneko","gana","mander","rgen","nde","nt","ngs","ruchen","ska","nimedae","rga","stin","nge","ngi","lton","stralis","hr","keshi","phorus","toris","rly","quila","stein","mark","burg","tröen","land","ntis","phoros","tch","rmir","rsay","ght","mpton","koft","nst","mst","ft","gs","nk","ntic","mp","lish","pture","nger","lette","tion","zung","schaft","ncia","sta","smus","nginus","rnet","ster","star","ridas","ston","tani","ton","nata","sky","nov","rys","riana","berg","ton","tron","rinae","stro","ris","nksy","kov"]
+let VOCALES = ["ua","ia","a","e","i","o","u","a","e","i","o","u","ae","ie","oa","io"]//,"ee","oo"];
+let GREEK=["Alpha","Epsilon","Nega","Proxima","Magna","Ultima","Central","Prima","Majora","Minora","Nova","Eta","Lambda","Tau","Beta","Gamma","Delta","Omicron","Omega","Ypsilon","Ultra","Phi","Sigma"]
 let SCALES=[" millones de"," billones de"," trillones de","",""]
+let CIVENDINGS=["riana","siana","niana","na","rgiana","bina","nita","lita","miana","liana","nte","","giana","tiana","noide","loide","quiana","diana"]
 let ROMNUM=["-A","-B","-C","-D","-I","-II","-III","-IV","-V","-X","-Y","-Z"]
 
 class random_name{
-  constructor(n){
+  constructor(n,end=true){
     let txt ="";
     for(let i =0;i<n-1;i++){
 
       txt=txt+SILABAS[floor(random()*SILABAS.length)]+VOCALES[floor(random()*VOCALES.length)];
       if(random()<0.2 & i<(n-3)){txt=txt+"-";}
     }
-    if(random()<0.8 & txt.split("").length<=6){
+    if(end & random()<0.8 & txt.split("").length<=6){
       txt=txt+ENDINGS[floor(random()*ENDINGS.length)];
 
 
@@ -65,6 +71,22 @@ class planet{
     this.X=x;
     this.Y=y;
     this.R=3*r;
+
+
+    //elementos
+    let nelem=5+floor(4*random());
+    let phonyelems=elems.slice(0);
+    this.elementos=[];
+    for (let k =0;k<nelem;k++){
+      let pick=floor(random()*phonyelems.length);
+      let arr = ELEMS[phonyelems[pick]];
+      let abund=randomGaussian(arr[1],arr[2]);
+      this.elementos[k]=[phonyelems[pick],abs(abund)];
+      phonyelems.splice(pick,1);
+        }
+
+
+
 
 
     this.ATMOS=0.2+1.8*random();
@@ -96,18 +118,52 @@ class planet{
     this.Y=y;
 
   }
+  inRange(xx,yy){
+    let val_inicial=0.8+this.falling*0.05*sin(80*T)*cos(49*T);
+
+    let mx=val_inicial;
+    let my=val_inicial;
+    if(W<H){
+      my=2-my;
+    }
+    else if(H<W){
+      mx=2-mx;
+    }
+
+    let x = this.X+mx*this.R*cos(this.W*T)//-0.4*this.R;
+    let y = this.Y+my*this.R*sin(this.W*T);
+    if(sqrt((x-xx)**2+(y-yy)**2)<=max(50,3*this.RP)){
+      return true;
+    }
+    else{return false;}
+
+  }
 
 
 
 
   paint(){
     stroke(0);
-    let x = this.X+this.R*cos(this.W*T);
-    let y = this.Y+this.R*sin(this.W*T);
+
+
+    let val_inicial=0.8+this.falling*0.05*sin(80*T)*cos(49*T);
+
+    let mx=val_inicial;
+    let my=val_inicial;
+    if(W<H){
+      my=2-my;
+    }
+    else if(H<W){
+      mx=2-mx;
+    }
+
+
+    let x = this.X+mx*this.R*cos(this.W*T)//-0.4*this.R;
+    let y = this.Y+my*this.R*sin(this.W*T);
     if(this.falling==1){
-      this.R = max(0,this.R-10000/this.R*abs(dT));
-      this.W=max(min(100,this.W+1/this.R*abs(dT)*(this.W/abs(this.W))),-100);
-      console.log(this.W);
+      this.R = max(0,this.R-150/this.R*abs(dT));
+      this.W=this.W+0.005*dT;
+
 
 
 
@@ -136,7 +192,7 @@ class planet{
 
     stroke(255);
     strokeWeight(0.5);
-    textSize(11);
+    textSize(12);
     fill(255);
     if(this.CIVI==1){
       fill(0,255,0);
@@ -158,13 +214,16 @@ class planet{
 
       fill(255,250*floor(2*random()),0);
       circle(x+this.R*random()*0.05*this.RP*cos(random()*T),y+this.R*0.05*random()*this.RP*sin(random()*T),230*random()*this.RP/(this.R+1));
+      circle(x+this.R*random()*0.05*this.RP*cos(random()*T),y+this.R*0.05*random()*this.RP*sin(random()*T),230*random()*this.RP/(this.R+1));
       fill(255,0,0);
       stroke(0);
 
     }
     noStroke();
-    text(this.NAME,x-textWidth(this.NAME)/2,y-4*this.RP);
-
+    if(this.inRange(mouseX,mouseY)){
+    fill(0,100,255);
+  }
+  text(this.NAME,x-textWidth(this.NAME)/2,y-4*this.RP);
 
 
     stroke(0);
@@ -212,8 +271,9 @@ class system{
     }
 
 
-
+    this.DYS=0;
     this.CIV=[];
+    this.Tciv=0;
     this.nameciv="";
 
     let contador = 0;
@@ -227,12 +287,23 @@ class system{
         this.CIV[0]=this.PLANETS[contador];
         this.PLANETS[contador].CIVI=1;
 
+        if(random()<0.05){this.Tciv=3}
+        else if(random()<0.1){this.Tciv=2}
+        else if(random()<0.25){this.Tciv=1}
+        if(this.Tciv>0){
+          this.DYS=1;
+        }
         let sp=this.CIV[0].NAME.split("-")[0].split("");
         this.nameciv="";
         for(let nn =0;nn< min(sp.length,4+floor(random()*3));nn++){
           this.nameciv=this.nameciv+sp[nn];
         }
-        this.nameciv=this.nameciv+VOCALES[floor(random()*VOCALES.length)];
+        this.nameciv=this.nameciv+VOCALES[floor(random()*VOCALES.length)]
+        if(this.nameciv.length<=6){this.nameciv=this.nameciv+CIVENDINGS[floor(random()*CIVENDINGS.length)];}//;
+        if(random()<0.1){
+          let nname=new random_name(2,false);
+          this.nameciv=nname.TXT+CIVENDINGS[floor(random()*CIVENDINGS.length)];
+        }
       }
       if (contador/nP < 0.5){this.PLANETS[contador].RING=0;}
       contador=contador+1;
@@ -263,13 +334,18 @@ class system{
     for(let p = 0;p<this.PLANETS.length;p++){
     this.PLANETS[p].paint();
 
-    if(this.PLANETS[p].R < 2*this.Rsun){
+    if(this.PLANETS[p].R < 1.5*this.Rsun){
       fill(255);
       let plan=this.PLANETS[p];
       circle(plan.X+plan.R*cos(plan.W*T),plan.Y+plan.R*sin(plan.W*T),10*plan.RP);
       if(this.CIV[0] == plan){
         this.CIV=[];
         this.nameciv="";
+      }
+      if(Pobs!=""){
+        if(Pobs.NAME==plan.NAME){
+          Pobs="";
+        }
       }
       this.PLANETS.splice(p,1);
       this.Rsun=1.35*this.Rsun;
@@ -310,6 +386,25 @@ class system{
       circle(W/2,H/2,0.9*(this.Rsun+0.05*this.DR*sin(4*this.Wsun*T+0.1)));
     }
 
+    let multip=70;
+    let distance=1.5+0.3*sin(100*T);
+    let Rdis=1;
+    if(this.DYS==1){
+      let n_dys=5;
+      for(let theta=0;theta<360;theta=theta+360/n_dys){
+        push();
+        fill(155+50*sin(500*T));
+        noStroke();
+        circle(W/2+this.Rsun*distance*sin(theta+multip*T),H/2+this.Rsun*distance*cos(theta+multip*T),Rdis);
+        circle(W/2+this.Rsun*distance*sin(theta+multip*T),H/2+this.Rsun*distance*sin(theta+multip*T),Rdis);
+        circle(W/2+this.Rsun*distance*cos(theta+multip*T),H/2-this.Rsun*distance*cos(theta+multip*T),Rdis);
+        circle(W/2+this.Rsun*distance*cos(theta+multip*T),H/2,Rdis);
+        circle(W/2,H/2+this.Rsun*distance*cos(theta+multip*T),Rdis);
+
+      }
+
+    }
+
 
     stroke(255);
     strokeWeight(0.5);
@@ -321,7 +416,7 @@ class system{
     text("A "+this.Dtierra+this.scales+" años luz de la tierra",20,60);
     if(this.CIV.length==1){
 
-      text("Civilización "+this.nameciv+" presente en "+this.CIV[0].NAME,20,100);
+      text("Civilización "+this.nameciv+" presente en "+this.CIV[0].NAME+" ( Tipo "+this.Tciv+")",20,100);
     }
     else{text("No hay civilizaciones en este sistema.",20,100);}
     text("Tipo de estrella : "+this.TXTsun,20,80);
@@ -334,7 +429,7 @@ class system{
       stroke(255);
        fill(255);
       if(this.PLANETS[i].CIVI==1){noStroke(); fill(0,255,0);}
-      if(this.PLANETS[i].falling==1){noStroke(),fill(255,20,20);this.PLANETS[i].ATMOS=max(0,(1+1/10000)*this.PLANETS[i].ATMOS) }
+      if(this.PLANETS[i].falling==1){this.DYS=0;noStroke(),fill(255,20,20);this.PLANETS[i].ATMOS=max(0,(1+1/10000)*this.PLANETS[i].ATMOS) }
 
       let multip = 0;
       if(this.Tsun ==1){multip=2}
@@ -369,17 +464,70 @@ class system{
 
 
 
+    let xxx=W-400;
+    let yyy=40;
+    if(mouseIsPressed & anyRange(mouseX,mouseY)!=""){
+      Pobs=anyRange(mouseX,mouseY);
+      //text(anyRange(mouseX,mouseY).NAME,20,H-20);
+    }
+    if(Pobs!=""){
+      push();
+      textSize(22);
+      stroke(255);
+      fill(255);
+      text("Planeta ",xxx,yyy);
+      fill(Pobs.C);
+      strokeWeight(1.5);
+      stroke(100+100*sin(50*T));
+      if(Pobs.CIVI==1){
+        stroke(0,100+100*sin(50*T),0);
+      }
+      if(Pobs.falling==1){
+        stroke(100+100*sin(50*T),0,0);
+      }
+      text(Pobs.NAME,xxx+textWidth("Planeta "),yyy);
+      pop();
+
+      if(Pobs.CIVI==1){
+        let add = "";
+        if(this.Wsun > 100){add=" de paso";}
+        push();
+        fill(255);
+        stroke(255);
+        textSize(15);
+        let txtciv="Hogar"+add+ " de la civilización "+this.nameciv;
+        text(txtciv,xxx,yyy+25);
+        pop();
+      }
+      textSize(14);
+      fill(255);
+      //text("Abundancia de :",xxx,yyy+45);
+      textSize(12);
+      for(let k =0;k<Pobs.elementos.length;k++){
+        text(Pobs.elementos[k][0]+"  "+(Pobs.elementos[k][1]*(1.5-k/Pobs.elementos.length)).toFixed(2)+"%",xxx,yyy+40+18*k);
+      }
+      text("g = "+((Pobs.RP**2)/3).toFixed(2)+" m/s2",xxx+120,yyy+40);
+      text("Horas/dia = "+round(30*(Pobs.R/600)*Pobs.NAME.length*0.2+Pobs.MOON.length*10)+" Horas",xxx+120,yyy+60);
+
+    }
+
   }
 }
 
 function keyPressed() {
   if (keyCode === ENTER) {
-    T=0;
+    setup();
+    background(0);
+
   } else if (keyCode ===BACKSPACE){
-    T=2000*random();
+    T=0;
+
   }
   else if(keyCode == SHIFT){
     c.Tsun=3;
+  }
+  else if(keyCode == CONTROL){
+    T=2000*random();
   }
 }
 
@@ -387,12 +535,15 @@ function keyPressed() {
 
 
   function setup(){
+    Pobs="";
+    elems= Object.keys(ELEMS);
 
     createCanvas(W,H);
+    angleMode(DEGREES);
     nStars=floor(500+random()*1000)
     let np =floor(random()*8)+4;
     pNum=(1-((np-3)/3-1)/3)*random();
-    c = new system( np, H/3.8);
+    c = new system( np, min(W,H)/4 );
 
     for(let s = 0;s<nStars;s++){
       let st = [];
@@ -430,16 +581,37 @@ function draw(){
   strokeWeight(0.5);
 
   c.paint();
-  if(mouseIsPressed){
-    setup();
-    background(0);
-  }
+
+
+
+
+
+
+
+
+
+
 
   T=T+dT;
   mult=map(mouseY,0,H,0.01  ,5);
-  dT = mult * map(mouseX,0,W,-0.0005,0.0005);
+  dT = mult * map(mouseX,0,W,-0.02,0.02);
 
 }
+function anyRange(xx,yy){
+  let ans="";
+  for (let i = 0 ; i<c.PLANETS.length;i++){
+    if(c.PLANETS[i].inRange(xx,yy)){
+      ans=c.PLANETS[i];
+    }
+  }
+  return ans;
+}
+
+
+
+
+
+
 // function windowResized() {
 //   W = windowWidth;
 //   H = windowHeight;//P5 window resize function
