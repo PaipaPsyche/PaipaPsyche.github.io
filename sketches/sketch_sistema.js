@@ -22,13 +22,14 @@ let nStars;
 let Pobs="";
 
 let STARS=[];
+let BUTTONS=[];
 
 
 
 
 
 
-let ELEMS={"Helio":[25,10],"Cloro":[20,20],"Calcio":[15,10],"Plomo":[2,0.2],"Uranio":[0.5,0.4],"Carbono":[20,10],"Nitrogeno":[9,5],"Silicio":[15,15],"Oxigeno":[20,20],"Azufre":[2,2],"Magnesio":[10,10],"Selenio":[20,10],"Boro":[5,2],"Hierro":[40,30],"Litio":[20,12]}
+let ELEMS={"Helio":[25,10],"Aluminio":[20,25],"Titanio":[8,5],"Oro":[2,1],"Platino":[2,1],"Yodo":[4,1],"Sodio":[10,8],"Potasio":[10,5],"Cloro":[20,20],"Calcio":[15,10],"Plomo":[2,0.2],"Uranio":[0.5,0.4],"Carbono":[20,10],"Nitrogeno":[9,5],"Silicio":[15,15],"Oxigeno":[20,20],"Azufre":[2,2],"Magnesio":[10,10],"Selenio":[20,10],"Boro":[5,2],"Hierro":[40,30],"Litio":[20,12]}
 let elems= Object.keys(ELEMS);
 
 
@@ -60,6 +61,64 @@ class random_name{
 }
 
 
+class button{
+  constructor(x,y,txt,c){
+
+    this.X=x;
+    this.Y=y;
+    this.T=txt;
+    this.R=20;
+    this.C=c;
+  }
+  clickInRange(){
+    if(mouseIsPressed & sqrt((this.X-mouseX)**2+(this.Y-mouseY)**2)<=1.5*this.R){
+      return true;
+    }
+    else{return false;}
+  }
+
+
+
+  paint(){
+
+
+
+    if(this.clickInRange()){
+      push();
+      strokeWeight(2);
+      stroke(255);
+      textSize(10);
+      fill(255);
+      circle(this.X,this.Y,this.R+5*sin(170*T));
+      fill(0);
+      noStroke();
+      setsystem();
+
+      text(this.T,this.X-textWidth(this.T)/4,this.Y-5 );
+      pop();
+
+    }
+    else{
+      push();
+      strokeWeight(2);
+      stroke(255);
+      textSize(10);
+      fill(100+100*sin(140*T),100+100*sin(100*T),100+100*sin(80*T));
+      circle(this.X,this.Y,this.R);
+      fill(255);
+      noStroke();
+      text(this.T,this.X-textWidth(this.T)/4,this.Y-5);
+      pop();
+
+
+    }
+
+
+
+
+  }
+
+}
 
 
 
@@ -132,7 +191,7 @@ class planet{
 
     let x = this.X+mx*this.R*cos(this.W*T)//-0.4*this.R;
     let y = this.Y+my*this.R*sin(this.W*T);
-    if(sqrt((x-xx)**2+(y-yy)**2)<=max(50,3*this.RP)){
+    if(sqrt((x-xx)**2+(y-yy)**2)<=max(30,2*this.RP)){
       return true;
     }
     else{return false;}
@@ -466,11 +525,16 @@ class system{
 
     let xxx=W-400;
     let yyy=40;
-    if(mouseIsPressed & anyRange(mouseX,mouseY)!=""){
-      Pobs=anyRange(mouseX,mouseY);
-      //text(anyRange(mouseX,mouseY).NAME,20,H-20);
-    }
-    if(Pobs!=""){
+    let _=anyRange(mouseX,mouseY);
+    if(mouseIsPressed & _!=""){
+      Pobs=_;
+
+          //text("g = "+((Pobs.RP**2)/3).toFixed(2)+" m/s2",xxx+120,yyy+40);
+          //text("Horas/dia = "+round(30*(Pobs.R/600)*Pobs.NAME.length*0.2+Pobs.MOON.length*10)+" Horas",xxx+120,yyy+60);
+
+      }
+
+    if(Pobs != "" & Pobs!="Sun"){
       push();
       textSize(22);
       stroke(255);
@@ -510,14 +574,54 @@ class system{
       text("Horas/dia = "+round(30*(Pobs.R/600)*Pobs.NAME.length*0.2+Pobs.MOON.length*10)+" Horas",xxx+120,yyy+60);
 
     }
+    else if (Pobs=="Sun"){
 
-  }
+
+          push();
+          textSize(22);
+          stroke(255);
+          fill(255);
+          text("Sol "+this.NAME,xxx,yyy);
+
+          pop();
+
+          if(this.CIV.length>0){
+            let add = "Cuna ";
+            if(this.Wsun>100 & this.Tciv>0){add="Colonia ";}
+            push();
+            fill(255);
+            stroke(255);
+            textSize(15);
+
+            let txtciv=add+ "de la civilización "+this.nameciv;
+            text(txtciv,xxx,yyy+25);
+            pop();
+          }
+          textSize(14);
+          fill(255);
+          //text("Abundancia de :",xxx,yyy+45);
+          textSize(12);
+          text("Tipo de estrella : "+this.TXTsun,xxx,yyy+58);
+          text("Temperatura (a 1.2 radios Solares) = "+((this.Tsun+1)*this.Rsun*this.Wsun*10).toFixed(0)+" K",xxx,yyy+78);
+          text("Radio estelar : "+(10**map(this.Rsun,1,30,-0.5,3.5)*0.00465247).toFixed(3)+" UA ("+(10**map(this.Rsun,1,30,-0.5,3.5)).toFixed(3)+" Rsun)",xxx,yyy+98);
+    }
+
+
 }
+}
+
+function setsystem(){
+setup();
+background(0);
+
+
+}
+
 
 function keyPressed() {
   if (keyCode === ENTER) {
-    setup();
-    background(0);
+    setsystem();
+
 
   } else if (keyCode ===BACKSPACE){
     T=0;
@@ -537,6 +641,13 @@ function keyPressed() {
   function setup(){
     Pobs="";
     elems= Object.keys(ELEMS);
+
+    let buttSet=new button(W-50,H-50,"FIND\nNEXT",[255,0,0]);
+
+
+    BUTTONS[0]=buttSet;
+
+
 
     createCanvas(W,H);
     angleMode(DEGREES);
@@ -582,6 +693,9 @@ function draw(){
 
   c.paint();
 
+  for(let b =0;b<BUTTONS.length;b++){
+    BUTTONS[b].paint();
+  }
 
 
 
@@ -597,11 +711,21 @@ function draw(){
   dT = mult * map(mouseX,0,W,-0.02,0.02);
 
 }
+
+
+
+
+
 function anyRange(xx,yy){
   let ans="";
   for (let i = 0 ; i<c.PLANETS.length;i++){
     if(c.PLANETS[i].inRange(xx,yy)){
       ans=c.PLANETS[i];
+    }
+  }
+  if(ans==""){
+    if(sqrt((xx-W/2)**2+(yy-H/2)**2)<=2*c.Rsun){
+      ans="Sun";
     }
   }
   return ans;
@@ -612,8 +736,7 @@ function anyRange(xx,yy){
 
 //mobile
 function deviceShaken() {
-  setup();
-  background(0);
+ setsystem();
 }
 
 
