@@ -33,13 +33,35 @@ let ELEMS={"Helio":[25,10],"Agua":[30,20],"Aluminio":[20,25],"Hidrogeno":[10,8],
 let elems= Object.keys(ELEMS);
 
 
-let SILABAS =["pl","v","s","ph","th","sh","z","h","n","thr","str","gr","br","fr","y","k","c","tr","cr","gl","t","p","b","m","g","l","r"];
-let ENDINGS=["rys","llus","shiba","ndi","rsei","cury","rth","rte","scus","nte","","rn","ptuno","rno","rano","sto","lgia","nz","lcani","rd","nucci","tina","ngo","gnikai","ccini","cordia","loide","maritano","rineris","lypso","lkanti","ntico","dici","tafar","nica","nyx","nsk","lucci","bino","nita","tana","mble","ptera","bdis","scylla","dore","loch","schen","klich","nich","niakea","stans","varius","leaux","kour","leau","ngria","nakea","lax","nax","nds","ngis","nt","reen","sis","tät","rok","fari","tanari","gneko","gana","mander","rgen","nde","nt","ngs","ruchen","ska","nimedae","rga","stin","nge","ngi","lton","stralis","hr","keshi","phorus","toris","rly","quila","stein","mark","burg","tröen","land","ntis","phoros","tch","rmir","rsay","ght","mpton","koft","nst","mst","ft","gs","nk","ntic","mp","lish","pture","nger","lette","tion","zung","schaft","ncia","sta","smus","nginus","rnet","ster","star","ridas","ston","tani","ton","nata","sky","nov","rys","riana","berg","ton","tron","rinae","stro","ris","nksy","kov"]
+let SILABAS =["pl","v","s","ph","th","sh","z","h","n","thr","str","gr","br",
+              "fr","y","k","c","tr","cr","gl","t","p","b","m","g","l","r"];
+
+let ENDINGS=["rys","llus","shiba","ndi","rsei","cury","rth","rte","scus","nte",
+            "","rn","ptuno","rno","rano","sto","lgia","nz","lcani","rd","nucci",
+              "tina","ngo","gnikai","ccini","cordia","loide","maritano","rineris",
+              "lypso","lkanti","ntico","dici","tafar","nica","nyx","nsk","lucci",
+              "bino","nita","tana","mble","ptera","bdis","scylla","dore","loch","ntos",
+              "schen","klich","nich","niakea","stans","varius","leaux","kour","nse","reau",
+              "leau","ngria","nakea","lax","nax","nds","ngis","nt","reen","nax","max","lax",
+              "sis","tät","rok","fari","tanari","gneko","gana","vyr","nys","ghal","tto",
+              "mander","rgen","nde","nt","ngs","ruchen","ska","pyr","pton","nge","xy","xion",
+              "nimedae","rga","stin","nge","ngi","lton","stralis","hr","keshi","phorus",
+              "toris","rly","quila","stein","mark","burg","tröen","land","ntis","phoros",
+              "tch","rmir","rsay","ght","mpton","koft","nst","mst","ft","gs","nk","ntic",
+              "mp","lish","pture","nger","lette","tion","zung","schaft","ncia","sta","smus",
+              "nginus","rnet","ster","star","ridas","ston","tani","ton","nata","sky","nov","rys",
+              "riana","berg","ton","tron","rinae","stro","ris","nksy","kov"];
+
+
 let VOCALES = ["ua","ia","a","e","i","o","u","a","e","i","o","u","ae","ie","oa","io"]//,"ee","oo"];
-let GREEK=["Alpha","Epsilon","Nega","Proxima","Magna","Ultima","Central","Prima","Majora","Minora","Nova","Eta","Lambda","Tau","Beta","Gamma","Delta","Omicron","Omega","Ypsilon","Ultra","Phi","Sigma"]
+let GREEK=["Alpha","Epsilon","Nega","Proxima","Magna","Ultima","Central","Prima","Majora",
+            "Minora","Nova","Eta","Lambda","Tau","Beta","Gamma","Delta","Omicron","Omega",
+            "Ypsilon","Ultra","Phi","Sigma","Zion"];
 let SCALES=[" millones de"," billones de"," trillones de","",""]
-let CIVENDINGS=["riana","siana","niana","na","rgiana","bina","nita","lita","miana","liana","nte","","giana","tiana","noide","loide","quiana","diana"]
-let ROMNUM=["-A","-B","-C","-D","-I","-II","-III","-IV","-V","-X","-Y","-Z"]
+let CIVENDINGS=["riana","siana","niana","na","rgiana","bina","nita","lita","miana","liana",
+                "nte","","giana","tiana","noide","loide","quiana","diana","nsiana","viana","mana","manoide",
+                "sdiana","ndina","laria"];
+let ROMNUM=["-A","-B","-C","-D","-I","-II","-III","-IV","-V","-X","-Y","-Z"];
 
 class random_name{
   constructor(n,end=true){
@@ -178,7 +200,7 @@ class planet{
 
   }
   inRange(xx,yy){
-    let val_inicial=0.6+this.falling*0.05*sin(80*T)*cos(49*T);
+    let val_inicial=0.7+this.falling*0.05*sin(80*T)*cos(49*T);
 
     let mx=val_inicial;
     let my=val_inicial;
@@ -205,7 +227,7 @@ class planet{
     stroke(0);
 
 
-    let val_inicial=0.6+this.falling*0.05*sin(80*T)*cos(49*T);
+    let val_inicial=0.7+this.falling*0.05*sin(80*T)*cos(49*T);
 
     let mx=val_inicial;
     let my=val_inicial;
@@ -661,7 +683,7 @@ function keyPressed() {
       let st = [];
       st[0]=floor(random()*W);
       st[1]=floor(random()*H);
-      st[2]=random()*3;
+      st[2]=abs(randomGaussian(1.5,1));
       st[3]=[255,255,255];
       if(random()<0.01){st[3]=[180,0,0];}
       if(random()<0.01){st[3]=[0,0,180];}
