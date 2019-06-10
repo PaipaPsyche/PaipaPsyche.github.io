@@ -24,6 +24,8 @@ let Pobs="";
 let STARS=[];
 let BUTTONS=[];
 
+let timeS;
+
 
 
 
@@ -200,7 +202,7 @@ class planet{
 
   }
   inRange(xx,yy){
-    let val_inicial=0.7+this.falling*0.05*sin(80*T)*cos(49*T);
+    let val_inicial=0.9+this.falling*0.08*sin(80*T)*cos(49*T);
 
     let mx=val_inicial;
     let my=val_inicial;
@@ -227,7 +229,7 @@ class planet{
     stroke(0);
 
 
-    let val_inicial=0.7+this.falling*0.05*sin(80*T)*cos(49*T);
+    let val_inicial=0.9+this.falling*0.08*sin(80*T)*cos(49*T);
 
     let mx=val_inicial;
     let my=val_inicial;
@@ -338,15 +340,15 @@ class system{
 
 
 
-    this.Rsun=this.DR*(random()+0.2);
-    this.Wsun=80+40*random();
+    this.Rsun=this.DR*(random());
+    this.Wsun=80+50*random();
     this.Dtierra=floor(random()*100000);
     this.scales=SCALES[floor(random()*SCALES.length)];
 
     this.Tsun=floor(random()*3);
     this.TXTsun="";
 
-    if(this.Rsun > 17 & random()<0.3){
+    if(this.Rsun > 15 & random()<0.3){
       this.Tsun=3;
       this.TXTsun="Agujero Negro";
     }
@@ -410,6 +412,25 @@ class system{
   paint(){
 
 
+
+  let dOrb =0.5;
+  if(this.Wsun <=100){dOrb=-dOrb;}
+  let mx=0;
+  let my=0;
+  if(W<H){
+    my=dOrb;
+  }
+  else if(H<W){
+    mx=dOrb;
+  }
+
+
+
+
+    let Xcenter=W/2  - mx*this.Rsun;
+    let Ycenter=H/2 - my*this.Rsun;
+
+
     stroke(0);
 
     for(let p = 0;p<this.PLANETS.length;p++){
@@ -441,11 +462,11 @@ class system{
     else if(this.Tsun==2){fill(255,240,80+70*sin(3*T));}
     else if(this.Tsun==3){
       fill(255,180+40*sin(200*(this.Rsun/12)*T),0);
-      circle(W/2,H/2,1.3*(this.Rsun+0.12*this.DR*sin(this.Wsun*T)));
+      circle(Xcenter,Ycenter,1.3*(this.Rsun+0.12*this.DR*sin(this.Wsun*T)));
 
       fill(0);
 
-      circle(W/2,H/2,1.2*(this.Rsun+0.1*this.DR*sin(this.Wsun*T)));
+      circle(Xcenter,Ycenter,1.2*(this.Rsun+0.1*this.DR*sin(this.Wsun*T)));
 
       // noFill();
       // strokeWeight(0.3);
@@ -461,10 +482,10 @@ class system{
 
     if(this.Tsun==3 & random()<pEat & this.PLANETS.length>=2){this.PLANETS[0].falling=1;}
 
-    circle(W/2,H/2,this.Rsun+0.1*this.DR*sin(this.Wsun*T));
+    circle(Xcenter,Ycenter,this.Rsun+0.1*this.DR*sin(this.Wsun*T));
     if(this.Tsun==3){
       fill(0);
-      circle(W/2,H/2,0.9*(this.Rsun+0.05*this.DR*sin(4*this.Wsun*T+0.1)));
+      circle(Xcenter,Ycenter,0.9*(this.Rsun+0.05*this.DR*sin(4*this.Wsun*T+0.1)));
     }
 
     let multip=70;
@@ -476,11 +497,11 @@ class system{
         push();
         fill(155+50*sin(500*T));
         noStroke();
-        circle(W/2+this.Rsun*distance*sin(theta+multip*T),H/2+this.Rsun*distance*cos(theta+multip*T),Rdis);
-        circle(W/2+this.Rsun*distance*sin(theta+multip*T),H/2+this.Rsun*distance*sin(theta+multip*T),Rdis);
-        circle(W/2+this.Rsun*distance*cos(theta+multip*T),H/2-this.Rsun*distance*cos(theta+multip*T),Rdis);
-        circle(W/2+this.Rsun*distance*cos(theta+multip*T),H/2,Rdis);
-        circle(W/2,H/2+this.Rsun*distance*cos(theta+multip*T),Rdis);
+        circle(Xcenter+this.Rsun*distance*sin(theta+multip*T),Ycenter+this.Rsun*distance*cos(theta+multip*T),Rdis);
+        circle(Xcenter+this.Rsun*distance*sin(theta+multip*T),Ycenter+this.Rsun*distance*sin(theta+multip*T),Rdis);
+        circle(Xcenter+this.Rsun*distance*cos(theta+multip*T),Ycenter-this.Rsun*distance*cos(theta+multip*T),Rdis);
+        circle(Xcenter+this.Rsun*distance*cos(theta+multip*T),Ycenter,Rdis);
+        circle(Xcenter,Ycenter+this.Rsun*distance*cos(theta+multip*T),Rdis);
 
       }
 
@@ -582,6 +603,7 @@ class system{
         stroke(255);
         textSize(15);
         let txtciv="Hogar"+add+ " de la civilización "+this.nameciv;
+        if(this.Wsun>110 ){let txtciv="Ruinas de la antigua civilización "+this.nameciv;}
         text(txtciv,xxx,yyy+25);
         pop();
       }
@@ -593,7 +615,7 @@ class system{
         text(Pobs.elementos[k][0]+"  "+(Pobs.elementos[k][1]*(1.5-k/Pobs.elementos.length)).toFixed(2)+"%",xxx,yyy+40+18*k);
       }
       text("g = "+((Pobs.RP**2)/3).toFixed(2)+" m/s2",xxx+120,yyy+40);
-      text("Horas/dia = "+round(30*(Pobs.R/600)*Pobs.NAME.length*0.2+Pobs.MOON.length*10)+" Horas",xxx+120,yyy+60);
+      text("Horas/dia = "+round(30*(Pobs.R/600)*Pobs.NAME.length*0.4+Pobs.MOON.length*10)+" Horas",xxx+120,yyy+60);
 
     }
     else if (Pobs=="Sun"){
@@ -666,7 +688,8 @@ function keyPressed() {
     elems= Object.keys(ELEMS);
 
     let buttSet=new button(W-50,H-50,"FIND\nNEXT",[255,0,0]);
-
+    //timeS = createAudio('time.mp3');
+    //timeS.autoplay(true);
 
     BUTTONS[0]=buttSet;
 
@@ -677,7 +700,7 @@ function keyPressed() {
     nStars=floor(500+random()*1000)
     let np =floor(random()*8)+4;
     pNum=(1-((np-3)/3-1)/3)*random();
-    c = new system( np, min(W,H)/6 );
+    c = new system( np, min(W,H)/5 );
 
     for(let s = 0;s<nStars;s++){
       let st = [];
