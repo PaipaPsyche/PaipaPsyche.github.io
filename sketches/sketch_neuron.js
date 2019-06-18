@@ -1,21 +1,21 @@
 new p5();
 var W;
 var H;
-var n_neurons=800;
+var n_neurons=1100;
 var NEURONS=[];
 
 
 var time = 1+10*random();
-var dt = 0.5;
+var dt = 0.15;
 
-var max_connections=1+15*random();
-var max_D=5+50*random();
+var max_connections=1+floor(15*random());
+var max_D=5+floor(65*random());
 
 class neuron{
   constructor(x,y){
     this.X = x;
     this.Y = y;
-    this.R = 2+floor(random()*7);
+    this.R = 2+floor(random()*4);
     this.C1=[80*(1+2*random()),80*(1+2*random()),80*(1+2*random())];
 
     this.Cs=[255,255,255];
@@ -45,10 +45,10 @@ class neuron{
   }
 
   activate(n){
-      if(this.estado==0 & n>0){
+      if(n>this.estado){
         this.estado=n;
-    this.C2=[255*(n+1)/(max_D),0,0];
-    this.Cs=[155*(n+1)/(max_D)+50*cos(n*time),255-255*(n+1)/(max_D),127+127*sin(n*time)];
+    this.C2=[255*(n+1)/(max_D),80*(1+sin(n*time+1)),255-255*(n+1)/(max_D)];
+    this.Cs=[155*(n+1)/(max_D)+50*cos(n*time),255-255*(n+1)/(max_D),20+100*(1+sin(n*time))];
 
 
     for(var i =0;i<this.CONNECT.length;i++){
@@ -147,7 +147,7 @@ flip(){
     circle(this.X,this.Y,this.R);
 
 
-    var amp=sin(time*0.1);
+    var amp=sin(time*0.17)*exp(-0.0001*time)*cos(time*0.14);
     this.X=this.X+randomGaussian(0,amp*abs(sin(time*0.05)));
     this.Y=this.Y+randomGaussian(0,amp*abs(sin(time*0.05)));
     if(this.X<0){this.X=0;}
@@ -204,8 +204,9 @@ function setup(){
 
 function mouseClicked(){
   for (var i =0;i<NEURONS.length;i++){
-    if(sqrt((mouseX-NEURONS[i].X)**2+(mouseY-NEURONS[i].Y)**2)<=NEURONS[i].R){
+    if(sqrt((mouseX-NEURONS[i].X)**2+(mouseY-NEURONS[i].Y)**2)<=1.5*NEURONS[i].R){
       NEURONS[i].flip();
+      NEURONS[i].parent=1;
       break;
     }
 
@@ -221,9 +222,12 @@ function mouseClicked(){
 
 function draw(){
   background(0);
+  total=0
   for (var i =0;i<n_neurons;i++){
     NEURONS[i].paint();
+    if(NEURONS[i].estado>0){total++;}
   }
-dt=map(mouseX,0,W,-0.5,0.5)
+  if(total-n_neurons ==0){dt=0;}
+//dt=map(mouseX,0,W,-1.5,1.5)
 time=time+dt;
 }
