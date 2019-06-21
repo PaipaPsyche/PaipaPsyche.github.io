@@ -1,7 +1,7 @@
 new p5();
 var W;
 var H;
-var n_neurons=1250;
+var n_neurons=1350;
 var NEURONS=[];
 
 
