@@ -13,6 +13,29 @@ function check_key(KEY){
 
 
 
+var N_img=7;
+
+function get_image(){
+	var img_n = Math.floor(Math.random()*N_img);
+	var la_img = "images/cursed_"+img_n+".jpg";
+	var imgStr = '<img src="' + la_img + '" alt = "" width="100%">';
+	document.write(imgStr); document.close();
+}
+
+
+TEXTOS = ["Si, más de la misma mierda. . .","La paginita que a nadie le importa :v","La mitad de la mitad de la mitad . . .","Eirschallensollbruchtellenverursacher.",
+"Heeee Heeee","Ya no temo nada.","Lo que te decia la vez pasada . . .","Existence is pain :'v","I'm broken inside papa","Cursed page.",
+"Pasa la mano . . . por tu cabeza.","Deje esa mala jeta y entre rápido.","Vamos a la caracas con 55. . .","¿Qué piensas?","NO ENTRES!!!"]
+
+
+function get_random_message(){
+	var texto = TEXTOS[Math.floor(Math.random()*TEXTOS.length)];
+	document.write(texto); document.close();
+
+}
+
+
+
 
 function check_user(){
 	var keylen=15;

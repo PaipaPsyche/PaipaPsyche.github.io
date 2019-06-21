@@ -1,7 +1,7 @@
 new p5();
 var W;
 var H;
-var n_neurons=1100;
+var n_neurons=1250;
 var NEURONS=[];
 
 
@@ -11,12 +11,31 @@ var dt = 0.15;
 var max_connections=1+floor(15*random());
 var max_D=5+floor(65*random());
 
+var varA = random()*0.2;
+var varB = randomGaussian(varA,0.2);
+
+var activated = 0;
+
+var non_filled = 1;
+
+
+
+
+
+function amplitudPulso(){
+  return abs(sin(time*varA)*exp(-0.001*time)*cos(time*varB));
+}
+
+
+
 class neuron{
   constructor(x,y){
     this.X = x;
     this.Y = y;
     this.R = 2+floor(random()*4);
     this.C1=[80*(1+2*random()),80*(1+2*random()),80*(1+2*random())];
+
+
 
     this.Cs=[255,255,255];
     this.estado=0;
@@ -115,19 +134,11 @@ flip(){
 
   paint(){
 
-    strokeWeight(2);
+    strokeWeight(1.5);
+    var osc = amplitudPulso()*(1+sin(0.5*(0.5*this.estado+1)*time*(varA+varB)));
+    if(this.estado>0){strokeWeight(1+osc);}
 
 
-
-    if(mouseIsPressed){
-      if(sqrt((mouseX-this.X)**2+(mouseY-this.Y)**2)<=this.R)
-      {
-
-      }
-
-
-
-    }
     this.add_connection(this.nearest(NEURONS));
 
 
@@ -139,17 +150,23 @@ flip(){
     }
 
 
-    noStroke();
+
 
 
 
     fill(this.C2);
-    circle(this.X,this.Y,this.R);
 
 
-    var amp=sin(time*0.17)*exp(-0.0001*time)*cos(time*0.14);
-    this.X=this.X+randomGaussian(0,amp*abs(sin(time*0.05)));
-    this.Y=this.Y+randomGaussian(0,amp*abs(sin(time*0.05)));
+    strokeWeight(1);
+
+    stroke(100*osc);
+
+    circle(this.X,this.Y,this.R*(1+osc/8));
+        noStroke();
+
+    var amp =amplitudPulso();
+    this.X=this.X+non_filled*randomGaussian(0,amp*abs(sin(time*0.5)));
+    this.Y=this.Y+non_filled*randomGaussian(0,amp*abs(sin(time*0.5)));
     if(this.X<0){this.X=0;}
     if(this.Y<0){this.Y=0;}
     if(this.X>W){this.X=W;}
@@ -196,11 +213,23 @@ function setup(){
     }
     NEURONS[i]=nn;
 
-    if(choca(new_n)){}
   }
 
 
 }
+
+
+function filled(){
+  activas=0;
+  for (var i =0;i<NEURONS.length;i++){
+    if(NEURONS[i].estado>0){activas++;}
+  }
+  activated=activas;
+  if(activated == NEURONS.length){non_filled=0;}
+  else{non_filled=1;}
+}
+
+
 
 function mouseClicked(){
   for (var i =0;i<NEURONS.length;i++){
@@ -221,13 +250,17 @@ function mouseClicked(){
 
 
 function draw(){
+
   background(0);
+  //background(155*(activated/NEURONS.length)*(1+amplitudPulso()));
   total=0
   for (var i =0;i<n_neurons;i++){
     NEURONS[i].paint();
     if(NEURONS[i].estado>0){total++;}
   }
-  if(total-n_neurons ==0){dt=0;}
+  filled();
+
+  // if(total-n_neurons ==0){dt=0;}
 //dt=map(mouseX,0,W,-1.5,1.5)
 time=time+dt;
 }
