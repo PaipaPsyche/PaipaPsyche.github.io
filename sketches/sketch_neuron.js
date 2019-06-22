@@ -135,7 +135,7 @@ flip(){
   paint(){
 
     strokeWeight(1.5);
-    var osc = amplitudPulso()*(1+sin(0.5*(0.5*this.estado+1)*time*(varA+varB)));
+    var osc = amplitudPulso()*(1+sin(2*(0.5*this.estado+1)*time*(varA+varB)));
     if(this.estado>0){strokeWeight(1+osc);}
 
 
@@ -159,7 +159,7 @@ flip(){
 
     strokeWeight(1);
 
-    stroke(100*osc);
+    stroke(180*osc);
 
     circle(this.X,this.Y,this.R*(1+osc/8));
         noStroke();
