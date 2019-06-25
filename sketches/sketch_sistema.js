@@ -35,7 +35,8 @@ let ELEMS={"Helio":[25,10],"Agua":[30,20],"Aluminio":[20,25],"Hidrogeno":[10,8],
 let elems= Object.keys(ELEMS);
 
 
-let SILABAS =["pl","v","s","ph","th","sh","z","h","n","thr","str","gr","br",
+let SILABAS =["pl","v","s","ph","pr","d","sh","z","h","n","str","gr","br",
+              "tr","f","dr","ch","k","z",
               "fr","y","k","c","tr","cr","gl","t","p","b","m","g","l","r"];
 
 let ENDINGS=["rys","llus","shiba","ndi","rsei","cury","rth","rte","scus","nte",
@@ -48,8 +49,8 @@ let ENDINGS=["rys","llus","shiba","ndi","rsei","cury","rth","rte","scus","nte",
               "sis","tät","rok","fari","tanari","gneko","gana","vyr","nys","ghal","tto",
               "mander","rgen","nde","nt","ngs","ruchen","ska","pyr","pton","nge","xy","xion",
               "nimedae","rga","stin","nge","ngi","lton","stralis","hr","keshi","phorus",
-              "toris","rly","quila","stein","mark","burg","tröen","land","ntis","phoros",
-              "tch","rmir","rsay","ght","mpton","koft","nst","mst","ft","gs","nk","ntic",
+              "toris","rly","quila","stein","mark","burg","rtz","lf","rov","rnov","tröen","land",
+              "tch","rmir","rsay","ght","mpton","koft","nst","mst","ft","gs","nk","ntic","ntis","phoros",
               "mp","lish","pture","nger","lette","tion","zung","schaft","ncia","sta","smus",
               "nginus","rnet","ster","star","ridas","ston","tani","ton","nata","sky","nov","rys",
               "riana","berg","ton","tron","rinae","stro","ris","nksy","kov"];
@@ -171,7 +172,6 @@ class planet{
 
 
 
-
     this.ATMOS=0.2+1.8*random();
 
 
@@ -191,6 +191,7 @@ class planet{
     }
     this.RING = 0;
     this.CIVI=0;
+    this.RUINA=0;
     if(random()<pAnillo*this.RP){this.RING=1};
 
     this.falling=0;
@@ -342,7 +343,7 @@ class system{
 
     this.Rsun=this.DR*(random());
     this.Wsun=80+50*random();
-    this.Dtierra=floor(random()*100000);
+    this.Dtierra=floor(random()*10000);
     this.scales=SCALES[floor(random()*SCALES.length)];
 
     this.Tsun=floor(random()*3);
@@ -376,6 +377,7 @@ class system{
         if(this.Tciv>0){
           this.DYS=1;
         }
+
         let sp=this.CIV[0].NAME.split("-")[0].split("");
         this.nameciv="";
         for(let nn =0;nn< min(sp.length,4+floor(random()*3));nn++){
@@ -387,6 +389,10 @@ class system{
           let nname=new random_name(2,false);
           this.nameciv=nname.TXT+CIVENDINGS[floor(random()*CIVENDINGS.length)];
         }
+      }
+      if(this.PLANETS[contador].CIVI==0 & 3*random()<pCiv){
+        this.PLANETS[contador].RUINA=1;
+
       }
       if (contador/nP < 0.5){this.PLANETS[contador].RING=0;}
       contador=contador+1;
@@ -603,10 +609,12 @@ class system{
         stroke(255);
         textSize(15);
         let txtciv="Hogar"+add+ " de la civilización "+this.nameciv;
-        if(this.Wsun>110 ){let txtciv="Ruinas de la antigua civilización "+this.nameciv;}
+
         text(txtciv,xxx,yyy+25);
         pop();
       }
+      if(Pobs.RUINA==1){let txtciv="Ruinas de una antigua civilización desconocida.";text(txtciv,xxx,yyy+25);}
+
       textSize(14);
       fill(255);
       //text("Abundancia de :",xxx,yyy+45);
@@ -674,6 +682,7 @@ function keyPressed() {
   }
   else if(keyCode == SHIFT){
     c.Tsun=3;
+    c.TXTsun="Agujero Negro"
   }
   else if(keyCode == CONTROL){
     T=2000*random();
@@ -700,7 +709,17 @@ function keyPressed() {
     nStars=floor(500+random()*1000)
     let np =floor(random()*8)+4;
     pNum=(1-((np-3)/3-1)/3)*random();
+
+
+    // try{
     c = new system( np, min(W,H)/5 );
+    // }
+    // catch(error){
+    //   console.log("HEE HEE");
+    //   console.log(error);
+    //   setsystem();
+    // }
+
 
     for(let s = 0;s<nStars;s++){
       let st = [];
