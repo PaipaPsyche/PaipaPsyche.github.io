@@ -36,7 +36,7 @@ let elems= Object.keys(ELEMS);
 
 
 let SILABAS =["pl","v","s","ph","pr","d","sh","z","h","n","str","gr","br",
-              "tr","f","dr","ch","k","z",
+              "tr","f","dr","ch","k","z","cl",
               "fr","y","k","c","tr","cr","gl","t","p","b","m","g","l","r"];
 
 let ENDINGS=["rys","llus","shiba","ndi","rsei","cury","rth","rte","scus","nte",
@@ -53,16 +53,16 @@ let ENDINGS=["rys","llus","shiba","ndi","rsei","cury","rth","rte","scus","nte",
               "tch","rmir","rsay","ght","mpton","koft","nst","mst","ft","gs","nk","ntic","ntis","phoros",
               "mp","lish","pture","nger","lette","tion","zung","schaft","ncia","sta","smus",
               "nginus","rnet","ster","star","ridas","ston","tani","ton","nata","sky","nov","rys",
-              "riana","berg","ton","tron","rinae","stro","ris","nksy","kov"];
+              "riana","berg","ton","tron","rinae","stro","ris","nksy","kov","rok","gnar"," nde","lsar"];
 
 
 let VOCALES = ["ua","ia","a","e","i","o","u","a","e","i","o","u","ae","ie","oa","io"]//,"ee","oo"];
 let GREEK=["Alpha","Epsilon","Nega","Proxima","Magna","Ultima","Central","Prima","Majora",
             "Minora","Nova","Eta","Lambda","Tau","Beta","Gamma","Delta","Omicron","Omega",
-            "Ypsilon","Ultra","Phi","Sigma","Zion"];
+            "Ypsilon","Ultra","Phi","Sigma","Zion","Nova"];
 let SCALES=[" millones de"," billones de"," trillones de","",""]
-let CIVENDINGS=["riana","siana","niana","na","rgiana","bina","nita","lita","miana","liana",
-                "nte","","giana","tiana","noide","loide","quiana","diana","nsiana","viana","mana","manoide",
+let CIVENDINGS=["riana","siana","niana","na","rgiana","bina","nita","lita","miana","liana","nica","nicoide","micode",
+                "nte","","giana","tiana","noide","loide","quiana","diana","nsiana","viana","mana","manoide","soide",
                 "sdiana","ndina","laria"];
 let ROMNUM=["-A","-B","-C","-D","-I","-II","-III","-IV","-V","-X","-Y","-Z"];
 
