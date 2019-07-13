@@ -19,6 +19,8 @@ let pCiv=0.25;
 let pEat=0.0007;
 let nStars;
 
+
+
 let Pobs="";
 
 let STARS=[];
@@ -26,8 +28,7 @@ let BUTTONS=[];
 
 let timeS;
 
-
-
+let c_prev  = "";
 
 
 
@@ -87,19 +88,31 @@ class random_name{
 
 
 class button{
-  constructor(x,y,txt,c){
+  constructor(x,y,txt,c,f){
 
     this.X=x;
     this.Y=y;
     this.T=txt;
     this.R=20;
     this.C=c;
+    this.F=f;
   }
   clickInRange(){
-    if(mouseIsPressed & sqrt((this.X-mouseX)**2+(this.Y-mouseY)**2)<=1.5*this.R){
+    if(mouseIsPressed  & sqrt((this.X-mouseX)**2+(this.Y-mouseY)**2)<=1.5*this.R){
+
       return true;
+
     }
-    else{return false;}
+    else{
+
+
+      return false;}
+  }
+
+  act(){
+    if(this.F ==0){setsystem();}
+    else if(this.F ==1){setprev();}
+
   }
 
 
@@ -117,7 +130,7 @@ class button{
       circle(this.X,this.Y,this.R+5*sin(170*T));
       fill(0);
       noStroke();
-      setsystem();
+
 
       text(this.T,this.X-textWidth(this.T)/4,this.Y-5 );
       pop();
@@ -128,7 +141,7 @@ class button{
       strokeWeight(2);
       stroke(255);
       textSize(10);
-      fill(100+100*sin(140*T),100+100*sin(100*T),100+100*sin(80*T));
+      fill(100+100*sin(140*(T*(this.F+1))),100+100*sin(100*(T+200*this.F)),100+100*sin(80*T));
       circle(this.X,this.Y,this.R);
       fill(255);
       noStroke();
@@ -148,6 +161,9 @@ class button{
 
 
 
+
+
+
 class planet{
   constructor(x,y,r){
     this.W=floor(10000*abs(1-2*r/min(W,H))/pow(r,3/2))+1;
@@ -155,6 +171,8 @@ class planet{
     this.X=x;
     this.Y=y;
     this.R=3*r;
+
+    this.pos=0;
 
 
     //elementos
@@ -365,7 +383,8 @@ class system{
       if((random()<pPlaneta | (p==(nP-1) & contador ==0 )) & contador <=8){
 
       this.PLANETS[contador]=new planet(W/2,H/2,this.DR*(p+1));
-      if(random()<pHered & this.PLANETS[contador].NAME.split("").length<=8 & this.NAME.split("").length<=8){ this.PLANETS[contador].NAME=this.NAME.slice(0,4)+this.PLANETS[contador].NAME.slice(4);console.log("HERD")}
+      this.PLANETS[contador].pos=contador;
+      if(random()<pHered & this.PLANETS[contador].NAME.split("").length<=8 & this.NAME.split("").length<=8){ this.PLANETS[contador].NAME=this.NAME.slice(0,4)+this.PLANETS[contador].NAME.slice(4);}
       else if(random()<pNum){ this.PLANETS[contador].NAME=this.NAME+"-"+(contador+1);}
       else if (random()<pCiv & p>0.2*nP & p<0.5*nP & this.CIV.length<1){
         this.CIV[0]=this.PLANETS[contador];
@@ -572,7 +591,7 @@ class system{
 
 
 
-    let xxx=W-400;
+    let xxx=W-450;
     let yyy=40;
     let _=anyRange(mouseX,mouseY);
     if(mouseIsPressed & _!=""){
@@ -624,7 +643,23 @@ class system{
       }
       text("g = "+((Pobs.RP**2)/3).toFixed(2)+" m/s2",xxx+120,yyy+40);
       text("Horas/dia = "+round(30*(Pobs.R/600)*Pobs.NAME.length*0.4+Pobs.MOON.length*10)+" Horas",xxx+120,yyy+60);
-
+      let porb=((5**map(Pobs.W,0,Pobs.W,Pobs.pos/4,-1)+(Pobs.R/200)**3 +Pobs.pos*this.Rsun/2)/2 + 1.5*max(0,(Pobs.pos-3)*this.Rsun*3)).toFixed(1);
+      let torb;
+      if(porb >1){
+        let yr = floor(porb)
+        let mnth=  floor(12*(porb-floor(porb)))
+        let s_yr = ""
+        let s_mt = ""
+        if(yr>1){s_yr="s"}
+        if(mnth >1){s_mt="es"}
+        torb=yr+" año"+s_yr+" y "+mnth+" mes"+s_mt;
+      }
+      else{
+        let mnth = (porb*12).toFixed(0)
+        let s_mt = ""
+        if(mnth >1){s_mt="es"}
+        torb = mnth+ " mes"+s_mt}
+      text("P. orbital = "+ torb,xxx+120,yyy+80);
     }
     else if (Pobs=="Sun"){
 
@@ -664,12 +699,22 @@ class system{
 }
 
 function setsystem(){
+
+c_prev=new system( 3, min(W,H)/5 );
+c_prev = Object.assign(c_prev,c);
+
 setup();
 background(0);
 
 
 }
+function setprev(){
 
+if(c_prev!="" & c!=c_prev){setup(c_prev);}
+background(0);
+
+
+}
 
 function keyPressed() {
   if (keyCode === ENTER) {
@@ -692,15 +737,19 @@ function keyPressed() {
 
 
 
-  function setup(){
+  function setup(syst = ""){
+
     Pobs="";
     elems= Object.keys(ELEMS);
 
-    let buttSet=new button(W-50,H-50,"FIND\nNEXT",[255,0,0]);
+    let buttSet=new button(W-50,H-50,"FIND\nNEXT",[255,0,0],0);
+    let buttPrev=new button(50,H-50,"PREV\nSYSTEM",[255,0,0],1);
     //timeS = createAudio('time.mp3');
     //timeS.autoplay(true);
 
     BUTTONS[0]=buttSet;
+
+    BUTTONS[1]=buttPrev;
 
 
 
@@ -712,7 +761,12 @@ function keyPressed() {
 
 
     // try{
-    c = new system( np, min(W,H)/5 );
+    if(syst==""){c = new system( np, min(W,H)/5 );}
+    else{
+      c = new system( np, min(W,H)/5 );
+
+      c = Object.assign(c,syst);}
+
     // }
     // catch(error){
     //   console.log("HEE HEE");
@@ -778,7 +832,14 @@ function draw(){
 }
 
 
+function mouseClicked(){
+  for(var i =0;i<BUTTONS.length;i++){
+    if(sqrt((BUTTONS[i].X-mouseX)**2+(BUTTONS[i].Y-mouseY)**2)<=1.5*BUTTONS[i].R){
+      BUTTONS[i].act();
+    }
+  }
 
+}
 
 
 function anyRange(xx,yy){
