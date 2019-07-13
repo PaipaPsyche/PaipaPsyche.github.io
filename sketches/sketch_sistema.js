@@ -162,10 +162,8 @@ class button{
 
 
 
-
-
 class planet{
-  constructor(x,y,r){
+  constructor(x,y,r,kind="p"){
     this.W=floor(10000*abs(1-2*r/min(W,H))/pow(r,3/2))+1;
     if(random()<pInv){this.W=-this.W;}
     this.X=x;
@@ -179,13 +177,15 @@ class planet{
     let nelem=5+floor(4*random());
     let phonyelems=elems.slice(0);
     this.elementos=[];
-    for (let k =0;k<nelem;k++){
-      let pick=floor(random()*phonyelems.length);
-      let arr = ELEMS[phonyelems[pick]];
-      let abund=randomGaussian(arr[1],arr[2]);
-      this.elementos[k]=[phonyelems[pick],abs(abund)];
-      phonyelems.splice(pick,1);
-        }
+    if(kind=="p"){
+      for (let k =0;k<nelem;k++){
+        let pick=floor(random()*phonyelems.length);
+        let arr = ELEMS[phonyelems[pick]];
+        let abund=randomGaussian(arr[1],arr[2]);
+        this.elementos[k]=[phonyelems[pick],abs(abund)];
+        phonyelems.splice(pick,1);
+          }
+    }
 
 
 
@@ -199,13 +199,15 @@ class planet{
     this.C =[50+random()*205,50+random()*205,50+random()*205];
     let nmoon=floor(random()*(Nmoons));
     this.MOON=[];
-    for(let m = 0;m<nmoon;m++){
-      this.MOON[m]= new planet(this.X,this.Y,this.RP);
-      this.MOON[m].MOON=[];
-      this.MOON[m].W=1.5*(m+1)*this.W + 4*(2*random()-1);
-      this.MOON[m].R= this.MOON[m].R + 6*m**2;
-      this.MOON[m].RING=0;
-      this.MOON[m].NAME="";
+    if(kind=="p"){
+      for(let m = 0;m<nmoon;m++){
+        this.MOON[m]= new planet(this.X,this.Y,this.RP,kind="m");
+        this.MOON[m].MOON=[];
+        this.MOON[m].W=1.5*(m+1)*this.W + 4*(2*random()-1);
+        this.MOON[m].R= this.MOON[m].R + 6*m**2;
+        this.MOON[m].RING=0;
+        this.MOON[m].NAME="";
+      }
     }
     this.RING = 0;
     this.CIVI=0;
@@ -357,7 +359,7 @@ class system{
     this.NAME=new random_name(2+floor(random()*long_name)).TXT;
     this.Tciv=0;
 
-
+    this.stars=[];
 
     this.Rsun=this.DR*(random());
     this.Wsun=80+50*random();
@@ -775,21 +777,47 @@ function keyPressed() {
     // }
 
 
-    for(let s = 0;s<nStars;s++){
-      let st = [];
-      st[0]=floor(random()*W);
-      st[1]=floor(random()*H);
-      st[2]=abs(randomGaussian(1.5,1));
-      st[3]=[255,255,255];
-      if(random()<0.01){st[3]=[180,0,0];}
-      if(random()<0.01){st[3]=[0,0,180];}
-      if(random()<0.01){st[3]=[180,180,0];}
-      if(random()<0.01){st[3]=[180,0,180];}
-      STARS[s]=st;
+      let gal = 0;
+
+      if(random()<0.6){gal=1;}
+
+      for(let s = 0;s<nStars;s++){
+        let st = [];
+        st[0]=floor(random()*W);
+        st[1]=floor(random()*H);
+        st[2]=abs(randomGaussian(1.5,1));
+        st[3]=[255,255,255];
+        if(random()<0.01){st[3]=[180,0,0];}
+        if(random()<0.01){st[3]=[0,0,180];}
+        if(random()<0.01){st[3]=[180,180,0];}
+        if(random()<0.01){st[3]=[180,0,180];}
+        STARS[s]=st;
 
 
 
+
+      }
+      if(gal==1){
+        for(let s = 0;s<floor(2.5*nStars);s++){
+          let st = [];
+
+          st[0]=floor(random()*W);
+          st[1]=H/2+floor(randomGaussian(0,H/6));
+          st[2]=abs(randomGaussian(1.3,0.5));
+          st[3]=[255,255,255];
+          if(random()<0.01){st[3]=[180,0,0];}
+          if(random()<0.01){st[3]=[0,0,180];}
+          if(random()<0.01){st[3]=[180,180,0];}
+          if(random()<0.01){st[3]=[180,0,180];}
+
+          STARS[nStars+s-1]=st;
+
+
+
+
+        }
     }
+
 
   }
 
@@ -808,6 +836,21 @@ function draw(){
     noStroke();
 
   }
+  if(STARS.length > nStars){
+    for(let s = nStars;s<STARS.length;s++){
+
+      stroke(STARS[s][3]);
+      let rand  = 0;
+      if(random()<0.0002){rand=1};
+      strokeWeight(max(STARS[s][2]+rand*randomGaussian(),0.1));
+      point(STARS[s][0],STARS[s][1]+(STARS[s][0]-W/2)*(nStars-1200)/200);
+      noStroke();
+
+    }
+
+
+  }
+
   strokeWeight(0.5);
 
   c.paint();
@@ -827,7 +870,7 @@ function draw(){
 
   T=T+dT;
   mult=map(mouseY,0,H,0.01  ,5);
-  dT = mult * map(mouseX,0,W,-0.02,0.02);
+  dT = mult * map(mouseX,0,W,0,0.03);
 
 }
 
