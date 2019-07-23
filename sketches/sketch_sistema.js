@@ -645,7 +645,7 @@ class system{
       }
       text("g = "+((Pobs.RP**2)/3).toFixed(2)+" m/s2",xxx+120,yyy+40);
       text("Horas/dia = "+round(30*(Pobs.R/600)*Pobs.NAME.length*0.4+Pobs.MOON.length*10)+" Horas",xxx+120,yyy+60);
-      let porb=((5**map(Pobs.W,0,Pobs.W,Pobs.pos/4,-1)+(Pobs.R/200)**3 +Pobs.pos*this.Rsun/2)/2 + 1.5*max(0,(Pobs.pos-3)*this.Rsun*3)).toFixed(1);
+      let porb=0.8*((5**map(Pobs.W,0,Pobs.W,Pobs.pos/4,-1)+(Pobs.R/200)**3 +Pobs.pos*this.Rsun/2)/2 + 1.5*max(0,(Pobs.pos-3)*this.Rsun*3)).toFixed(1);
       let torb;
       if(porb >1){
         let yr = floor(porb)
@@ -798,12 +798,12 @@ function keyPressed() {
 
       }
       if(gal==1){
-        for(let s = 0;s<floor(2.5*nStars);s++){
+        for(let s = 0;s<floor(1.8*nStars);s++){
           let st = [];
 
           st[0]=floor(random()*W);
           st[1]=H/2+floor(randomGaussian(0,H/6));
-          st[2]=abs(randomGaussian(1.3,0.5));
+          st[2]=abs(randomGaussian(1.5,0.5));
           st[3]=[255,255,255];
           if(random()<0.01){st[3]=[180,0,0];}
           if(random()<0.01){st[3]=[0,0,180];}
@@ -869,8 +869,8 @@ function draw(){
 
 
   T=T+dT;
-  mult=map(mouseY,0,H,0.01  ,5);
-  dT = mult * map(mouseX,0,W,0,0.03);
+  mult=map(mouseY,0,H,3  ,0.01);
+  dT = mult * map(mouseX,0,W,0,0.02);
 
 }
 
