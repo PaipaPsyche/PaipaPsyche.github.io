@@ -40,8 +40,8 @@ let SILABAS =["pl","v","s","ph","pr","d","sh","z","h","n","str","gr","br",
               "tr","f","dr","ch","k","z","cl",
               "fr","y","k","c","tr","cr","gl","t","p","b","m","g","l","r"];
 
-let ENDINGS=["rys","llus","shiba","ndi","rsei","cury","rth","rte","scus","nte",
-            "","rn","ptuno","rno","rano","sto","lgia","nz","lcani","rd","nucci",
+let ENDINGS=["rys","llus","shiba","ndi","rsei","cury","rth","rte","scus","nte","bel","vez",
+            "","rn","ptuno","rno","rano","sto","lgia","nz","lcani","rd","nucci","bba",
               "tina","ngo","gnikai","ccini","cordia","loide","maritano","rineris",
               "lypso","lkanti","ntico","dici","tafar","nica","nyx","nsk","lucci",
               "bino","nita","tana","mble","ptera","bdis","scylla","dore","loch","ntos",
@@ -60,7 +60,7 @@ let ENDINGS=["rys","llus","shiba","ndi","rsei","cury","rth","rte","scus","nte",
 let VOCALES = ["ua","ia","a","e","i","o","u","a","e","i","o","u","ae","ie","oa","io"]//,"ee","oo"];
 let GREEK=["Alpha","Epsilon","Nega","Proxima","Magna","Ultima","Central","Prima","Majora",
             "Minora","Nova","Eta","Lambda","Tau","Beta","Gamma","Delta","Omicron","Omega",
-            "Ypsilon","Ultra","Phi","Sigma","Zion","Nova"];
+            "Ypsilon","Ultra","Phi","Sigma","Zion","Nova","Zegna","Cignus"];
 let SCALES=[" millones de"," billones de"," trillones de","",""]
 let CIVENDINGS=["riana","siana","niana","na","rgiana","bina","nita","lita","miana","liana","nica","nicoide","micode",
                 "nte","","giana","tiana","noide","loide","quiana","diana","nsiana","viana","mana","manoide","soide",
@@ -870,7 +870,7 @@ function draw(){
 
   T=T+dT;
   mult=map(mouseY,0,H,3  ,0.01);
-  dT = mult * map(mouseX,0,W,0,0.02);
+  dT = mult * map(mouseX,0,W,0.02,0.0001);
 
 }
 
