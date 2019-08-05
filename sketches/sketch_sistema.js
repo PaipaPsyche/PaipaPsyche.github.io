@@ -64,7 +64,7 @@ let GREEK=["Alpha","Epsilon","Nega","Proxima","Magna","Ultima","Central","Prima"
 let SCALES=[" millones de"," billones de"," trillones de","",""]
 let CIVENDINGS=["riana","siana","niana","na","rgiana","bina","nita","lita","miana","liana","nica","nicoide","micode",
                 "nte","","giana","tiana","noide","loide","quiana","diana","nsiana","viana","mana","manoide","soide",
-                "sdiana","ndina","laria","ptera","nicia","mnica","ptica"];
+                "sdiana","ndina","laria","ptera","nicia","mnica","ptica","ntica"];
 let ROMNUM=["-A","-B","-C","-D","-I","-II","-III","-IV","-V","-X","-Y","-Z"];
 
 class random_name{
