@@ -10,7 +10,7 @@ let c;
 
 let pPlaneta =0.6;
 let pInv=0.004;
-let Nmoons=3;
+let Nmoons=4;
 let pAnillo = 0.3;
 let pNum = 0.3;
 let pHered = 0.1;
@@ -168,7 +168,7 @@ class planet{
     if(random()<pInv){this.W=-this.W;}
     this.X=x;
     this.Y=y;
-    this.R=3*r;
+    this.R=3.2*r;
 
     this.pos=0;
 
@@ -194,8 +194,9 @@ class planet{
 
 
     this.NAME=new random_name(2+floor(random()*long_name)).TXT;
-
-    this.RP= 2+random()*this.R/50;
+    let mp_size=2;
+    if(kind=="p"){mp_size=3;}
+    this.RP= mp_size+random()*this.R/50;
     this.C =[50+random()*205,50+random()*205,50+random()*205];
     let nmoon=floor(random()*(Nmoons));
     this.MOON=[];
@@ -354,7 +355,7 @@ class planet{
 class system{
   constructor(nP,r){
 
-    this.DR = r/(nP+1)+4;
+    this.DR = r/(nP+1)+6;
     this.PLANETS = [];
     this.NAME=new random_name(2+floor(random()*long_name)).TXT;
     this.Tciv=0;
