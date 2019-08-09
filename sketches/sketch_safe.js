@@ -18,6 +18,11 @@ let my;
 let ticks = 4;
 
 
+UPS = [["|","="],[".","°"],["X","Y"],["v","^"],["1","0"],["P","N"],["+","—"],["V","F"],["p","d"]];
+
+
+let up ;
+let down;
 
 class rueda{
 
@@ -108,6 +113,9 @@ function setup() {
   T = 1000*random();
   mx=W/2;
   my=H/2;
+  let updown = UPS[int(random()*UPS.length)];
+  down = updown[1];
+  up = updown[0];
 
 
   createCanvas(W, H);
@@ -130,9 +138,9 @@ function draw() {
     for(let j=0;j<test.length;j++){
 
       if(test[j].IS == i){
-        chain=chain+"1";
+        chain=chain+up;
       }
-      else{chain=chain+"0";}
+      else{chain=chain+down;}
 
     }
     CODES[i]=chain;
@@ -193,8 +201,10 @@ text("CODIGOS: ",50,140);
 
 
 let exito = "";
+let blank = "";
 for(let i =0;i<n_ruedas;i++){
-exito=exito+"1";
+exito=exito+up;
+blank=blank+down;
 }
 
 for (k =0;k<CODES.length;k++){
@@ -203,7 +213,7 @@ if(CODES[k]==exito){fill(0,255,0);}
 text(CODES[k],50,160+k*20);
 
 fill(255,0  ,0);
-text(binToDec(CODES[k]),55+textWidth(CODES[k]),160+k*20);
+text(binToDec(CODES[k]),55+textWidth(blank),160+k*20);
 
 
 }
@@ -253,7 +263,7 @@ let nterm=lista.length;
 
 let ans= 0;
 for(let i =0;i<nterm;i++){
-  if(lista[i]==="1"){
+  if(lista[i]===up){
     ans=ans+(2**i);
   }
 
