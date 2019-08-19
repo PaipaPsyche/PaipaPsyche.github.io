@@ -3,7 +3,7 @@ new p5();
 var W;
 var H;
 var CHASERS = [];
-var n_chasers = 600;
+var n_chasers = 400;
 var mode = "loop";
 var chasing  ="pos";
 var n_hist= 200;
