@@ -93,9 +93,9 @@ function setup() {
 
   Engine.run(engine);
 
-  ground1 = new Box(width/4,height/6,width/2,30,istat= true,ang=PI/8)
-  ground2 = new Box(4*width/5,height/3,width,30,istat= true,ang=-PI/8)
-  ground3 = new Box(1*width/3,7*height/8,width,30,istat= true,ang=PI/12)
+  ground1 = new Box(width/4,height/6,width/2,30,istat= true,ang=PI/7)
+  ground2 = new Box(5*width/6,height/3,width,30,istat= true,ang=-PI/7)
+  ground3 = new Box(1*width/4,7*height/8,width,30,istat= true,ang=PI/11)
   //World.add(world,ground);
   boxes.push(ground1);
   boxes.push(ground2);
@@ -141,7 +141,7 @@ function draw() {
   factorAdd = map(mouseY,0,height, 0.6,0.001)
 
   if(random()<factorAdd ){
-    newobj(width/4+randomGaussian(0,50),height/40);
+    newobj(width/2+randomGaussian(0,150),0);
   }
   if(random()<factorDel & boxes.length>10){
 
