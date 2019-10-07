@@ -50,12 +50,15 @@ class oscillator{
     let y = this.Y+R*sin(this.W*T+8*this.P*(mouseY-H/2)/H);
     noStroke();
 
-    let cr = 180+50*sin(13*T);
-    let cg = 180+50*sin(7*T);
-    let cb = 180+50*sin(11*T);
+    // let cr = 180+50*sin(13*T);
+    // let cg = 180+50*sin(7*T);
+    // let cb = 180+50*sin(11*T);
 
+    let C = [map(sin(this.W*T+8*this.P*(mouseY-H/2)/H),-1,1,50,255),
+        map(sin(this.W*T+7*this.P*(mouseY-H/2)/H),-1,1,50,255),
+        map(sin(this.W*T+9*this.P*(mouseY-H/2)/H),-1,1,50,255)]
 
-    fill(cr,cg,cb);
+    fill(C);
     circle(x,y,this.r_min+0.5*sin(this.W*T));
 
 
