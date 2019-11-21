@@ -102,8 +102,8 @@ function mouseClicked(){
     else if(n_ir.length>0 & distancia(nuevo,clst)>clst.mindist){
       CENTROS.push(nuevo);
       var chosen=1000;
-      var n_ir_c=n_ir[0];
-      for(var i=0;i<n_ir.length;i++){
+      var n_ir_c=n_ir[n_ir.length-1];
+      for(var i=n_ir.length-1;i>0;i--){
         if(distancia(n_ir[i],nuevo)<chosen){
           chosen=distancia(n_ir[i],nuevo);
           n_ir_c=n_ir[i];
@@ -177,5 +177,10 @@ function draw() {
 
   T+=0.5;
 
+  push();
+  stroke([255,0,0]);
+  fill([255,0,0]);
+
+  text("SEEDS "+str(max(primero,0)),20,20)
 
 }
