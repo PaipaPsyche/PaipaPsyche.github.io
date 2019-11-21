@@ -11,7 +11,7 @@ var DICT_MIN_CON = {
   2:3,
   3:4,
   4:5,
-  5:6
+  5:8
 };
 
 class centro{
@@ -21,6 +21,7 @@ class centro{
     this.Y=y;
     this.T=t;
     this.connect=0;
+    this.mis_canales=[];
 
     this.evaluar_tipo();
 
@@ -48,6 +49,21 @@ class centro{
   desconectar(){
     this.connect--;
   }
+
+  give_high_canal(ARR){
+    let maxt = 1;
+    let ans = 0;
+    for(var  i =ARR.length-1;i>=0;i--){
+      if(ARR[i].T>maxt){
+        ans=ARR[i];
+      }
+    }
+    return ans;
+
+
+  }
+
+
   give_closest(ARR){
     let closest = 1000;
     let closest_elem=0;
@@ -93,14 +109,14 @@ class centro{
     this.R = DICT_R_M[this.T];
     this.min_R = 5*this.R;
     this.C = DICT_C_M[this.T];
-    this.maxdist= 50+3.5*(this.T**2);
-    this.mindist= 15+(this.T**2);
+    this.maxdist= 50+4*(this.T**2);
+    this.mindist= 20+2*(this.T);
   }
   mouseInRange(){
     return dist(mouseX,mouseY,this.X,this.Y)<=2*this.R?1:0;
   }
   mouseInMin(){
-    return dist(mouseX,mouseY,this.X,this.Y)<=5*this.R?1:0;
+    return dist(mouseX,mouseY,this.X,this.Y)<=this.mindist?1:0;
   }
   pintar(T){
     push();

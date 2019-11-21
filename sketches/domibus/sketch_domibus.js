@@ -20,10 +20,15 @@ var thresholdf = 0.73;
 
 var T=0;
 
+var buenas=1;
+var malas = 0;
+
 var pintar_rec=0;
 
 var opc_but ="";
 var opc_elems = [];
+
+var activate_auto=0;
 
 var primero=1;
 
@@ -34,6 +39,9 @@ function keyTyped() {
 if(key =='m'){
   pintar_rec=(1+pintar_rec)%3;
 }
+if(key =='a'){
+  activate_auto=1-activate_auto;
+}
 if(key =='f'){
 console.log(primero);
 console.log(last_five);
@@ -43,8 +51,8 @@ console.log(last_five);
 function rango_mina(){
   var ans = 0;
   for(var i =0;i<CENTROS.length;i++){
-    if(CENTROS[i].mouseInMin()==1){
-      ans  = 1;
+    if(CENTROS[i].mouseInRange()==1){
+      ans  = CENTROS[i];
       break;
     }
   }
@@ -75,70 +83,102 @@ function distancia(el1,el2){
 }
 
 
-function mouseClicked(){
-  if(m.M_tierra[mouseX][mouseY]==1){
 
-    let nuevo = new centro(mouseX,mouseY,1);
-    let n_ir = nuevo.give_high_in_range(CENTROS);
+function check_spot(XX,YY){
 
 
+    if(rango_mina()!=0 & buenas-malas>0 & activate_auto==0){
+      if( rango_mina().T<=4){
+        rango_mina().T=5;
+        rango_mina().evaluar_tipo();
+        malas=malas+1;
+      }
 
-    if(CENTROS.length>=1){
-      let clst=nuevo.give_closest(CENTROS);
-
-
-
-      let num_c = clst.connect;
-      let num_n = nuevo.connect;
-      if(distancia(nuevo,clst)<=clst.maxdist & distancia(nuevo,clst)>clst.mindist & num_c<DICT_MIN_CON[5] & num_n<DICT_MIN_CON[5]){
-        CENTROS.push(nuevo);
-
-        var nc = new canal(clst,nuevo,floor(1+random(3)));
-        CANALES.push(nc);
-
-        nuevo.conectar();
-        clst.conectar();
     }
-    else if(n_ir.length>0 & distancia(nuevo,clst)>clst.mindist){
-      CENTROS.push(nuevo);
-      var chosen=1000;
-      var n_ir_c=n_ir[n_ir.length-1];
-      for(var i=n_ir.length-1;i>0;i--){
-        if(distancia(n_ir[i],nuevo)<chosen){
-          chosen=distancia(n_ir[i],nuevo);
-          n_ir_c=n_ir[i];
+
+
+
+
+
+    if(m.M_tierra[XX][YY]==1){
+
+      let nuevo = new centro(XX,YY,1);
+      let n_ir = nuevo.give_high_in_range(CENTROS);
+
+
+
+      if(CENTROS.length>=1){
+        let clst=nuevo.give_closest(CENTROS);
+
+
+
+        let num_c = clst.connect;
+        let num_n = nuevo.connect;
+        if(distancia(nuevo,clst)<=clst.maxdist & distancia(nuevo,clst)>clst.mindist & num_c<DICT_MIN_CON[5] & num_n<DICT_MIN_CON[5]){
+          CENTROS.push(nuevo);
+
+          var nc = new canal(clst,nuevo,floor(1+random(3)));
+          CANALES.push(nc);
+          nuevo.mis_canales.push(CANALES[CANALES.length-1]);
+          clst.mis_canales.push(CANALES[CANALES.length-1]);
+
+          nuevo.conectar();
+          clst.conectar();
+      }
+      else if(n_ir.length>0 & distancia(nuevo,clst)>clst.mindist){
+
+        var chosen=CENTROS[0].mindist;
+        var n_ir_c="";
+        for(var i=n_ir.length-1;i>0;i--){
+          if(distancia(n_ir[i],nuevo)<chosen){
+            chosen=distancia(n_ir[i],nuevo);
+            n_ir_c=n_ir[i];
+          }
+
+        }
+        if(n_ir_c!=""){
+          CENTROS.push(nuevo);
+          var nc = new canal(n_ir_c,nuevo,floor(1+random(3)));
+          CANALES.push(nc);
+
+          nuevo.conectar();
+          n_ir_c.conectar();
         }
 
       }
 
-      var nc = new canal(n_ir_c,nuevo,floor(1+random(3)));
-      CANALES.push(nc);
+      else if(buenas-malas>0 & distancia(nuevo,clst)>(W+H)/6){
+        malas=malas+1;
+        nuevo.T=5;
+        nuevo.evaluar_tipo();
+        CENTROS.push(nuevo);
+      }
 
-      nuevo.conectar();
-      n_ir_c.conectar();
     }
-
-    else if(primero>0 & distancia(nuevo,clst)>(W+H)/6){
-      primero=primero-2;
+    else if(buenas-malas>0){
+      malas=malas+1;
       nuevo.T=5;
       nuevo.evaluar_tipo();
       CENTROS.push(nuevo);
+
     }
 
-  }
-  else if(primero>0){
-    primero=primero-2;
-    nuevo.T=5;
-    nuevo.evaluar_tipo();
-    CENTROS.push(nuevo);
 
-  }
-
-
-  }
-
+    }
 }
 
+
+
+function mouseClicked(){
+  check_spot(mouseX,mouseY);
+
+
+}
+function get_rand_coords(xx,yy,sd){
+   let x = max(min(floor(randomGaussian(xx,sd)),W-20),20);
+   let y = max(min(floor(randomGaussian(yy,sd)),H-20),20);
+   return [x,y];
+}
 
 function setup() {
   H = windowHeight;
@@ -158,6 +198,10 @@ background(0);
 
 function draw() {
 
+
+
+
+
   let five=0;
   m.pintar();
   for(var i =0;i<CANALES.length;i++){
@@ -169,10 +213,14 @@ function draw() {
     if(CENTROS[i].T==5){five++;}
 
   }
-  if(five>last_five & five>3){
-    primero+=five-last_five;
-    last_five=five;
-  }
+  buenas=floor(sqrt(five));
+  if(CENTROS.length==0){buenas=1;}
+
+
+  // if(five>last_five & five>3){
+  //   primero+=five-last_five;
+  //   last_five=five;
+  // }
 
 
   T+=0.5;
@@ -181,6 +229,10 @@ function draw() {
   stroke([255,0,0]);
   fill([255,0,0]);
 
-  text("SEEDS "+str(max(primero,0)),20,20)
-
+  text("SEEDS "+str(max(buenas-malas,0)),20,20)
+  if(CENTROS.length>0 & activate_auto==1){
+    var coords = get_rand_coords(CENTROS[CENTROS.length-1].X,CENTROS[CENTROS.length-1].Y,100)
+    console.log(coords);
+  check_spot(coords[0],coords[1]);
+}
 }

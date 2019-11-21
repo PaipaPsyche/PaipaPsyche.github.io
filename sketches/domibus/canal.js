@@ -36,7 +36,12 @@ class canal{
       this.T = 3;
 
     }
-    if(this.T>prev_T & random()>0.8){this.EL1.conectar();}
+    if(this.T>prev_T & random()>0.8){this.EL1.conectar();this.EL2.conectar();}
+
+    if(this.EL2.T<5){this.EL1.evaluar_tipo();}
+    if(this.EL1.T<5){this.EL2.evaluar_tipo();}
+
+
 
     this.R = DICT_R_C[this.T];
 
