@@ -13,9 +13,9 @@ class mapa{
     this.M_food = [];
 
     this.crear_mapas();
-    console.log("a");
+
     this.asignar_mapas();
-    console.log("b");
+
 
 
 
