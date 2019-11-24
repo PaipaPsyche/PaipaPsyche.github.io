@@ -509,12 +509,24 @@
         <tr>
           <td>  <a href="tryme/camdraw.html"><img src="images/ml5.png" width="200px" ></a> </td>
           <td>
-            <p></p>
+            <p>Con la iniciativa <b>Trainable Machine</b> de Google se genera un modelo de red neuronal entrenada con
+               imagenes etiquetadas respectivamente con UP, DOWN, LEFT, RIGHT y STILL segun la pose que represente. Una vez
+               obtenido el modelo entrenado, se implementa librería de Machine Learning <b>ml5</b> de Javascript para importar el modelo y usarlo para
+              clasificar video en vivo de la webcam y de esta forma darle instrucciones al juego.  </p>
 
 
-            <p></p>
+            <p>El objetivo del juego es guiar el viajero Rojo hacia los objetivos azules para crecer y recolectar el mayor numero de puntos
+            posible.Las ordenes se le daran al juego por webcam, traduciendose gracias al modelo a 5 instrucciones basicas: ir arriba, ir abajo, ir a la izquiera, ir a la derecha y no hacer nada.</p>
 
-              <p><b>CONTROLES : </b>  </p>
+              <p><b>CONTROLES :</b> Para jugar es necesario <b>permitirle a la página usar la webcam</b> pues de esta manera se recolectan las imagenes que
+                traducen a instrucciones. Para que la red neuronal reconozca mejor la pose, es necesario que la webcam enfoque el pecho, la cabeza y los brazos completos.Además,
+                es preciso que el fondo sea uniforme (por ejemplo, una pared lisa).</p>
+
+              <p><b>QUEDARSE QUIETO:</b> Quedarse quieto con los brazos abajo.</p>
+              <p><b>IR ARRIBA:</b>Hacer una "casa" con las manos sobre la cabeza, poniendo las manos por encima de la cabeza en forma de punta hacia arriba.</p>
+              <p><b>IR ABAJO:</b>Hacer una forma de flacha hacia abajo por debajo de la cara, haciendo una cuna para la mandibula con las manos hacia abajo en forma de punta, tambien alzando los codos.</p>
+              <p><b>IR A LA IZQUIERDA:</b> poner la mano izquierda al lado de la cara con la palma hacia el frente, como si fuera un saludo.</p>
+              <p><b>IR A LA DERECHA:</b>poner la mano derecha al lado de la cara con la palma hacia el frente, como si fuera un saludo.</p>
 
            </td>
         </tr>

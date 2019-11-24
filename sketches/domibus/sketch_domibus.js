@@ -29,10 +29,13 @@ var opc_but ="";
 var opc_elems = [];
 
 var activate_auto=0;
+var activate_virus=0;
 
 var primero=1;
 
 var last_five=3;
+
+var killrate=0.8;
 
 
 function keyTyped() {
@@ -41,6 +44,9 @@ if(key =='m'){
 }
 if(key =='a'){
   activate_auto=1-activate_auto;
+}
+if(key =='v'){
+  activate_virus=1-activate_virus;
 }
 if(key =='f'){
 console.log(primero);
@@ -90,7 +96,7 @@ function check_spot(XX,YY){
     if(rango_mina()!=0 & buenas-malas>0 & activate_auto==0){
       if( rango_mina().T<=4){
         rango_mina().T=5;
-        rango_mina().evaluar_tipo();
+
         malas=malas+1;
       }
 
@@ -126,29 +132,29 @@ function check_spot(XX,YY){
           clst.conectar();
           clst.evaluar_tipo();
       }
-      else if(n_ir.length>0 & distancia(nuevo,clst)>clst.mindist){
+      // else if(n_ir.length>0 ){
+      //
+      //   var chosen=cls;
+      //   var n_ir_c="";
+      //   for(var i=n_ir.length-1;i>0;i--){
+      //     if(distancia(n_ir[i],nuevo)<chosen & n_ir[i]!=clst){
+      //       chosen=distancia(n_ir[i],nuevo);
+      //       n_ir_c=n_ir[i];
+      //     }
+      //
+      //   }
+      //   if(n_ir_c!=""){
+      //     CENTROS.push(nuevo);
+      //     var nc = new canal(n_ir_c,nuevo,floor(1+random(3)));
+      //     CANALES.push(nc);
+      //
+      //     nuevo.conectar();
+      //     n_ir_c.conectar();
+      //   }
+      //
+      // }
 
-        var chosen=CENTROS[0].mindist;
-        var n_ir_c="";
-        for(var i=n_ir.length-1;i>0;i--){
-          if(distancia(n_ir[i],nuevo)<chosen){
-            chosen=distancia(n_ir[i],nuevo);
-            n_ir_c=n_ir[i];
-          }
-
-        }
-        if(n_ir_c!=""){
-          CENTROS.push(nuevo);
-          var nc = new canal(n_ir_c,nuevo,floor(1+random(3)));
-          CANALES.push(nc);
-
-          nuevo.conectar();
-          n_ir_c.conectar();
-        }
-
-      }
-
-      else if(buenas-malas>0 & distancia(nuevo,clst)>(W+H)/6){
+      else if(buenas-malas>0 & distancia(nuevo,clst)>(W+H)/8){
         malas=malas+1;
         nuevo.T=1;
         nuevo.evaluar_tipo();
@@ -175,15 +181,38 @@ function mouseClicked(){
 
 
 }
+
+
+function get_maxlvl(){
+  let maxlvl = 0;
+  for(var i =0;i<CENTROS.length;i++){
+    if(CENTROS[i].T>maxlvl){
+      maxlvl=CENTROS[i].T;
+    }
+  }
+  return maxlvl;
+
+}
+
+function mousePressed(event) {
+  if(event.button==2 & rango_mina()!=0){
+    rango_mina().desconectar();
+  }
+}
+
+
 function get_rand_coords(xx,yy,sd){
-   let x = max(min(floor(randomGaussian(xx,sd)),W-20),20);
-   let y = max(min(floor(randomGaussian(yy,sd)),H-20),20);
+   let x = max(min(floor(randomGaussian(xx,sd)),W-50),50);
+   let y = max(min(floor(randomGaussian(yy,sd)),H-50),50);
+   x=x-(x+8*(y%3))%24;
+   y=y-y%24;
    return [x,y];
 }
 
 function setup() {
   H = windowHeight;
   W = windowWidth;
+  frameRate(5);
 
   // H=600;
   // W=600;
@@ -205,17 +234,60 @@ function draw() {
 
   let five=0;
   m.pintar();
+
+  let mxlvl=get_maxlvl();
+
+  let mx_cap=0;
+  let cand = [];
+
   for(var i =0;i<CANALES.length;i++){
     // CANALES[i].evaluar_tipo();
     CANALES[i].pintar();
   }
 
   for(var i =0;i<CENTROS.length;i++){
+
     CENTROS[i].pintar(T);
     if(CENTROS[i].T==5){five++;}
+    let score=CENTROS[i].score_center();
+    if(CENTROS[i].T==mxlvl){cand.push([CENTROS[i],score])}
 
   }
-  buenas=floor(sqrt(five));
+
+  let cap ="";
+  let max_score=0;
+  for(var i = 0;i<cand.length;i++){
+    if(cand[i][1]>max_score){
+      cap=cand[i][0];
+      max_score=cand[i][1];
+    }
+  }
+
+
+
+
+
+  if(cap!=""){
+
+  push();
+  noFill();
+  stroke(255);
+  strokeWeight(2);
+  circle(cap.X,cap.Y,cap.R+3);
+
+  pop();
+
+  push();
+  fill([0,0,0]);
+  noStroke();
+  textAlign(CENTER,CENTER)
+  text(" capital ",cap.X,cap.Y+cap.R+8);
+  pop();
+}
+
+
+
+  buenas=floor(five/2);
   if(CENTROS.length==0){buenas=1;}
 
 
@@ -237,8 +309,19 @@ function draw() {
 
     text("AUTO-EXPLORATION MODE",20,60);
   }
+  if(activate_virus==1){
+
+    text("VIRUS",150,20);
+    if(random()<killrate){
+      random(CENTROS).desconectar();
+    }
+  }
+  pop();
+
+
   if(CENTROS.length>0 & activate_auto==1){
-    var coords = get_rand_coords(CENTROS[CENTROS.length-1].X,CENTROS[CENTROS.length-1].Y,40)
+    var centroelecto=random(CENTROS);
+    var coords = get_rand_coords(centroelecto.X,centroelecto.Y,40)
     //console.log(coords);
   check_spot(coords[0],coords[1]);
 }

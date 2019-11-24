@@ -102,10 +102,10 @@ class mapa{
           rgba = [0,50,200,255];
           }
           else if(tipo ==1){
-          rgba = [10,200,0,255];
+          rgba = [35,124,39,255];
           }
           else if(tipo ==2){
-          rgba = [100+value*100,200,0,255];
+          rgba = [80+value*80,80,0,255];
           }
           else if(tipo ==-1){
           rgba = [0,20,150,255];

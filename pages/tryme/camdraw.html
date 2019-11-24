@@ -37,6 +37,9 @@
   let R;
   let R_com;
 
+  let ganados=0;
+  let CAZADORES = [];
+
   let COLS={
     LEFT:[150,150,0],
     DOWN:[0,0,250],
@@ -45,6 +48,11 @@
     STILL:[255,255,255]
 
   }
+
+
+
+
+
 
   // Load the model first
   function preload() {
@@ -71,7 +79,19 @@
   }
 
 
-
+class cazador{
+  contructor(){
+    let coords=gen_coord();
+    if(dist(x,y,coords[0],coords[1])<=R+50){
+      coords=gen_coord();
+    }
+    this.X = coords[0];
+    this.Y = coords[1];
+    this.V = 9-1+random(7);
+    this.R = 1+this.V;
+    this.D  = 1+random(4);
+  }
+}
 
   function setup() {
     W = windowWidth;
@@ -83,7 +103,7 @@
     y=H/2;
 
     R=7;
-    R_com=20;
+    R_com=17;
 
     let coords = gen_coord();
     x_com=coords[0];
@@ -114,20 +134,35 @@
     text(label, width / 2, height - 4);
     pop();
 
+
+    push();
+
+    // Draw the label
+    fill([0,0,0,50]);
+    rect(W/2-40,H-80,80,80);
+    fill([255,255,255,255]);
+    textSize(40);
+    textAlign(CENTER);
+    text(str(ganados), width / 2, height - 40);
+    pop();
+
+
+
     if(label == "UP"){
-      y = max(y-dy,0);
+      y = max(y-dy,20);
     }
     else if(label == "DOWN"){
-      y = min(y+dy,H);
+      y = min(y+dy,H-20);
     }
     else if(label == "LEFT"){
-      x = max(x-dx,0);
+      x = max(x-dx,20);
     }
     else if(label == "RIGHT"){
-      x = min(x+dx,W);
+      x = min(x+dx,W-20);
     }
 
-    if(check(R_com+1.5*R)==1){
+    if(check(R_com*1.1)==1){
+      ganados++;
       new_comida();
       R=min(R+5,100);
     }
@@ -135,8 +170,8 @@
 
     push();
     fill([0,0,255]);
-    console.log(x_com,y_com,R_com);
-    circle(x_com,y_com,R_com);
+    //console.log(x_com,y_com,R_com);
+    circle(x_com,y_com,R_com+4*sin(frameCount/5));
     pop();
 
     push();

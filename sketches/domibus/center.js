@@ -2,14 +2,14 @@ var DICT_R_M = {1:3,2:5,3:7,4:9,5:11};
 var DICT_C_M = {
   1:[200,0,0],
   2:[220,120,0],
-  3:[0,150,0],
+  3:[0,250,0],
   4:[0,150,200],
-  5:[200,0,200]};
+  5:[200,0,200]}
 
 var DICT_MIN_CON = {
   1:3,
-  2:4,
-  3:7,
+  2:5,
+  3:7 ,
   4:10,
   5:8
 };
@@ -25,10 +25,10 @@ var DICT_DESC = {
 
 var DICT_R_MINMAX = {
   1:[20,50],
-  2:[20,50],
-  3:[20,70],
+  2:[20,60],
+  3:[20,80],
   4:[20,120],
-  5:[30,160]};
+  5:[25,160]};
 
 class centro{
 
@@ -38,6 +38,7 @@ class centro{
     this.T=t;
     this.connect=0;
     this.mis_canales=[];
+    this.born=frameCount;
 
     this.evaluar_tipo();
 
@@ -50,6 +51,14 @@ class centro{
   }
   desconectar(){
     this.connect--;
+    this.evaluar_tipo();
+  }
+  give_age(){
+    return frameCount-this.born;
+  }
+
+  score_center(){
+    return this.give_age()+100*this.connect;
   }
 
   give_high_canal(ARR){
@@ -70,7 +79,7 @@ class centro{
     let closest = 1000;
     let closest_elem=0;
     for(var i =0;i<ARR.length;i++){
-      if(ARR[i]!=this & dist(this.X,this.Y,ARR[i].X,ARR[i].Y)<=closest ){
+      if(ARR[i]!=this & dist(this.X,this.Y,ARR[i].X,ARR[i].Y)<=closest & ARR[i].T>0){
           closest = dist(this.X,this.Y,ARR[i].X,ARR[i].Y);
           closest_elem=ARR[i];
       }
@@ -94,7 +103,7 @@ class centro{
     let inr=this.give_in_range(ARR);
     let ans=[];
     for(let i =0;i<inr.length;i++){
-      if(ARR[i].T>=4){
+      if(ARR[i].T>=2){
         ans.push(ARR[i]);
       }
     }
@@ -108,28 +117,23 @@ class centro{
 
 
   evaluar_tipo(){
-    if(this.T==1 & this.connect>=DICT_MIN_CON[this.T]){
-      this.T=2;
 
+
+    this.T=1;
+
+    for(var i=2;i<=5;i++){
+      if(this.connect>=DICT_MIN_CON[i-1]){
+        this.T=i;
+      }
     }
-    else if(this.T==2 & this.connect>=DICT_MIN_CON[this.T]){
-      this.T=3;
-
-    }
-    else if(this.T==3 & this.connect>=DICT_MIN_CON[this.T]){
-      this.T=4;
-
-    }
-    else if(this.T==4 & this.connect>=DICT_MIN_CON[this.T]){
-      this.T=5;
-
-    }
+    if(this.connect<0){this.T=-1};
 
 
-    this.R = DICT_R_M[this.T];
+    this.R = DICT_R_M[abs(this.T)];
     this.min_R = 5*this.R;
-    this.C = DICT_C_M[this.T];
-    let dists = DICT_R_MINMAX[this.T];
+    this.C = DICT_C_M[abs(this.T)];
+    let dists = DICT_R_MINMAX[abs(this.T)];
+    if(this.T==-1){dists=[0,1000];this.C=[0,0,0]}
     this.maxdist= dists[1];
     this.mindist= dists[0];
 
@@ -149,9 +153,11 @@ class centro{
       noStroke();
       fill(0);
       textSize(15);
-      text("Potential : "+str(this.connect),20,80);
-      text("Type : "+DICT_DESC[this.T],20,100);
-
+      text("Potential : "+str(max(this.connect,0)),20,80);
+      let tipox=this.T==-1?"Ruins":DICT_DESC[this.T];
+      text("Type : "+tipox,20,100);
+      text("Age : "+str(this.give_age())+" years",20,120);
+      text("Score : "+str(this.score_center()),20,140);
       pop();
     }
     push();
@@ -160,7 +166,7 @@ class centro{
     this.mouseInRange()==1?fill([255,255,255]):fill(this.C);
 
     stroke(100);
-    circle(this.X,this.Y,this.R+sin(T*this.T*0.3));
+    circle(this.X,this.Y,this.R+sin(T*(this.T+1)*0.3));
     pop();
   }
 
