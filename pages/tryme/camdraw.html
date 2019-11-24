@@ -1,0 +1,167 @@
+<!-- <div><h1>CAMDRAW</h1></div> -->
+<head>
+  <meta charset="utf-8">
+  <title>camdraw</title>
+</head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.dom.min.js"></script>
+<script src="https://unpkg.com/ml5@0.4.3/dist/ml5.min.js"></script>
+<script type="text/javascript">
+  // Classifier Variable
+  let classifier;
+  // Model URL
+
+  let imageModelURL = 'https://teachablemachine.withgoogle.com/models/icR-QeZv/';
+
+  let modelURL = imageModelURL + "model.json";
+  let metadataURL = imageModelURL + "metadata.json";
+
+  // Video
+  let video;
+  let flippedVideo;
+  // To store the classification
+  let label = "STILL";
+
+  let x;
+  let y;
+
+  let x_com;
+  let y_com;
+
+  let dx=8;
+  let dy=8;
+
+  let W;
+  let H;
+
+  let R;
+  let R_com;
+
+  let COLS={
+    LEFT:[150,150,0],
+    DOWN:[0,0,250],
+    RIGHT:[0,250,0],
+    UP:[250,0,0],
+    STILL:[255,255,255]
+
+  }
+
+  // Load the model first
+  function preload() {
+    classifier = ml5.imageClassifier(modelURL);
+  }
+
+
+  function gen_coord(){
+    return [100+random(W-100),100+random(H-100)];
+  }
+  function new_comida(){
+
+    let coords = gen_coord()
+    x_com=coords[0];
+    y_com=coords[1];
+  }
+
+  function check(tol){
+    if(dist(x,y,x_com,y_com)<=tol){
+      console.log("e");
+      return 1;
+    }
+    return 0;
+  }
+
+
+
+
+  function setup() {
+    W = windowWidth;
+    H = windowHeight;
+    // W =640;
+    // H = 480;
+
+    x=W/2;
+    y=H/2;
+
+    R=7;
+    R_com=20;
+
+    let coords = gen_coord();
+    x_com=coords[0];
+    y_com=coords[1];
+
+    createCanvas(W,H);
+    // Create the video
+    video = createCapture(VIDEO);
+    video.size(W,H);
+    video.hide();
+
+    flippedVideo = ml5.flipImage(video)
+    // Start classifying
+    classifyVideo();
+  }
+
+  function draw() {
+    background(0);
+    // Draw the video
+    image(flippedVideo, 0, 0);
+
+    push();
+
+    // Draw the label
+    fill(COLS[label]);
+    textSize(25);
+    textAlign(CENTER);
+    text(label, width / 2, height - 4);
+    pop();
+
+    if(label == "UP"){
+      y = max(y-dy,0);
+    }
+    else if(label == "DOWN"){
+      y = min(y+dy,H);
+    }
+    else if(label == "LEFT"){
+      x = max(x-dx,0);
+    }
+    else if(label == "RIGHT"){
+      x = min(x+dx,W);
+    }
+
+    if(check(R_com+1.5*R)==1){
+      new_comida();
+      R=min(R+5,100);
+    }
+
+
+    push();
+    fill([0,0,255]);
+    console.log(x_com,y_com,R_com);
+    circle(x_com,y_com,R_com);
+    pop();
+
+    push();
+    fill([255,0,0]);
+    circle(x,y,R);
+    pop();
+  }
+
+  // Get a prediction for the current video frame
+  function classifyVideo() {
+    flippedVideo = ml5.flipImage(video)
+    classifier.classify(flippedVideo, gotResult);
+  }
+
+  // When we get a result
+  function gotResult(error, results) {
+    // If there is an error
+    if (error) {
+      console.error(error);
+      return;
+    }
+    // The results are in an array ordered by confidence.
+    // console.log(results[0]);
+    label = results[0].label;
+    // Classifiy again!
+    classifyVideo();
+  }
+</script>

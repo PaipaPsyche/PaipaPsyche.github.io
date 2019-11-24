@@ -1,8 +1,8 @@
-var DICT_R_C = {1:2,2:3,3:4};
+var DICT_R_C = {1:1.5,2:2,3:3};
 var DICT_C_C = {
   1:[200,0,0],
-  2:[120,220,0],
-  3:[0,50,100]};
+  3:[0,255,170],
+  2:[0,50,100]};
 class canal{
 
   constructor(el1,el2,t){
@@ -28,7 +28,7 @@ class canal{
     if(el1.T<=2 & el2.T<=2){
       this.T=1;
     }
-    else if(el1.T +el2.T<=6){
+    else if((el1.T+el2.T)<=5){
       this.T=2;
 
     }
@@ -36,10 +36,10 @@ class canal{
       this.T = 3;
 
     }
-    if(this.T>prev_T & random()>0.8){this.EL1.conectar();this.EL2.conectar();}
+    if(this.T>prev_T & random()>0.65){this.EL1.conectar();this.EL2.conectar();}
 
-    if(this.EL2.T<5){this.EL1.evaluar_tipo();}
-    if(this.EL1.T<5){this.EL2.evaluar_tipo();}
+    this.EL1.evaluar_tipo();
+    this.EL2.evaluar_tipo();
 
 
 

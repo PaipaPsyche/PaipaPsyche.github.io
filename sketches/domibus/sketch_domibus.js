@@ -112,18 +112,19 @@ function check_spot(XX,YY){
 
 
 
-        let num_c = clst.connect;
-        let num_n = nuevo.connect;
-        if(distancia(nuevo,clst)<=clst.maxdist & distancia(nuevo,clst)>clst.mindist & num_c<DICT_MIN_CON[5] & num_n<DICT_MIN_CON[5]){
+
+        if(distancia(nuevo,clst)<=clst.maxdist & distancia(nuevo,clst)>clst.mindist){
           CENTROS.push(nuevo);
 
-          var nc = new canal(clst,nuevo,floor(1+random(3)));
+          var nc = new canal(clst,nuevo,1);
           CANALES.push(nc);
           nuevo.mis_canales.push(CANALES[CANALES.length-1]);
           clst.mis_canales.push(CANALES[CANALES.length-1]);
 
           nuevo.conectar();
+          nuevo.evaluar_tipo();
           clst.conectar();
+          clst.evaluar_tipo();
       }
       else if(n_ir.length>0 & distancia(nuevo,clst)>clst.mindist){
 
@@ -149,7 +150,7 @@ function check_spot(XX,YY){
 
       else if(buenas-malas>0 & distancia(nuevo,clst)>(W+H)/6){
         malas=malas+1;
-        nuevo.T=5;
+        nuevo.T=1;
         nuevo.evaluar_tipo();
         CENTROS.push(nuevo);
       }
@@ -157,7 +158,7 @@ function check_spot(XX,YY){
     }
     else if(buenas-malas>0){
       malas=malas+1;
-      nuevo.T=5;
+      nuevo.T=1;
       nuevo.evaluar_tipo();
       CENTROS.push(nuevo);
 
@@ -205,6 +206,7 @@ function draw() {
   let five=0;
   m.pintar();
   for(var i =0;i<CANALES.length;i++){
+    // CANALES[i].evaluar_tipo();
     CANALES[i].pintar();
   }
 
@@ -226,13 +228,18 @@ function draw() {
   T+=0.5;
 
   push();
-  stroke([255,0,0]);
+  noStroke();
   fill([255,0,0]);
 
-  text("SEEDS "+str(max(buenas-malas,0)),20,20)
+  text("SEEDS "+str(max(buenas-malas,0)),20,20);
+  text("MAP : "+["Terrain","Fuel","Food"][pintar_rec],20,40);
+  if(activate_auto==1){
+
+    text("AUTO-EXPLORATION MODE",20,60);
+  }
   if(CENTROS.length>0 & activate_auto==1){
-    var coords = get_rand_coords(CENTROS[CENTROS.length-1].X,CENTROS[CENTROS.length-1].Y,100)
-    console.log(coords);
+    var coords = get_rand_coords(CENTROS[CENTROS.length-1].X,CENTROS[CENTROS.length-1].Y,40)
+    //console.log(coords);
   check_spot(coords[0],coords[1]);
 }
 }

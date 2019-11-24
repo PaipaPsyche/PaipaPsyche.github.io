@@ -1,4 +1,4 @@
-var DICT_R_M = {1:3,2:5,3:7,4:9,5:12};
+var DICT_R_M = {1:3,2:5,3:7,4:9,5:11};
 var DICT_C_M = {
   1:[200,0,0],
   2:[220,120,0],
@@ -7,12 +7,28 @@ var DICT_C_M = {
   5:[200,0,200]};
 
 var DICT_MIN_CON = {
-  1:2,
-  2:3,
-  3:4,
-  4:5,
+  1:3,
+  2:4,
+  3:7,
+  4:10,
   5:8
 };
+
+
+var DICT_DESC = {
+  1:"Station",
+  2:"Base",
+  3:"Town",
+  4:"City",
+  5:"Metrópolis"
+};
+
+var DICT_R_MINMAX = {
+  1:[20,50],
+  2:[20,50],
+  3:[20,70],
+  4:[20,120],
+  5:[30,160]};
 
 class centro{
 
@@ -28,22 +44,8 @@ class centro{
   }
   conectar(){
     this.connect++;
-    if(this.T==1 & this.connect==DICT_MIN_CON[this.T]){
-      this.T=2;
-      this.evaluar_tipo();
-    }
-    else if(this.T==2 & this.connect==DICT_MIN_CON[this.T]){
-      this.T=3;
-      this.evaluar_tipo();
-    }
-    else if(this.T==3 & this.connect==DICT_MIN_CON[this.T]){
-      this.T=4;
-      this.evaluar_tipo();
-    }
-    else if(this.T==4 & this.connect==DICT_MIN_CON[this.T]){
-      this.T=5;
-      this.evaluar_tipo();
-    }
+    if(random()<0.2){this.connect++;}
+
 
   }
   desconectar(){
@@ -106,12 +108,34 @@ class centro{
 
 
   evaluar_tipo(){
+    if(this.T==1 & this.connect>=DICT_MIN_CON[this.T]){
+      this.T=2;
+
+    }
+    else if(this.T==2 & this.connect>=DICT_MIN_CON[this.T]){
+      this.T=3;
+
+    }
+    else if(this.T==3 & this.connect>=DICT_MIN_CON[this.T]){
+      this.T=4;
+
+    }
+    else if(this.T==4 & this.connect>=DICT_MIN_CON[this.T]){
+      this.T=5;
+
+    }
+
+
     this.R = DICT_R_M[this.T];
     this.min_R = 5*this.R;
     this.C = DICT_C_M[this.T];
-    this.maxdist= 50+4*(this.T**2);
-    this.mindist= 20+2*(this.T);
-  }
+    let dists = DICT_R_MINMAX[this.T];
+    this.maxdist= dists[1];
+    this.mindist= dists[0];
+
+    // this.maxdist= 50+4*(this.T**2);
+    // this.mindist= 12+2*(this.T);
+   }
   mouseInRange(){
     return dist(mouseX,mouseY,this.X,this.Y)<=2*this.R?1:0;
   }
@@ -119,12 +143,24 @@ class centro{
     return dist(mouseX,mouseY,this.X,this.Y)<=this.mindist?1:0;
   }
   pintar(T){
+
+    if(this.mouseInRange()==1){
+      push();
+      noStroke();
+      fill(0);
+      textSize(15);
+      text("Potential : "+str(this.connect),20,80);
+      text("Type : "+DICT_DESC[this.T],20,100);
+
+      pop();
+    }
     push();
+
 
     this.mouseInRange()==1?fill([255,255,255]):fill(this.C);
 
     stroke(100);
-    circle(this.X,this.Y,this.R+sin(T+this.T));
+    circle(this.X,this.Y,this.R+sin(T*this.T*0.3));
     pop();
   }
 

@@ -45,7 +45,7 @@ let ENDINGS=["rys","llus","shiba","ndi","rsei","cury","rth","rte","scus","nte","
               "tina","ngo","gnikai","ccini","cordia","loide","maritano","rineris","lytro","scitt",
               "lypso","lkanti","ntico","dici","tafar","nica","nyx","nsk","lucci","tch","ythe",
               "bino","nita","tana","mble","ptera","bdis","scylla","dore","loch","ntos","rtz",
-              "schen","klich","nich","niakea","stans","varius","leaux","kour","nse","reau",
+              "schen","klich","nich","niakea","stans","varius","leaux","kour","nse","reau","ctra",
               "leau","ngria","nakea","lax","nax","nds","ngis","nt","reen","lytra","max","gnon",
               "sis","tät","rok","fari","tanari","gneko","gana","vyr","nys","ghal","tto","stro",
               "mander","rgen","nde","nt","ngs","ruchen","ska","pyr","pton","nge","xy","xion","",
