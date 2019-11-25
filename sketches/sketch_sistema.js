@@ -41,10 +41,10 @@ let SILABAS =["pl","v","s","ph","pr","d","sh","z","h","n","str","gr","br",
               "fr","y","k","c","tr","cr","gl","t","p","b","m","g","l","r"];
 
 let ENDINGS=["rys","llus","shiba","ndi","rsei","cury","rth","rte","scus","nte","bel","vez",
-            "","rn","ptuno","rno","rano","sto","lgia","nz","lcani","rd","nucci","bba","xto",
-              "tina","ngo","gnikai","ccini","cordia","loide","maritano","rineris","lytro","scitt",
-              "lypso","lkanti","ntico","dici","tafar","nica","nyx","nsk","lucci","tch","ythe",
-              "bino","nita","tana","mble","ptera","bdis","scylla","dore","loch","ntos","rtz",
+            "","rn","ptuno","rno","rano","sto","lgia","nz","lcani","rd","nucci","bba","xto","ctor",
+              "tina","ngo","gnikai","ccini","cordia","loide","maritano","rineris","lytro","scitt","ctorio",
+              "lypso","lkanti","ntico","dici","tafar","nica","nyx","nsk","lucci","tch","ythe","ctoris",
+              "bino","nita","tana","mble","ptera","bdis","scylla","dore","loch","ntos","rtz","ctoria",
               "schen","klich","nich","niakea","stans","varius","leaux","kour","nse","reau","ctra",
               "leau","ngria","nakea","lax","nax","nds","ngis","nt","reen","lytra","max","gnon",
               "sis","tät","rok","fari","tanari","gneko","gana","vyr","nys","ghal","tto","stro",
@@ -96,6 +96,7 @@ class button{
     this.R=20;
     this.C=c;
     this.F=f;
+
   }
   clickInRange(){
     if(mouseIsPressed  & sqrt((this.X-mouseX)**2+(this.Y-mouseY)**2)<=1.5*this.R){
@@ -172,6 +173,9 @@ class planet{
 
     this.pos=0;
 
+    this.Tmax=0;
+    this.Tmin=0;
+
 
     //elementos
     let nelem=5+floor(4*random());
@@ -218,6 +222,14 @@ class planet{
     this.falling=0;
 
   }
+
+  set_T(multip){
+    this.Tmax=(this.falling*10+40 *multip+min(floor(1000000/(this.R**2)-0.01*this.R),950)+(this.ATMOS-1.1)*40).toFixed(0);
+    this.Tmin=(this.falling*10-30*multip+max(floor(300000/(this.R**2)-0.2*this.R),-210)-(this.ATMOS-1.1)*40).toFixed(0);
+  }
+
+
+
   setXY(x,y){
     this.X=x;
     this.Y=y;
@@ -249,6 +261,8 @@ class planet{
 
   paint(){
     stroke(0);
+
+
 
 
     let val_inicial=0.9+this.falling*0.08*sin(80*T)*cos(49*T);
@@ -567,9 +581,12 @@ class system{
       else if(this.Tsun ==3){multip=1}
       else if(this.Tsun ==2){multip=0.5}
 
-      let Tsup=this.PLANETS[i].falling*10+40 *multip+min(floor(1000000/(this.PLANETS[i].R**2)-0.01*this.PLANETS[i].R),950)+(this.PLANETS[i].ATMOS-1.1)*40;
-      let Tinf=this.PLANETS[i].falling*10-30*multip+max(floor(300000/(this.PLANETS[i].R**2)-0.2*this.PLANETS[i].R),-210)-(this.PLANETS[i].ATMOS-1.1)*40;
 
+      this.PLANETS[i].set_T(multip);
+      // let Tsup=this.PLANETS[i].falling*10+40 *multip+min(floor(1000000/(this.PLANETS[i].R**2)-0.01*this.PLANETS[i].R),950)+(this.PLANETS[i].ATMOS-1.1)*40;
+      // let Tinf=this.PLANETS[i].falling*10-30*multip+max(floor(300000/(this.PLANETS[i].R**2)-0.2*this.PLANETS[i].R),-210)-(this.PLANETS[i].ATMOS-1.1)*40;
+      let Tsup=this.PLANETS[i].Tmax;
+      let Tinf=this.PLANETS[i].Tmin;
 
       text(this.PLANETS[i].NAME,40,140+i*35);
       textSize(10);
@@ -647,6 +664,7 @@ class system{
       text("g = "+((Pobs.RP**2)/3).toFixed(2)+" m/s2",xxx+120,yyy+40);
       text("Horas/dia = "+round(30*(Pobs.R/600)*Pobs.NAME.length*0.4+Pobs.MOON.length*10)+" Horas",xxx+120,yyy+60);
       let porb=0.8*((5**map(Pobs.W,0,Pobs.W,Pobs.pos/4,-1)+(Pobs.R/200)**3 +Pobs.pos*this.Rsun/2)/2 + 1.5*max(0,(Pobs.pos-3)*this.Rsun*3)).toFixed(1);
+      porb = porb*pow(10**map(this.Rsun,1,30,-0.5,3.5),2/3)*2*PI;
       let torb;
       if(porb >1){
         let yr = floor(porb)
@@ -663,6 +681,18 @@ class system{
         if(mnth >1){s_mt="es"}
         torb = mnth+ " mes"+s_mt}
       text("P. orbital = "+ torb,xxx+120,yyy+80);
+
+
+
+
+      let diametros_t = map(Pobs.RP,3,11,0.1,14);
+      let diametros_km = 12766*diametros_t;
+
+
+
+      text("Temp. max = "+Pobs.Tmax+" °C",xxx+120,yyy+100);
+      text("Temp. min = "+Pobs.Tmin+" °C",xxx+120,yyy+120);
+      text("Diametro = "+(diametros_km).toFixed(1)+" KM ("+(diametros_t).toFixed(2)+" R. terrestres )",xxx+120,yyy+140);
     }
     else if (Pobs=="Sun"){
 
