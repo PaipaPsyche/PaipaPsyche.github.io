@@ -95,7 +95,8 @@ function check_spot(XX,YY){
 
     if(rango_mina()!=0 & buenas-malas>0 & activate_auto==0){
       if( rango_mina().T<=4){
-        rango_mina().T=5;
+        rango_mina().connect+=10;
+        rango_mina().evaluar_tipo();
 
         malas=malas+1;
       }
@@ -320,8 +321,8 @@ function draw() {
 
 
   if(CENTROS.length>0 & activate_auto==1){
-    var centroelecto=random(CENTROS);
-    var coords = get_rand_coords(centroelecto.X,centroelecto.Y,40)
+    var centroelecto=CENTROS[CENTROS.length-1];
+    var coords = get_rand_coords(centroelecto.X,centroelecto.Y,80)
     //console.log(coords);
   check_spot(coords[0],coords[1]);
 }
