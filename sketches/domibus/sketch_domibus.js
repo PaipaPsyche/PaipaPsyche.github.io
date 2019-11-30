@@ -15,8 +15,8 @@ var scaleY=0.006;
 
 var threshold1 = 0.5;
 var threshold2 = 0.68;
-var thresholdr = 0.73;
-var thresholdf = 0.73;
+var thresholdr = 0.7;
+var thresholdf = 0.7;
 
 var T=0;
 
@@ -35,12 +35,12 @@ var primero=1;
 
 var last_five=3;
 
-var killrate=0.8;
+var killrate=1;
 
 
 function keyTyped() {
 if(key =='m'){
-  pintar_rec=(1+pintar_rec)%3;
+  pintar_rec=(1+pintar_rec)%4;
 }
 if(key =='a'){
   activate_auto=1-activate_auto;
@@ -90,7 +90,10 @@ function distancia(el1,el2){
 
 
 
-function check_spot(XX,YY){
+function check_spot(XX_a,YY_a){
+
+    let XX = min(max(XX_a,20),W-20);
+    let YY = min(max(YY_a,20),H-20);
 
 
     if(rango_mina()!=0 & buenas-malas>0 & activate_auto==0){
@@ -103,13 +106,15 @@ function check_spot(XX,YY){
 
     }
 
-
+    else{
 
 
 
     if(m.M_tierra[XX][YY]==1){
 
       let nuevo = new centro(XX,YY,1);
+      nuevo.asignar_valores_mapa(m);
+      console.log(nuevo.in_mountain,nuevo.in_food,nuevo.in_fuel)
       let n_ir = nuevo.give_high_in_range(CENTROS);
 
 
@@ -122,6 +127,7 @@ function check_spot(XX,YY){
 
         if(distancia(nuevo,clst)<=clst.maxdist & distancia(nuevo,clst)>clst.mindist){
           CENTROS.push(nuevo);
+          console.log(nuevo.in_mountain,nuevo.in_food,nuevo.in_fuel)
 
           var nc = new canal(clst,nuevo,1);
           CANALES.push(nc);
@@ -173,6 +179,7 @@ function check_spot(XX,YY){
 
 
     }
+  }
 }
 
 
@@ -203,9 +210,9 @@ function mousePressed(event) {
 
 
 function get_rand_coords(xx,yy,sd){
-   let x = max(min(floor(randomGaussian(xx,sd)),W-50),50);
-   let y = max(min(floor(randomGaussian(yy,sd)),H-50),50);
-   x=x-(x+8*(y%3))%24;
+   let x = max(min(floor(randomGaussian(xx,sd)),W-25),25);
+   let y = max(min(floor(randomGaussian(yy,sd)),H-25),25);
+   x=x-(x+8*(y%3))%50;
    y=y-y%24;
    return [x,y];
 }
@@ -272,9 +279,9 @@ function draw() {
 
   push();
   noFill();
-  stroke(255);
-  strokeWeight(2);
-  circle(cap.X,cap.Y,cap.R+3);
+  stroke([255,255,255,150+50*sin(0.5*T)]);
+  strokeWeight(1.5);
+  circle(cap.X,cap.Y,cap.R+4);
 
   pop();
 
@@ -303,17 +310,20 @@ function draw() {
   push();
   noStroke();
   fill([255,0,0]);
-
-  text("SEEDS "+str(max(buenas-malas,0)),20,20);
-  text("MAP : "+["Terrain","Fuel","Food"][pintar_rec],20,40);
+  let xo=20;
+  let yo=-20;
+  text("SEEDS "+str(max(buenas-malas,0)),xo,yo+40);
+  text("MAP : "+["Standard","Fuel","Food","Terrain"][pintar_rec],xo,yo+60);
+  text("Difficulty : "+str(int(map(m.DIFF,0.3,0.7,80,10))+"%"),xo,yo+80);
   if(activate_auto==1){
 
-    text("AUTO-EXPLORATION MODE",20,60);
+    text("AUTO-EXPLORATION MODE",xo+130,yo+40);
+
   }
   if(activate_virus==1){
 
-    text("VIRUS",150,20);
-    if(random()<killrate){
+    text("VIRUS",xo+130,yo+60);
+    if(random()<killrate & CENTROS.length>0){
       random(CENTROS).desconectar();
     }
   }
@@ -322,7 +332,7 @@ function draw() {
 
   if(CENTROS.length>0 & activate_auto==1){
     var centroelecto=CENTROS[CENTROS.length-1];
-    var coords = get_rand_coords(centroelecto.X,centroelecto.Y,80)
+    var coords = get_rand_coords(centroelecto.X,centroelecto.Y,50)
     //console.log(coords);
   check_spot(coords[0],coords[1]);
 }

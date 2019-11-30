@@ -1,10 +1,10 @@
-var DICT_R_M = {1:3,2:5,3:7,4:9,5:11};
+var DICT_R_M = {1:3,2:4,3:5,4:7,5:9};
 var DICT_C_M = {
-  1:[200,0,0],
-  2:[220,120,0],
-  3:[0,250,0],
-  4:[0,150,200],
-  5:[200,0,200]}
+  1:[80,80,80],
+  2:[120,120,120],
+  3:[180,160,160],
+  4:[20,190,0],
+  5:[255,255,0]}
 
 var DICT_MIN_CON = {
   1:3,
@@ -37,8 +37,15 @@ class centro{
     this.Y=y;
     this.T=t;
     this.connect=0;
+    this.pop=int(random(100));
+    this.prov=0;
     this.mis_canales=[];
     this.born=frameCount;
+
+
+    this.in_fuel=0;
+    this.in_food=0;
+    this.in_mountain=0;
 
     this.evaluar_tipo();
 
@@ -112,11 +119,18 @@ class centro{
   }
 
 
+asignar_valores_mapa(m){
+  this.in_fuel=m.M_petro[this.X][this.Y];
+  this.in_food=m.M_food[this.X][this.Y];
+  this.in_mountain=m.M_tipos[this.X][this.Y]==2?1:0;
 
+
+}
 
 
 
   evaluar_tipo(){
+
 
 
     this.T=1;
@@ -129,7 +143,8 @@ class centro{
     if(this.connect<0){this.T=-1};
 
 
-    this.R = DICT_R_M[abs(this.T)];
+    this.R = this.T==-1?0.5*DICT_R_M[abs(this.T)]:DICT_R_M[this.T];
+
     this.min_R = 5*this.R;
     this.C = DICT_C_M[abs(this.T)];
     let dists = DICT_R_MINMAX[abs(this.T)];
@@ -153,11 +168,14 @@ class centro{
       noStroke();
       fill(0);
       textSize(15);
-      text("Potential : "+str(max(this.connect,0)),20,80);
+      let xo=20;
+      let yo=80;
+      text("Potential : "+str(max(this.connect,0)),xo,yo);
       let tipox=this.T==-1?"Ruins":DICT_DESC[this.T];
-      text("Type : "+tipox,20,100);
-      text("Age : "+str(this.give_age())+" years",20,120);
-      text("Score : "+str(this.score_center()),20,140);
+      text("Type : "+tipox,xo,yo+20);
+      text("Age : "+str(this.give_age())+" years",xo,yo+40);
+      //text("Score : "+str(this.score_center()),20,140);
+
       pop();
     }
     push();
@@ -165,7 +183,8 @@ class centro{
 
     this.mouseInRange()==1?fill([255,255,255]):fill(this.C);
 
-    stroke(100);
+    stroke(0);
+    strokeWeight(1);
     circle(this.X,this.Y,this.R+sin(T*(this.T+1)*0.3));
     pop();
   }

@@ -10,8 +10,9 @@
   // Classifier Variable
   let classifier;
   // Model URL
-
-  let imageModelURL = 'https://teachablemachine.withgoogle.com/models/icR-QeZv/';
+//'https://teachablemachine.withgoogle.com/models/TJt2Bt13/'
+  let imageModelURL = 'https://teachablemachine.withgoogle.com/models/TJt2Bt13/';
+  //el de 4 dir ('https://teachablemachine.withgoogle.com/models/icR-QeZv/')
 
   let modelURL = imageModelURL + "model.json";
   let metadataURL = imageModelURL + "metadata.json";
@@ -34,6 +35,15 @@
   let W;
   let H;
 
+  let CONF ={
+    "UP":0,
+    "DOWN":0,
+    "LEFT":0,
+    "RIGHT":0,
+    "STILL":0
+
+  }
+
   let R;
   let R_com;
 
@@ -41,11 +51,11 @@
   let CAZADORES = [];
 
   let COLS={
-    LEFT:[150,150,0],
-    DOWN:[0,0,250],
-    RIGHT:[0,250,0],
-    UP:[250,0,0],
-    STILL:[255,255,255]
+    LEFT:[150,150,0,255],
+    DOWN:[0,0,250,255],
+    RIGHT:[0,250,0,255],
+    UP:[250,0,0,255],
+    STILL:[255,255,255,255]
 
   }
 
@@ -139,12 +149,64 @@ class cazador{
 
     // Draw the label
     fill([0,0,0,50]);
-    rect(W/2-40,H-80,80,80);
+    rect(W/2-40,H-100,80,100);
     fill([255,255,255,255]);
     textSize(40);
     textAlign(CENTER);
-    text(str(ganados), width / 2, height - 40);
+    text(str(ganados), width / 2, height - 50);
     pop();
+
+
+    push();
+    textAlign(CENTER);
+    // Draw the label
+    let xo = W/2+80;
+    let yo = H-10;
+    let d_dx = 50;
+    fill(COLS["UP"]);
+    rect(xo-10,yo-20-100*CONF["UP"],20,100*CONF["UP"]);
+    text("UP",xo,yo);
+    //
+
+    fill(COLS["DOWN"]);
+    rect(xo-10+1*d_dx,yo-20-100*CONF["DOWN"],20,100*CONF["DOWN"]);
+    text("DOWN",xo+1*d_dx,yo);
+
+    fill(COLS["LEFT"]);
+    rect(xo-10+2*d_dx,yo-20-100*CONF["LEFT"],20,100*CONF["LEFT"]);
+    text("LEFT",xo+2*d_dx,yo);
+
+    fill(COLS["RIGHT"]);
+    rect(xo-10+3*d_dx,yo-20-100*CONF["RIGHT"],20,100*CONF["RIGHT"]);
+    text("RIGHT",xo+3*d_dx,yo);
+
+    fill(COLS["STILL"]);
+    rect(xo-10+4*d_dx,yo-20-100*CONF["STILL"],20,100*CONF["STILL"]);
+    text("STILL",xo+4*d_dx,yo);
+    // fill(COLS["DOWN"]);
+    // rect(W/2+49,H-20,5,100*CONF["DOWN"]);
+    // text("DOWN",W/2+51,H-10);
+    //
+    //
+    // fill(COLS["LEFT"]);
+    // rect(W/2+56,H-20,5,100*CONF["LEFT"]);
+    // text("LEFT",W/2+58,H-10);
+    //
+    //
+    // fill(COLS["RIGHT"]);
+    // rect(W/2+63,H-20,5,100*CONF["RIGHT"]);
+    // text("RIGHT",W/2+65,H-10);
+    //
+    //
+    // fill(COLS["STILL"]);
+    // rect(W/2+70,H-20,5,100*CONF["STILL"]);
+    // text("STILL",W/2+72,H-10);
+
+    pop();
+
+
+
+
 
 
 
@@ -196,6 +258,9 @@ class cazador{
     // The results are in an array ordered by confidence.
     // console.log(results[0]);
     label = results[0].label;
+    for(let i=1;i<=4;i++){
+      CONF[results[i].label]=results[i].confidence;
+    }
     // Classifiy again!
     classifyVideo();
   }

@@ -5,6 +5,8 @@ class mapa{
     this.W = w;
     this.H = h;
 
+    this.DIFF=0;
+
     this.MAPA = [];
     this.M_tipos = [];
     this.M_tierra = [];
@@ -37,11 +39,12 @@ class mapa{
       for (let y = 0; y < this.H; y++) {
         // let distance = dist(this.W / 2, this.H / 2, x, y);
         var value1 = noise(xoff,yoff);
-        var value2 = noise(2*xoff+100,2*yoff+100);
-        var value3 = noise(5*xoff+200,5*yoff+200);
-        this.M_petro[x][y] = value2;
-        this.M_food[x][y] = value3;
+        var value2 = noise(3*xoff+100,3*yoff+100);
+        var value3 = noise(4*xoff+200,4*yoff+200);
+        this.M_petro[x][y] = value2>thresholdr?1:0;
+        this.M_food[x][y] = value3>thresholdf?1:0;
         this.MAPA[x][y] = value1;
+        //this.PUNTOS_INTERES={};
         yoff+=scaleY;
       }
       xoff+=scaleX;
@@ -52,6 +55,8 @@ class mapa{
 }
 
   asignar_mapas(){
+
+    let suma_tierra=0;
 
     for(var y=0;y<this.H;y++){
 
@@ -65,14 +70,22 @@ class mapa{
         if(value>threshold2){
           tipo=2;
         }
-        if(value<0.9*threshold1){
+        if(value<0.95*threshold1){
           tipo=-1;
         }
         if(value<0.7*threshold1){
           tipo=-2;
         }
         this.M_tipos[x][y]=tipo;
-        this.M_tierra[x][y]=tipo>0?1:0;
+
+
+        let es_tierra;
+        es_tierra=tipo>0?1:0;
+
+        this.M_tierra[x][y]=es_tierra;
+        suma_tierra=suma_tierra+es_tierra;
+
+
         this.M_montana[x][y]=tipo==2?1:0;
 
 
@@ -80,6 +93,8 @@ class mapa{
 
       }
     }
+    //console.log(suma_tierra,(this.W*this.H),suma_tierra/(this.W*this.H));
+    this.DIFF= suma_tierra/(this.W*this.H);
 
 
 
@@ -114,6 +129,9 @@ class mapa{
           rgba = [0,0,120,255];
           }
 
+
+
+
           if(pintar_rec == 1){
             if(this.M_petro[x][y]>thresholdr){
               rgba=[0,0,0,30*sin(T)+200];
@@ -129,6 +147,31 @@ class mapa{
               }
 
             }
+          }
+          if(pintar_rec == 3){
+            let r,g,b;
+
+              if(this.M_tipos[x][y]>0){
+                r = int(map(this.MAPA[x][y],0.5,0.7,0,255));
+                g = 150+int(this.MAPA[x][y]*55);
+                b = int(map(this.MAPA[x][y],0.5,1,0,50));
+
+
+                //console.log(r,g,b);
+
+
+              }
+              else{
+
+                r = 0;
+                g = int(10+150*this.MAPA[x][y]);
+                b = int(10+400*this.MAPA[x][y]);
+              }
+                r=r-r%15;
+                g=g-g%15;
+                b=b-b%15;
+                rgba=[r,g,b,255];
+
           }
 
 
