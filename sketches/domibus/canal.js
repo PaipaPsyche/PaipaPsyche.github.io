@@ -65,6 +65,7 @@ class canal{
 
     stroke(this.C);
     strokeWeight(this.R);
+    
     line(this.X1,this.Y1,this.X2,this.Y2);
     pop();
   }

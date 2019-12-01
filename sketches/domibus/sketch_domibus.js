@@ -114,18 +114,24 @@ function check_spot(XX_a,YY_a){
 
       let nuevo = new centro(XX,YY,1);
       nuevo.asignar_valores_mapa(m);
-      console.log(nuevo.in_mountain,nuevo.in_food,nuevo.in_fuel)
+      let nombre_nuevo = gen_nombre(nuevo);
+      nuevo.nombre=nombre_nuevo;
+
+
+
+      //console.log(nuevo.in_mountain,nuevo.in_food,nuevo.in_fuel)
       let n_ir = nuevo.give_high_in_range(CENTROS);
 
 
 
       if(CENTROS.length>=1){
         let clst=nuevo.give_closest(CENTROS);
+        let clst_real=nuevo.give_closest_all(CENTROS);
 
 
 
 
-        if(distancia(nuevo,clst)<=clst.maxdist & distancia(nuevo,clst)>clst.mindist){
+        if(distancia(nuevo,clst)<=clst.maxdist & distancia(nuevo,clst)>clst.mindist & distancia(nuevo,clst_real)>15){
           CENTROS.push(nuevo);
           console.log(nuevo.in_mountain,nuevo.in_food,nuevo.in_fuel)
 
@@ -212,8 +218,8 @@ function mousePressed(event) {
 function get_rand_coords(xx,yy,sd){
    let x = max(min(floor(randomGaussian(xx,sd)),W-25),25);
    let y = max(min(floor(randomGaussian(yy,sd)),H-25),25);
-   x=x-(x+8*(y%3))%50;
-   y=y-y%24;
+   x=x-(x+8*(y%3))%20;
+   y=y-y%20;
    return [x,y];
 }
 
@@ -276,6 +282,7 @@ function draw() {
 
 
   if(cap!=""){
+  cap.nombre["NAME"]=cap.nombre["RAIZ"]
 
   push();
   noFill();

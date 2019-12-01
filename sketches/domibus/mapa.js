@@ -152,9 +152,9 @@ class mapa{
             let r,g,b;
 
               if(this.M_tipos[x][y]>0){
-                r = int(map(this.MAPA[x][y],0.5,0.7,0,255));
-                g = 150+int(this.MAPA[x][y]*55);
-                b = int(map(this.MAPA[x][y],0.5,1,0,50));
+                r = int(map(this.MAPA[x][y],0.5,0.7,0,185));
+                g = this.MAPA[x][y]>0.72?30+int(this.MAPA[x][y]*35):150+int(this.MAPA[x][y]*55);
+                b = int(map(this.MAPA[x][y],0.5,1,0,80));
 
 
                 //console.log(r,g,b);
