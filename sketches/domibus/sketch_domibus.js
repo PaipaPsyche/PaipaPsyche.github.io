@@ -131,9 +131,9 @@ function check_spot(XX_a,YY_a){
 
 
 
-        if(distancia(nuevo,clst)<=clst.maxdist & distancia(nuevo,clst)>clst.mindist & distancia(nuevo,clst_real)>15){
+        if(distancia(nuevo,clst)<=clst.maxdist & distancia(nuevo,clst)>clst.mindist & distancia(nuevo,clst_real)>5){
           CENTROS.push(nuevo);
-          console.log(nuevo.in_mountain,nuevo.in_food,nuevo.in_fuel)
+          //console.log(nuevo.in_mountain,nuevo.in_food,nuevo.in_fuel)
 
           var nc = new canal(clst,nuevo,1);
           CANALES.push(nc);
@@ -171,7 +171,12 @@ function check_spot(XX_a,YY_a){
         malas=malas+1;
         nuevo.T=1;
         nuevo.evaluar_tipo();
+        nuevo.is_origin=1;
+        let nombre_nuevo = gen_nombre(nuevo);
+        console.log(nombre_nuevo["NAME"])
+        nuevo.nombre=nombre_nuevo;
         CENTROS.push(nuevo);
+
       }
 
     }
@@ -179,6 +184,9 @@ function check_spot(XX_a,YY_a){
       malas=malas+1;
       nuevo.T=1;
       nuevo.evaluar_tipo();
+      nuevo.is_origin=1;
+      let nombre_nuevo = gen_nombre(nuevo);
+      nuevo.nombre=nombre_nuevo;
       CENTROS.push(nuevo);
 
     }
@@ -218,8 +226,8 @@ function mousePressed(event) {
 function get_rand_coords(xx,yy,sd){
    let x = max(min(floor(randomGaussian(xx,sd)),W-25),25);
    let y = max(min(floor(randomGaussian(yy,sd)),H-25),25);
-   x=x-(x+8*(y%3))%20;
-   y=y-y%20;
+   x=x-(x+8*(y%3))%10;
+   y=y-y%10;
    return [x,y];
 }
 
@@ -227,6 +235,7 @@ function setup() {
   H = windowHeight;
   W = windowWidth;
   frameRate(5);
+  add_silabas();
 
   // H=600;
   // W=600;
@@ -339,7 +348,7 @@ function draw() {
 
   if(CENTROS.length>0 & activate_auto==1){
     var centroelecto=CENTROS[CENTROS.length-1];
-    var coords = get_rand_coords(centroelecto.X,centroelecto.Y,50)
+    var coords = get_rand_coords(centroelecto.X,centroelecto.Y,40)
     //console.log(coords);
   check_spot(coords[0],coords[1]);
 }

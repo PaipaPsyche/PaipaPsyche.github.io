@@ -41,6 +41,7 @@ class centro{
     this.prov=0;
     this.mis_canales=[];
     this.born=frameCount;
+    this.is_origin=0;
 
 
     this.in_fuel=0;
@@ -193,7 +194,7 @@ asignar_valores_mapa(m){
     this.min_R = 5*this.R;
     this.C = DICT_C_M[abs(this.T)];
     let dists = DICT_R_MINMAX[abs(this.T)];
-    if(this.T==-1){dists=[10,1000];this.C=[0,0,0]}
+    if(this.T==-1){dists=[5,1000];this.C=[0,0,0]}
     this.maxdist= dists[1];
     this.mindist= dists[0];
 
