@@ -40,7 +40,7 @@ class centro{
     this.pop=int(random(100));
     this.prov=0;
     this.mis_canales=[];
-    this.born=frameCount;
+    this.born=T;
     this.is_origin=0;
 
 
@@ -71,7 +71,8 @@ class centro{
 
   }
   give_age(){
-    return frameCount-this.born;
+    let age  =T-this.born;
+    return  floor(age+1);
   }
 
   score_center(){
@@ -173,20 +174,7 @@ asignar_valores_mapa(m){
     if(this.connect<0){this.T=-1};
 
 
-    this.genfood=this.T<=0?0:0.05*this.in_food*(10+this.connect+this.T*100*log(this.population+1));
-    this.genfuel=this.T<=0?0:0.05*this.in_fuel*(10+this.connect+this.T*100*log(this.population+1));
 
-    let add_pop=this.T<=1?0:max(-20*this.T,-this.consumo+this.genfood+this.genfuel)+int(this.T*random(this.connect/6));
-    this.population=max(this.population+int(this.connect/3)+this.T*add_pop/2+int(random(4**this.T))-this.consumo*(this.T-1)*0.005,0);
-    this.consumo=this.T<=0?0:0.008*log(this.give_age()+1)*(this.T*30*log(this.population+1)*(1+0.5*this.in_mountain));
-
-
-    this.cost = this.in_food*300+this.infuel*1000+this.in_mountain*800;
-
-    this.genfood=int(this.genfood);
-    this.genfuel=int(this.genfuel);
-    this.consumo=int(this.consumo);
-    this.population=int(this.population);
 
 
     this.R = this.T==-1?0.5*DICT_R_M[abs(this.T)]:DICT_R_M[this.T];
@@ -201,6 +189,28 @@ asignar_valores_mapa(m){
     // this.maxdist= 50+4*(this.T**2);
     // this.mindist= 12+2*(this.T);
    }
+
+   evolve(){
+     if(mult!=0){
+     this.genfood=this.T<=0?0:0.05*this.in_food*(10+this.connect+this.T*100*log(this.population+1));
+     this.genfuel=this.T<=0?0:0.05*this.in_fuel*(10+this.connect+this.T*100*log(this.population+1));
+
+     let add_pop=this.T<=1?0:max(-20*this.T,-this.consumo+this.genfood+this.genfuel)+int(this.T*random(this.connect/6));
+     this.population=max(this.population+int(this.connect/3)+this.T*add_pop/2+int(random(4**this.T))-this.consumo*(this.T-1)*0.005,0);
+     this.consumo=this.T<=0?0:0.008*log(this.give_age()+1)*(this.T*30*log(this.population+1)*(1+0.5*this.in_mountain));
+
+
+     this.cost = this.in_food*300+this.infuel*1000+this.in_mountain*800;
+
+     this.genfood=int(this.genfood);
+     this.genfuel=int(this.genfuel);
+     this.consumo=int(this.consumo);
+     this.population=int(this.population);}
+   }
+
+
+
+
   mouseInRange(){
     return dist(mouseX,mouseY,this.X,this.Y)<=2*this.R?1:0;
   }
@@ -208,7 +218,7 @@ asignar_valores_mapa(m){
     return dist(mouseX,mouseY,this.X,this.Y)<=this.mindist?1:0;
   }
   pintar(T){
-
+    this.evolve()
     if(this.mouseInRange()==1){
       push();
       noStroke();
@@ -240,7 +250,7 @@ asignar_valores_mapa(m){
 
     stroke(0);
     strokeWeight(1);
-    circle(this.X,this.Y,this.R+sin(T*(this.T+1)*0.3));
+    circle(this.X,this.Y,this.R);//+sin(T*(this.T+1)*0.3));
     pop();
   }
 

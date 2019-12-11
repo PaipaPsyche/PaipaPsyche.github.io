@@ -3,21 +3,24 @@ let POST_ALTO = ["Hill ","Mountains ","Mountain","Cannon ","Hills ","Woods ","Mi
 
 let POST_FOSA = ["Rift ","Crack ","pit ","Abyss ","Fault "]
 
-let POST_VALLE = ["Valley ","Arids ","Plains ","Park ","River ","Cave "]
+let POST_VALLE = ["Valley ","Arids ","Plains ","Park ","River ","Cave "," Fields "," Swamp "]
 let POST_WATER = ["Sea ","Lake ","Waters","Extension ","Point "]
-let POST_SHORE = ["Shore ","Port ","Reef ","Gulf ","Bottom "]
+let POST_SHORE = ["Shore ","Port ","Reef ","Gulf ","Bottom ","Landing ","Beach ","Delta "]
 
 
-let POST_NAME=[" Ville "," Dale "," Post "," Stand "," Gate"," Rise"," Fort "," Bridge "," Landing "," Castle "];
+let POST_NAME=[" Ville "," Dale "," Post "," Stand "," Gate"," Rise"," Fort "," Bridge "," Watch "," Lair "," Castle "];
 let PRE_NAME = ["Saint ","The ","Last ","","Front ","Will of ","Forge ","Temple of ","Camp of "]
-let ORIGIN_NAME=["Fist of ","Land of ","Fire of the first ","Hammer of ","Light of ","Path of ","Nest of ","Guard of ","Rise of ","Dawn of "];
+let ORIGIN_NAME=["Fist of ","Land of ","Fire of the first ","Hammer of ","Light of ",
+                " Mother ","","Path of ","Nest of ","Guard of ","Rise of ","Dawn of "];
 
 let END_NAME= ["ngton","shire","ston","strong","nford","ldorf","vhys","stern","ster","stan",
+            "rys","llus","shiba","ndi","rsei","cury","rth","rte","scus","nte","bel","vez",
+            "rn","ptuno","rno","rano","sto","lgia","nz","lcani","rd","nucci","bba","xto","ctor",
                 "derson","rdens","xtus","mnius","nimus","ntic","ntis","polis","kyo","bai",
               "nville","town","fort","lord","stand","nys","rys","gdri","rk","ndon","rdam",
             "toris","rly","quila","stein","mark","burg","rtz","lf","rov","rnov","tröen","land"]
 
-let VOCAL=["a","e","i","o","u"]
+let VOCAL=["a","e","i","o","u",""]
 let SILABAS = [];
 
 let C_SILABAS=[
@@ -37,7 +40,7 @@ let C_SILABAS=[
   ["","m"],["","n"],
   ["","s"],["","th"],
   ["th",""],["dr",""],
-  ["",""],["","x"],
+  ["d","ns"],["","x"],
   ["","rg"],["","rp"],
   ["","st"],["sh","st"],
   ["ch","r"],["sh","r"],
@@ -75,7 +78,7 @@ function gen_nombre(elemento){
   for (let i =0;i<(1+long);i++){
     raiz=raiz+random(SILABAS)
     if(random()>0.7){
-      raiz=raiz+random(["-"," ","'",""])+random(SILABAS);
+      raiz=raiz+random(["-"," ","'"])+random(SILABAS);
     }
   }
 
@@ -119,8 +122,10 @@ function gen_nombre(elemento){
   // else if(random()<0.5){
   //   raiz=random(PRE_NAME)+raiz;
   // }
+  if(nombre==""){
+    nombre=raiz;
+  }
 
-  nombre=raiz;
   if(tipo==-2){
     nombre = raiz+" "+random(POST_FOSA);
 
@@ -131,7 +136,7 @@ function gen_nombre(elemento){
 
   }
 
-  if(tipo==0 ){
+  if(tipo==1 & valor<0.6){
         nombre = raiz+" "+random(POST_SHORE);
 
 

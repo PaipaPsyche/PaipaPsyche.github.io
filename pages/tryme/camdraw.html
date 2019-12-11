@@ -211,17 +211,22 @@ class cazador{
 
 
     if(label == "UP"){
-      y = max(y-dy,20);
+      y -=dy;
     }
     else if(label == "DOWN"){
-      y = min(y+dy,H-20);
+      y +=dy;
     }
     else if(label == "LEFT"){
-      x = max(x-dx,20);
+      x -=dx;
     }
     else if(label == "RIGHT"){
-      x = min(x+dx,W-20);
+      x +=dx;
     }
+
+    if(x<0){x=W;}
+    if(x>W){x=0;}
+    if(y<0){x=H;}
+    if(y>H){y=0;}
 
     if(check(R_com*1.1)==1){
       ganados++;

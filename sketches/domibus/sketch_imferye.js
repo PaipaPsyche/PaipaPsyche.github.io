@@ -51,7 +51,6 @@ if(key =='a'){
 if(key =='v'){
   activate_virus=1-activate_virus;
 }
-
 if(key =='p'){
   mult = 1-mult;
 }
