@@ -159,10 +159,7 @@ class mapa{
 
                 //console.log(r,g,b);
 
-
-              }
-              else{
-
+} else {
                 r = 0;
                 g = int(10+150*this.MAPA[x][y]);
                 b = int(10+400*this.MAPA[x][y]);
