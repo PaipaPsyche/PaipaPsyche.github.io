@@ -19,6 +19,9 @@ var thresholdr = 0.7;
 var thresholdf = 0.7;
 
 var T=0;
+var dT = 0.1;
+
+var mult= 1;
 
 var buenas=1;
 var malas = 0;
@@ -48,11 +51,20 @@ if(key =='a'){
 if(key =='v'){
   activate_virus=1-activate_virus;
 }
+
+if(key =='p'){
+  mult = 1-mult;
+}
+
 if(key =='f'){
 console.log(primero);
 console.log(last_five);
 }
 }
+
+
+
+
 
 function rango_mina(){
   var ans = 0;
@@ -199,8 +211,9 @@ function check_spot(XX_a,YY_a){
 
 
 function mouseClicked(){
+  if(mult!=0){
   check_spot(mouseX,mouseY);
-
+  }
 
 }
 
@@ -321,7 +334,7 @@ function draw() {
   // }
 
 
-  T+=0.5;
+  T+=dT*mult;
 
   push();
   noStroke();
@@ -339,17 +352,26 @@ function draw() {
   if(activate_virus==1){
 
     text("VIRUS",xo+130,yo+60);
-    if(random()<killrate & CENTROS.length>0){
+    if(random()<killrate & CENTROS.length>0 & mult!=0){
       random(CENTROS).desconectar();
     }
   }
   pop();
 
 
-  if(CENTROS.length>0 & activate_auto==1){
+  if(CENTROS.length>0 & activate_auto==1 & mult!=0){
     var centroelecto=CENTROS[CENTROS.length-1];
     var coords = get_rand_coords(centroelecto.X,centroelecto.Y,40)
     //console.log(coords);
   check_spot(coords[0],coords[1]);
+}
+if(mult==0){
+  push();
+  fill([0,0,0,100]);
+  noStroke();
+  textSize(50);
+  textAlign(CENTER,CENTER)
+  text(" PAUSE ",W/2,H/2);
+  pop();
 }
 }
