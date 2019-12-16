@@ -2,6 +2,7 @@ new p5();
 
 var W;
 var H;
+var H_chart=60;
 
 var m;
 var maxDistance;
@@ -13,13 +14,15 @@ var BOTONES=[];
 var scaleX=0.006;
 var scaleY=0.006;
 
+var buenas_off=0;
+
 var threshold1 = 0.5;
 var threshold2 = 0.68;
 var thresholdr = 0.7;
 var thresholdf = 0.7;
 
 var T=0;
-var dT = 0.1;
+var dT = 0.5;
 
 var mult= 1;
 
@@ -40,6 +43,8 @@ var last_five=3;
 
 var killrate=1;
 
+var titulo = "אימפעריע";
+
 
 function keyTyped() {
 if(key =='m'){
@@ -53,6 +58,10 @@ if(key =='v'){
 }
 if(key =='p'){
   mult = 1-mult;
+}
+
+if(key =='k' & rango_mina()!=0 & random()<killrate){
+      rango_mina().desconectar();
 }
 
 if(key =='f'){
@@ -78,21 +87,49 @@ function rango_mina(){
 
 }
 
-function poll(){
-  let classes_M = {1:0,2:0,3:0,4:0,5:0};
-  let classes_C = {1:0,2:0,3:0};
-
-  for(var i = 0;i<CENTROS.length;i++){
-    classes_M[CENTROS[i].T]++;
-  }
-
-    for(var i = 0;i<CANALES.length;i++){
-      classes_C[CANALES[i].T]++;
-    }
-  return [classes_M,classes_C];
-
-
-}
+// function poll(){
+//   let classes_M = {"1":0,"2":0,"3":0,"4":0,"5":0,"-1":0};
+//   let classes_C = {1:0,2:0,3:0};
+//   let consume=0;
+//   let world_pop = 0;
+//   let fuel_prod= 0;
+//   let food_prod= 0;
+//   let maxage  = 0;
+//   let trace =0;
+//   let maxage_city= "";
+//
+//
+//
+//
+//
+//
+//   for(var i = 0;i<CENTROS.length;i++){
+//     let elected = CENTROS[i];
+//     classes_M[elected.T]++;
+//     world_pop+=elected.population;
+//     fuel_prod+=elected.genfuel;
+//     food_prod+=elected.genfood;
+//     consume+=elected.consumo;
+//     if(elected.give_age()>maxage & elected.T>0){
+//       maxage = elected.give_age();
+//       maxage_city = elected.nombre["NAME"].toUpperCase();
+//
+//     }
+//     if(elected.give_age()>trace){trace=elected.give_age()}
+//   }
+//
+//     for(var i = 0;i<CANALES.length;i++){
+//       classes_C[CANALES[i].T]++;
+//
+//     }
+//
+//     let ans  = {"POLL_CEN":classes_M,"POLL_CAN":classes_C,"WPOP":world_pop,
+//                 "WFUEL":fuel_prod,"WFOOD":food_prod,"WCONS":consume,"MAXAGE":[maxage,maxage_city,trace]};
+//
+//   return ans;
+//
+//
+// }
 
 
 function distancia(el1,el2){
@@ -210,7 +247,7 @@ function check_spot(XX_a,YY_a){
 
 
 function mouseClicked(){
-  if(mult!=0){
+  if(mult!=0 & mouseY>H_chart){
   check_spot(mouseX,mouseY);
   }
 
@@ -228,16 +265,16 @@ function get_maxlvl(){
 
 }
 
-function mousePressed(event) {
-  if(event.button==2 & rango_mina()!=0){
-    rango_mina().desconectar();
-  }
-}
+// function mousePressed(event) {
+//   if(event.button==2 & rango_mina()!=0){
+//     rango_mina().desconectar();
+//   }
+// }
 
 
 function get_rand_coords(xx,yy,sd){
    let x = max(min(floor(randomGaussian(xx,sd)),W-25),25);
-   let y = max(min(floor(randomGaussian(yy,sd)),H-25),25);
+   let y = max(min(floor(randomGaussian(yy,sd)),H-25),H_chart);
    x=x-(x+8*(y%3))%10;
    y=y-y%10;
    return [x,y];
@@ -264,9 +301,6 @@ background(0);
 function draw() {
 
 
-
-
-
   let five=0;
   m.pintar();
 
@@ -275,19 +309,70 @@ function draw() {
   let mx_cap=0;
   let cand = [];
 
-  for(var i =0;i<CANALES.length;i++){
-    // CANALES[i].evaluar_tipo();
-    CANALES[i].pintar();
+
+
+  let polling;
+
+
+  let classes_M = {"1":0,"2":0,"3":0,"4":0,"5":0,"-1":0};
+  let classes_C = {1:0,2:0,3:0};
+  let consume=0;
+  let world_pop = 0;
+  let fuel_prod= 0;
+  let food_prod= 0;
+  let maxage  = 0;
+  let maxage_city= "";
+  let trace=0;
+  let sumal=0;
+  let activas=0;
+
+
+      for(var i = 0;i<CANALES.length;i++){
+        CANALES[i].pintar();
+        classes_C[CANALES[i].T]++;
+      }
+
+  for(var i = 0;i<CENTROS.length;i++){
+
+    let elected = CENTROS[i];
+
+    sumal+=elected.T;
+
+    elected.pintar(T);
+    if(elected.T==5){five++;}
+    let score=elected.score_center();
+    if(elected.T==mxlvl){cand.push([elected,score])}
+
+
+    classes_M[elected.T]++;
+    world_pop+=elected.population;
+    fuel_prod+=elected.genfuel;
+    food_prod+=elected.genfood;
+    consume+=elected.consumo;
+    if(elected.give_age()>maxage & elected.T>0){
+      maxage = elected.give_age();
+      maxage_city = elected.nombre["NAME"].toUpperCase();
+
+    }
+      if(elected.give_age()>trace){trace=elected.give_age()}
+      if(elected.T>0){activas++};
   }
 
-  for(var i =0;i<CENTROS.length;i++){
+    let meanl=sumal/(CENTROS.length+1);
 
-    CENTROS[i].pintar(T);
-    if(CENTROS[i].T==5){five++;}
-    let score=CENTROS[i].score_center();
-    if(CENTROS[i].T==mxlvl){cand.push([CENTROS[i],score])}
+    let resta = fuel_prod+food_prod-consume;
 
-  }
+    let profit =(resta/(abs(resta)+1))*log(max(abs(resta),1))+meanl;
+
+    polling  = {"POLL_CEN":classes_M,"POLL_CAN":classes_C,"WPOP":world_pop,"PRFT":(profit).toFixed(3),"MEANL":meanl,
+                "WFUEL":fuel_prod,"WFOOD":food_prod,"WCONS":consume,"MAXAGE":[maxage,maxage_city,trace],
+              "ACTVS":activas};
+
+
+
+
+
+
 
   let cap ="";
   let max_score=0;
@@ -323,7 +408,7 @@ function draw() {
 
 
 
-  buenas=floor(five/2);
+  buenas=floor(five/2)+buenas_off;
   if(CENTROS.length==0){buenas=1;}
 
 
@@ -335,32 +420,130 @@ function draw() {
 
   T+=dT*mult;
 
+
   push();
   noStroke();
-  fill([255,0,0]);
-  let xo=20;
-  let yo=-20;
-  text("SEEDS "+str(max(buenas-malas,0)),xo,yo+40);
-  text("MAP : "+["Standard","Fuel","Food","Terrain"][pintar_rec],xo,yo+60);
-  text("Difficulty : "+str(int(map(m.DIFF,0.3,0.7,80,10))+"%"),xo,yo+80);
-  if(activate_auto==1){
+  fill([0,0,0,100]);
+  rect(0,0,W,H_chart);
+  pop();
 
-    text("AUTO-EXPLORATION MODE",xo+130,yo+40);
+
+
+  let xo=30;
+  let yo=-20;
+  push();
+  noStroke();
+  fill(255);
+  textSize(50);
+  textAlign(CENTER,CENTER);
+  text(titulo,xo+90,yo+45);
+  textSize(20);
+  fill([250,0,0]);
+  text("IMFERYE",xo+90,yo+70);
+  fill([250,255,0]);
+  text("~ ~ ~ ~ ________ ~ ~ ~ ~",xo+90,yo+70);
+  pop();
+
+
+
+  push();
+  noStroke();
+  fill([0,255,255]);
+
+  xo = 250;
+  yo=-22;
+
+
+  text("Seeds : ",xo,yo+35);
+  text("Map : ",xo,yo+50);
+  text("Difficulty : ",xo,yo+65);
+  text("Era : ",xo,yo+80);
+
+
+  fill([255,255,255]);
+  text(str(max(buenas-malas,0)),xo+60,yo+35);
+  text(["Standard","Fuel","Food","Terrain"][pintar_rec],xo+60,yo+50);
+  text(str(int(map(m.DIFF,0.3,0.7,80,10))+"%"),xo+60,yo+65);
+  text("Hee Hee",xo+60,yo+80);
+
+  xo = 400;
+
+  fill([255,255,80]);
+
+  text("Population : ",xo,yo+35);
+  text("Fuel Prod. : ",xo,yo+50);
+  text("Food Prod. : ",xo,yo+65);
+  text("Consume : ",xo,yo+80);
+
+  fill([255,255,255]);
+  text(str(polling["WPOP"]),xo+75,yo+35);
+  text(str(polling["WFUEL"])+" Pts.",xo+75,yo+50);
+  text(str(polling["WFOOD"])+" Pts.",xo+75,yo+65);
+  text(str(polling["WCONS"])+" Pts.",xo+75,yo+80);
+
+
+
+
+
+  xo = 540;
+
+  fill([255,255,80]);
+
+  text("Profit : ",xo,yo+35);
+  text("Legacy : ",xo,yo+50);
+  text("Oldest : ",xo,yo+65);
+  text("Tracing: ",xo,yo+80);
+
+  fill([255,255,255]);
+  text(str(polling["PRFT"]),xo+50,yo+35);
+  text(str(polling["MAXAGE"][0])+" Yrs",xo+50,yo+50);
+  text(str(polling["MAXAGE"][1]),xo+50,yo+65);
+  text(str(polling["MAXAGE"][2])+" Yrs.",xo+50,yo+80);
+
+
+
+
+
+
+
+
+
+
+  xo = W-230;
+
+
+
+  if(activate_auto==1){
+    fill([255,255,0]);
+    text("AUTO-EXPLORATION MODE",xo,yo+40);
 
   }
-  if(activate_virus==1){
-
-    text("VIRUS",xo+130,yo+60);
+  if(activate_virus==1 | profit<0){
+    fill([0,255,0]);
+    text("VIRUS",xo,yo+60);
+    killrate = activate_virus==1?1:0.1*log(-min(resta,-1));
+    console.log(killrate);
     if(random()<killrate & CENTROS.length>0 & mult!=0){
       random(CENTROS).desconectar();
     }
   }
-  pop();
+
+
 
 
   if(CENTROS.length>0 & activate_auto==1 & mult!=0){
-    var centroelecto=CENTROS[CENTROS.length-1];
-    var coords = get_rand_coords(centroelecto.X,centroelecto.Y,40)
+
+    if(random()<0.8){
+      var centroelecto=CENTROS[CENTROS.length-1];
+      var coords = get_rand_coords(centroelecto.X,centroelecto.Y,40)
+    }
+    else{
+      var centroelecto=random(CENTROS);
+      var coords = get_rand_coords(centroelecto.X,centroelecto.Y,40)
+    }
+
+
+
     //console.log(coords);
   check_spot(coords[0],coords[1]);
 }

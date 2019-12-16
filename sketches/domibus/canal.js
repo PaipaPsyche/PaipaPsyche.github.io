@@ -72,8 +72,27 @@ class canal {
 
     stroke(this.C);
     strokeWeight(this.R);
+    noFill();
+    //line(this.X1, this.Y1, this.X2, this.Y2);
 
-    line(this.X1, this.Y1, this.X2, this.Y2);
+
+
+    let set_els=[this.EL1,this.EL2];
+    let election = random()>0.5?0:1;
+
+
+
+
+    let ee1 = set_els[election];
+    let ee2 = set_els[1-election];
+
+
+
+    let promx = floor((ee1.X+ee2.X)/2);
+    let promy = floor((ee1.Y+ee2.Y)/2);
+
+    bezier(ee1.X, ee1.Y,ee1.X, promy,promx, ee1.Y,promx, promy);
+    bezier(promx, promy,promx, ee2.Y,ee2.X, promy,ee2.X, ee2.Y);
     pop();
   }
 

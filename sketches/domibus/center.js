@@ -1,9 +1,9 @@
 var DICT_R_M = {
-  1: 3,
-  2: 4,
-  3: 5,
-  4: 7,
-  5: 9
+  1: 2.5,
+  2: 3.5,
+  3: 4.5,
+  4: 6,
+  5: 7
 };
 var DICT_C_M = {
   1: [80, 80, 80],
@@ -31,11 +31,11 @@ var DICT_DESC = {
 };
 
 var DICT_R_MINMAX = {
-  1: [20, 50],
-  2: [20, 60],
-  3: [20, 80],
-  4: [20, 120],
-  5: [25, 160]
+  1: [20, 40],
+  2: [15, 60],
+  3: [15, 80],
+  4: [15, 120],
+  5: [20, 160]
 };
 
 class centro {
@@ -76,7 +76,7 @@ class centro {
   }
   desconectar() {
     this.connect--;
-    this.population = this.population * 0.8;
+    this.population = int(this.population * 0.4*(1+random()));
     this.evaluar_tipo();
 
   }
@@ -206,13 +206,18 @@ class centro {
   }
 
   evolve() {
+    if(this.T<0 & this.population>100 & random()<0.005){this.population = this.population*random();}
     if (mult != 0) {
       this.genfood = this.T <= 0 ? 0 : 0.05 * this.in_food * (10 + this.connect + this.T * 100 * log(this.population + 1));
       this.genfuel = this.T <= 0 ? 0 : 0.05 * this.in_fuel * (10 + this.connect + this.T * 100 * log(this.population + 1));
 
-      let add_pop = this.T <= 1 ? 0 : max(-20 * this.T, -this.consumo + this.genfood + this.genfuel) + int(this.T * random(this.connect / 6));
-      this.population = max(this.population + int(this.connect / 3) + this.T * add_pop / 2 + int(random(4 ** this.T)) - this.consumo * (this.T - 1) * 0.005, 0);
-      this.consumo = this.T <= 0 ? 0 : 0.008 * log(this.give_age() + 1) * (this.T * 30 * log(this.population + 1) * (1 + 0.5 * this.in_mountain));
+      let add_pop = this.T <= 1 ? 0 : max(-0.1*this.population, -this.consumo + 1.5*this.genfood + this.genfuel) + int(this.T *this.connect / 6);
+
+      let resta = this.genfood+this.genfuel-this.consumo;
+
+      this.population = max(0,this.population+sqrt(this.population+1)*add_pop);
+      this.consumo = this.T <= 0 ? 0 : 0.005 * log(this.give_age() + 1) * (this.T * 50 * log(this.population + 1) * (1 + 0.5 * this.in_mountain));
+
 
 
       this.cost = this.in_food * 300 + this.infuel * 1000 + this.in_mountain * 800;
@@ -220,7 +225,7 @@ class centro {
       this.genfood = int(this.genfood);
       this.genfuel = int(this.genfuel);
       this.consumo = int(this.consumo);
-      this.population = int(this.population);
+      this.population = floor(this.population);
     }
   }
 
@@ -234,7 +239,8 @@ class centro {
     return dist(mouseX, mouseY, this.X, this.Y) <= this.mindist ? 1 : 0;
   }
   pintar(T) {
-    this.evolve()
+    if(T%5==0){
+    this.evolve();}
     if (this.mouseInRange() == 1) {
       push();
       noStroke();

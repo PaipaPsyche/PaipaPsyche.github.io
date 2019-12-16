@@ -3,7 +3,7 @@ let POST_ALTO = ["Hill ", "Mountains ", "Mountain", "Cannon ", "Hills ", "Woods 
 
 let POST_FOSA = ["Rift ", "Crack ", "pit ", "Abyss ", "Fault "]
 
-let POST_VALLE = ["Valley ", "Arids ", "Plains ", "Park ", "River ", "Cave ", " Fields ", " Swamp "]
+let POST_VALLE = ["Valley ", "Arids ", "Plains ", "Jungle ", "River ", "Cave ", " Fields ", " Swamp "]
 let POST_WATER = ["Sea ", "Lake ", "Waters", "Extension ", "Point "]
 let POST_SHORE = ["Shore ", "Port ", "Reef ", "Gulf ", "Bottom ", "Landing ", "Beach ", "Delta "]
 
@@ -22,7 +22,7 @@ let END_NAME = ["ngton", "shire", "ston", "strong", "nford", "ldorf", "vhys", "s
   "toris", "rly", "quila", "stein", "mark", "burg", "rtz", "lf", "rov", "rnov", "tröen", "land"
 ]
 
-let VOCAL = ["a", "e", "i", "o", "u", ""]
+let VOCAL = ["a", "e", "i", "o", "u"," "]
 let SILABAS = [];
 
 let C_SILABAS = [
@@ -97,7 +97,7 @@ function gen_nombre(elemento) {
   let valor = m.MAPA[elemento.X][elemento.Y];
   let tipo = m.M_tipos[elemento.X][elemento.Y];
 
-  let long = int(random(3));
+  let long = int(random(2));
   for (let i = 0; i < (1 + long); i++) {
     raiz = raiz + random(SILABAS)
     if (random() > 0.7) {
@@ -106,7 +106,7 @@ function gen_nombre(elemento) {
   }
 
   if (raiz.length > 10 & random() > 0.4) {
-    raiz = raiz.slice(5, raiz.length - 1)
+    raiz = raiz.slice(6, raiz.length - 1)
   }
 
   if (elemento.is_origin == 1) {
@@ -123,7 +123,7 @@ function gen_nombre(elemento) {
     raiz = "";
     if (elemento.give_closest(CENTROS).nombre["RAIZ"].length > 4) {
       let word = elemento.give_closest(CENTROS).nombre["RAIZ"].split(" ")
-      raiz = word.pop().slice(0, min(5, word.length)) + random(VOCAL) + random(END_NAME);
+      raiz = word.pop().slice(0, min(4, word.length)) + random(VOCAL) + random(END_NAME);
     } else {
       raiz = elemento.give_closest(CENTROS).nombre["RAIZ"] + random(SILABAS);
     }
@@ -135,10 +135,10 @@ function gen_nombre(elemento) {
 
 
 
-  if (random() > 0.5) {
+  if (random() > 0.8) {
     raiz = raiz + random(VOCAL) + random(END_NAME);
   }
-  if (random() < 0.5) {
+  if (random() < 0.9) {
     raiz = random(PRE_NAME) + random(VOCAL) + raiz;
   }
 
@@ -162,7 +162,7 @@ function gen_nombre(elemento) {
 
   }
 
-  if (tipo == 1 & valor < 0.6) {
+  if (tipo == 1 & valor < 0.5) {
     nombre = raiz + " " + random(POST_SHORE);
 
 
@@ -174,9 +174,9 @@ function gen_nombre(elemento) {
 
 
   if (tipo == 1) {
-    if (random() > 0.5) {
+    if (random() > 0.8) {
       nombre = raiz + " " + random(POST_VALLE);
-    } else if (random() > 0.5) {
+    } else if (random() > 0.8) {
       nombre = raiz + random(VOCAL) + " " + random(POST_NAME)
     }
 
@@ -184,7 +184,7 @@ function gen_nombre(elemento) {
   if (tipo == 2 & random() > 0.5) {
     if (random() > 0.5) {
       nombre = raiz + " " + random(POST_ALTO);
-    } else if (random() > 0.5) {
+    } else if (random() > 0.8) {
       nombre = raiz + " " + random(POST_NAME);
     }
 
