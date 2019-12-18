@@ -13,11 +13,20 @@ var DICT_C_M = {
   5: [255, 255, 0]
 }
 
+
+var DICT_P_MIN = {
+  1: 10**2,
+  2: 10**3,
+  3: 10**4,
+  4: 10**5,
+  5: 10**6
+}
+
 var DICT_MIN_CON = {
   1: 3,
   2: 5,
   3: 7,
-  4: 10,
+  4: 11,
   5: 8
 };
 
@@ -58,10 +67,12 @@ class centro {
 
     this.cost = 0;
 
+    this.maxpop = DICT_P_MIN[1];
+
     this.consumo = 0;
     this.genfuel = 0;
     this.genfood = 0;
-    this.population = 0;
+    this.population = 1+floor(random(20));
 
     this.evaluar_tipo();
 
@@ -177,11 +188,11 @@ class centro {
 
 
     for (var i = 2; i <= 5; i++) {
-      if (this.connect >= DICT_MIN_CON[i - 1]) {
+      if (this.connect >= DICT_MIN_CON[i - 1] & this.population>=0.8*DICT_P_MIN[i-1]) {
         this.T = i;
       }
     }
-    if (this.connect < 0) {
+    if (this.connect < 0 | this.population==0) {
       this.T = -1
     };
 
@@ -206,16 +217,34 @@ class centro {
   }
 
   evolve() {
-    if(this.T<0 & this.population>100 & random()<0.005){this.population = this.population*random();}
+    //if(this.T<0 & this.population>100 & random()<0.005){this.population = this.population*random();}
     if (mult != 0) {
-      this.genfood = this.T <= 0 ? 0 : 0.05 * this.in_food * (10 + this.connect + this.T * 100 * log(this.population + 1));
-      this.genfuel = this.T <= 0 ? 0 : 0.05 * this.in_fuel * (10 + this.connect + this.T * 100 * log(this.population + 1));
+      this.genfood = this.T <= 0 ? 0 : 0.1 * this.in_food * (10 + this.connect + this.T * 100 * log(this.population + 1));
+      this.genfuel = this.T <= 0 ? 0 : 0.1 * this.in_fuel * (10 + this.connect + this.T * 100 * log(this.population + 1));
 
-      let add_pop = this.T <= 1 ? 0 : max(-0.1*this.population, -this.consumo + 1.5*this.genfood + this.genfuel) + int(this.T *this.connect / 6);
+      if(this.T>0){
+      this.maxpop = int(DICT_P_MIN[abs(this.T)]*(1+random()));
+      let popgrowth = map(abs(this.T)*(this.genfuel+this.genfood),0,100000,0.5,1.5);
 
-      let resta = this.genfood+this.genfuel-this.consumo;
+      let dndt = popgrowth*((this.maxpop-this.population)/(this.maxpop+1))*this.population;
 
-      this.population = max(0,this.population+sqrt(this.population+1)*add_pop);
+      this.population=max(0,this.population+dndt);
+
+      }
+      else if(random()>0.1){
+        this.population=int(this.population*random());
+      }
+
+      // let add_pop = this.T <= 1 ? 0 : max(-0.1*this.population, -this.consumo + 1.5*this.genfood + this.genfuel) + int(this.T *this.connect / 6);
+      //
+      // let resta = this.genfood+this.genfuel-this.consumo;
+
+
+
+
+
+
+
       this.consumo = this.T <= 0 ? 0 : 0.005 * log(this.give_age() + 1) * (this.T * 50 * log(this.population + 1) * (1 + 0.5 * this.in_mountain));
 
 

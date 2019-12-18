@@ -105,8 +105,8 @@ function gen_nombre(elemento) {
     }
   }
 
-  if (raiz.length > 10 & random() > 0.4) {
-    raiz = raiz.slice(6, raiz.length - 1)
+  if (raiz.length > 7 & random() > 0.2) {
+    raiz = raiz.slice(4, raiz.length - 1)
   }
 
   if (elemento.is_origin == 1) {
@@ -123,7 +123,7 @@ function gen_nombre(elemento) {
     raiz = "";
     if (elemento.give_closest(CENTROS).nombre["RAIZ"].length > 4) {
       let word = elemento.give_closest(CENTROS).nombre["RAIZ"].split(" ")
-      raiz = word.pop().slice(0, min(4, word.length)) + random(VOCAL) + random(END_NAME);
+      raiz = word.pop().slice(0, min(4, word.length))  + random(END_NAME);
     } else {
       raiz = elemento.give_closest(CENTROS).nombre["RAIZ"] + random(SILABAS);
     }
@@ -136,10 +136,10 @@ function gen_nombre(elemento) {
 
 
   if (random() > 0.8) {
-    raiz = raiz + random(VOCAL) + random(END_NAME);
+    raiz = raiz  + random(END_NAME);
   }
   if (random() < 0.9) {
-    raiz = random(PRE_NAME) + random(VOCAL) + raiz;
+    raiz = random(PRE_NAME) + raiz;
   }
 
   // if(random()>0.5){

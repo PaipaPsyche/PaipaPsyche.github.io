@@ -22,7 +22,7 @@ var thresholdr = 0.7;
 var thresholdf = 0.7;
 
 var T=0;
-var dT = 0.5;
+var dT = 1;
 
 var mult= 1;
 
@@ -38,6 +38,8 @@ var activate_auto=0;
 var activate_virus=0;
 
 var primero=1;
+
+var show_ruinas=1;
 
 var last_five=3;
 
@@ -58,6 +60,9 @@ if(key =='v'){
 }
 if(key =='p'){
   mult = 1-mult;
+}
+if(key =='r'){
+  show_ruinas = 1-show_ruinas;
 }
 
 if(key =='k' & rango_mina()!=0 & random()<killrate){
@@ -328,8 +333,11 @@ function draw() {
 
 
       for(var i = 0;i<CANALES.length;i++){
+        if(CANALES[i].T>0 | show_ruinas==1){
         CANALES[i].pintar();
-        classes_C[CANALES[i].T]++;
+
+      }
+      classes_C[CANALES[i].T]++;
       }
 
   for(var i = 0;i<CENTROS.length;i++){
@@ -338,7 +346,9 @@ function draw() {
 
     sumal+=elected.T;
 
+    if(elected.T>0 | show_ruinas==1){
     elected.pintar(T);
+  }
     if(elected.T==5){five++;}
     let score=elected.score_center();
     if(elected.T==mxlvl){cand.push([elected,score])}
@@ -512,28 +522,44 @@ function draw() {
   xo = W-230;
 
 
-
+  noStroke();
   if(activate_auto==1){
-    fill([255,255,0]);
-    text("AUTO-EXPLORATION MODE",xo,yo+40);
+    fill([170,170,255]);
+    text("AUTO-EXPLORE",xo,yo+40);
 
   }
-  if(activate_virus==1 | profit<0){
+  if(profit>6){
+    fill([250,255,0]);
+    text("GOLDEN TIMES",xo+105,yo+40);
+  }
+  if(activate_virus==1 ){
     fill([0,255,0]);
     text("VIRUS",xo,yo+60);
-    killrate = activate_virus==1?1:0.1*log(-min(resta,-1));
-    console.log(killrate);
+    killrate =1;
+    //console.log(killrate);
     if(random()<killrate & CENTROS.length>0 & mult!=0){
       random(CENTROS).desconectar();
     }
   }
+  if(profit<-4){
+    fill([255,155,30]);
+    text("FAMINE",xo+55,yo+60);
+    killrate =0.1*log(-min(resta,-1));
+    //console.log(killrate);
+    if(random()<killrate & CENTROS.length>0 & mult!=0){
+      random(CENTROS).desconectar();
+    }
+
+  }
 
 
 
 
-  if(CENTROS.length>0 & activate_auto==1 & mult!=0){
+  if(CENTROS.length>0 & (activate_auto==1 | profit>6)& mult!=0){
 
-    if(random()<0.8){
+    if(random()<0.05 | activate_auto==1){
+
+    if(random()<0.9){
       var centroelecto=CENTROS[CENTROS.length-1];
       var coords = get_rand_coords(centroelecto.X,centroelecto.Y,40)
     }
@@ -542,10 +568,11 @@ function draw() {
       var coords = get_rand_coords(centroelecto.X,centroelecto.Y,40)
     }
 
+        //console.log(coords);
+      check_spot(coords[0],coords[1]);
+  }
 
 
-    //console.log(coords);
-  check_spot(coords[0],coords[1]);
 }
 if(mult==0){
   push();
