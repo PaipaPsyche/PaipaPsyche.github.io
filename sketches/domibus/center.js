@@ -223,7 +223,7 @@ class centro {
       this.genfuel = this.T <= 0 ? 0 : 0.1 * this.in_fuel * (10 + this.connect + this.T * 100 * log(this.population + 1));
 
       if(this.T>0){
-      this.maxpop = int(DICT_P_MIN[abs(this.T)]*(1+random()));
+      this.maxpop = int(DICT_P_MIN[abs(this.T)]*(1+random())*(1.001**this.give_age()));
       let popgrowth = map(abs(this.T)*(this.genfuel+this.genfood),0,100000,0.5,1.5);
 
       let dndt = popgrowth*((this.maxpop-this.population)/(this.maxpop+1))*this.population;
