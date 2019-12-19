@@ -2,7 +2,7 @@ new p5();
 
 var W;
 var H;
-var H_chart=60;
+var H_chart=65;
 
 var m;
 var maxDistance;
@@ -20,6 +20,9 @@ var threshold1 = 0.5;
 var threshold2 = 0.68;
 var thresholdr = 0.7;
 var thresholdf = 0.7;
+
+var population_reg = [];
+var n_reg_pop = 5;
 
 var T=0;
 var dT = 1;
@@ -275,13 +278,29 @@ function get_maxlvl(){
 //     rango_mina().desconectar();
 //   }
 // }
+function parse_pop(n){
+  let ans = "";
+  let s = str(n);
+  let count = 0;
+  for(var  i = s.length-1;i>=0;i--){
+    ans =s[i]+ans;
+    count++;
+    if(count%3==0){
+      count=0;
+      ans=" "+ans;
+    }
 
+  }
+
+  return trim(ans);
+
+}
 
 function get_rand_coords(xx,yy,sd){
    let x = max(min(floor(randomGaussian(xx,sd)),W-25),25);
    let y = max(min(floor(randomGaussian(yy,sd)),H-25),H_chart);
-   x=x-(x+8*(y%3))%10;
-   y=y-y%10;
+   // x=x-(x+8*(y%3))%10;
+   // y=y-y%10;
    return [x,y];
 }
 
@@ -303,11 +322,23 @@ background(0);
 
 
 
+
+
 function draw() {
 
 
   let five=0;
   m.pintar();
+
+  push();
+  noStroke();
+  fill([0,0,0,150]);
+  rect(0,0,W,H_chart);
+  pop();
+
+
+
+
 
   let mxlvl=get_maxlvl();
 
@@ -354,7 +385,7 @@ function draw() {
     if(elected.T==mxlvl){cand.push([elected,score])}
 
 
-    classes_M[elected.T]++;
+    classes_M[str(elected.T)]++;
     world_pop+=elected.population;
     fuel_prod+=elected.genfuel;
     food_prod+=elected.genfood;
@@ -377,6 +408,30 @@ function draw() {
     polling  = {"POLL_CEN":classes_M,"POLL_CAN":classes_C,"WPOP":world_pop,"PRFT":(profit).toFixed(3),"MEANL":meanl,
                 "WFUEL":fuel_prod,"WFOOD":food_prod,"WCONS":consume,"MAXAGE":[maxage,maxage_city,trace],
               "ACTVS":activas};
+
+
+
+    // if(CENTROS.length>0){
+    //
+    //
+    //
+    // }
+
+
+
+
+
+
+
+
+    if(population_reg.length<n_reg_pop){
+      population_reg.push(polling["WPOP"])
+    }
+    else{
+      population_reg = population_reg.slice(1,population_reg.length)
+      population_reg.push(polling["WPOP"])
+    }
+    //console.log(population_reg);
 
 
 
@@ -431,11 +486,6 @@ function draw() {
   T+=dT*mult;
 
 
-  push();
-  noStroke();
-  fill([0,0,0,100]);
-  rect(0,0,W,H_chart);
-  pop();
 
 
 
@@ -476,7 +526,7 @@ function draw() {
   text(str(int(map(m.DIFF,0.3,0.7,80,10))+"%"),xo+60,yo+65);
   text("Hee Hee",xo+60,yo+80);
 
-  xo = 400;
+  xo = 375;
 
   fill([255,255,80]);
 
@@ -486,7 +536,7 @@ function draw() {
   text("Consume : ",xo,yo+80);
 
   fill([255,255,255]);
-  text(str(polling["WPOP"]),xo+75,yo+35);
+  text(parse_pop(polling["WPOP"]),xo+75,yo+35);
   text(str(polling["WFUEL"])+" Pts.",xo+75,yo+50);
   text(str(polling["WFOOD"])+" Pts.",xo+75,yo+65);
   text(str(polling["WCONS"])+" Pts.",xo+75,yo+80);
@@ -495,20 +545,20 @@ function draw() {
 
 
 
-  xo = 540;
+  xo = 530;
 
   fill([255,255,80]);
 
   text("Profit : ",xo,yo+35);
-  text("Legacy : ",xo,yo+50);
-  text("Oldest : ",xo,yo+65);
-  text("Tracing: ",xo,yo+80);
+  text("Lost legacy : ",xo,yo+50);
+  text("Oldest City : ",xo,yo+65);
+  text("Origin : ",xo,yo+80);
 
   fill([255,255,255]);
-  text(str(polling["PRFT"]),xo+50,yo+35);
-  text(str(polling["MAXAGE"][0])+" Yrs",xo+50,yo+50);
-  text(str(polling["MAXAGE"][1]),xo+50,yo+65);
-  text(str(polling["MAXAGE"][2])+" Yrs.",xo+50,yo+80);
+  text(str(polling["PRFT"]),xo+70,yo+35);
+  text(str(polling["MAXAGE"][2] - polling["MAXAGE"][0])+" Yrs",xo+70,yo+50);
+  text(str(polling["MAXAGE"][0])+" Yrs.",xo+70,yo+65);
+  text(str(polling["MAXAGE"][2])+" Yrs.",xo+70,yo+80);
 
 
 

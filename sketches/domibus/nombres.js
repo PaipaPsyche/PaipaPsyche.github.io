@@ -79,7 +79,11 @@ function add_silabas() {
     let C1 = C_SILABAS[j][0];
     let C2 = C_SILABAS[j][1];
     for (var i = 0; i < VOCAL.length; i++) {
-      SILABAS.push(C1 + VOCAL[i] + C2);
+      if(VOCAL[i]!=" "){
+        SILABAS.push(C1 + VOCAL[i] + C2);
+
+      }
+
     }
   }
 }

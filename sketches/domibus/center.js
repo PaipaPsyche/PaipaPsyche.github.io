@@ -8,7 +8,7 @@ var DICT_R_M = {
 var DICT_C_M = {
   1: [80, 80, 80],
   2: [120, 120, 120],
-  3: [180, 160, 160],
+  3: [120, 120, 200],
   4: [20, 190, 0],
   5: [255, 255, 0]
 }
@@ -39,8 +39,23 @@ var DICT_DESC = {
   5: "Metrópolis"
 };
 
+
+var DICT_NAME_RANGE = {
+  0:"נול",
+  1:"איינער",
+  2:"צוויי",
+  3:"דריי",
+  4:"פיר",
+  5:"פינף",
+  6:"זעקס",
+  7:"זיבן",
+  8:"אַכט"
+
+
+}
+
 var DICT_R_MINMAX = {
-  1: [20, 40],
+  1: [15, 40],
   2: [15, 60],
   3: [15, 80],
   4: [15, 120],
@@ -68,6 +83,7 @@ class centro {
     this.cost = 0;
 
     this.maxpop = DICT_P_MIN[1];
+    this.maxlevel = 0;
 
     this.consumo = 0;
     this.genfuel = 0;
@@ -197,7 +213,7 @@ class centro {
     };
 
 
-
+    if(this.T>this.maxlevel){this.maxlevel=this.T;}
 
 
     this.R = this.T == -1 ? 0.5 * DICT_R_M[abs(this.T)] : DICT_R_M[this.T];
@@ -245,8 +261,8 @@ class centro {
 
 
 
-      this.consumo = this.T <= 0 ? 0 : 0.005 * log(this.give_age() + 1) * (this.T * 50 * log(this.population + 1) * (1 + 0.5 * this.in_mountain));
-
+      this.consumo = this.T <= 0 ? 0 : 0.005 * log(this.give_age() + 1) * (this.T * 60 * log(this.population+1) * (1 + 0.5 * this.in_mountain));
+      this.consumo = this.consumo*(1+(log(this.population+1)*0.1))
 
 
       this.cost = this.in_food * 300 + this.infuel * 1000 + this.in_mountain * 800;
@@ -273,23 +289,51 @@ class centro {
     if (this.mouseInRange() == 1) {
       push();
       noStroke();
-      fill(0);
-      textSize(15);
-      let xo = 20;
-      let yo = 80;
-      text("Potential : " + str(max(this.connect, 0)), xo, yo);
+      fill([255,80,80]);
+
+      textSize(12);
+      //textSize(15);
+      let xo = 670;
+      let yo = 20;
+
+
+
+      // text("Potential : " + str(max(this.connect, 0)), xo, yo);
+      // let tipox = this.T == -1 ? "Ruins" : DICT_DESC[this.T];
+      //text("Type : " + tipox, xo, yo + 20);
+      // text("Age : " + str(this.give_age()) + " years", xo, yo + 40);
+      // text("Consume rate: " + str(this.consumo) + " pts", xo, yo + 60);
+      // text("Fuel production rate: " + str(this.genfuel) + " pts", xo, yo + 80);
+      // text("Food production rate: " + str(this.genfood) + " pts", xo, yo + 100);
+      // text("Population: " + str(this.population) + " ciudadanos", xo, yo + 120);
+      //
+      //
+      text("Type : ",xo,yo+23);
+      text("Age : ",xo,yo+38);
+      text("Pop. : ",xo+95,yo+23);
+      text("Range : ",xo+95,yo+38);
+
+
+      fill([255,255,255]);
+
       let tipox = this.T == -1 ? "Ruins" : DICT_DESC[this.T];
-      text("Type : " + tipox, xo, yo + 20);
-      text("Age : " + str(this.give_age()) + " years", xo, yo + 40);
-      text("Consume rate: " + str(this.consumo) + " pts", xo, yo + 60);
-      text("Fuel production rate: " + str(this.genfuel) + " pts", xo, yo + 80);
-      text("Food production rate: " + str(this.genfood) + " pts", xo, yo + 100);
-      text("Population: " + str(this.population) + " ciudadanos", xo, yo + 120);
+
+      let addx = this.T==-1 & this.maxlevel>=4?"City ":"";
 
 
-      textSize(20);
+      text(addx+tipox,xo+35,yo+23);
+      text(str(this.give_age()) + " Yrs",xo+35,yo+38);
+      text( parse_pop(this.population),xo+145,yo+23);
+      text(str(this.connect),xo+145,yo+38);
+
+
+
+
+
+
+      textSize(16);
       fill(255);
-      text(this.nombre["NAME"].toUpperCase(), xo, H - 30);
+      text(this.nombre["NAME"].toUpperCase(), xo,18);
       //text("Score : "+str(this.score_center()),20,140);
 
       pop();
