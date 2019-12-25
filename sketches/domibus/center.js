@@ -6,11 +6,12 @@ var DICT_R_M = {
   5: 7
 };
 var DICT_C_M = {
-  1: [80, 80, 80],
-  2: [120, 120, 120],
-  3: [120, 120, 200],
-  4: [20, 190, 0],
-  5: [255, 255, 0]
+  "-1": [10,10,10],
+  "1": [90, 90, 90],
+  "2": [120, 50, 120],
+  "3": [0, 40, 200],
+  "4": [20, 190, 0],
+  "5": [255, 255, 0]
 }
 
 
@@ -219,7 +220,7 @@ class centro {
     this.R = this.T == -1 ? 0.5 * DICT_R_M[abs(this.T)] : DICT_R_M[this.T];
 
     this.min_R = 5 * this.R;
-    this.C = DICT_C_M[abs(this.T)];
+    this.C = DICT_C_M[str(abs(this.T))];
     let dists = DICT_R_MINMAX[abs(this.T)];
     if (this.T == -1) {
       dists = [5, 1000];
@@ -294,7 +295,7 @@ class centro {
       textSize(12);
       //textSize(15);
       let xo = 670;
-      let yo = 20;
+      let yo = 18;
 
 
 
@@ -308,10 +309,10 @@ class centro {
       // text("Population: " + str(this.population) + " ciudadanos", xo, yo + 120);
       //
       //
-      text("Type : ",xo,yo+23);
-      text("Age : ",xo,yo+38);
-      text("Pop. : ",xo+95,yo+23);
-      text("Range : ",xo+95,yo+38);
+      text("Type : ",xo,yo+18);
+      text("Age : ",xo,yo+33);
+      text("Pop. : ",xo+95,yo+18);
+      text("Range : ",xo+95,yo+33);
 
 
       fill([255,255,255]);
@@ -321,10 +322,10 @@ class centro {
       let addx = this.T==-1 & this.maxlevel>=4?"City ":"";
 
 
-      text(addx+tipox,xo+35,yo+23);
-      text(str(this.give_age()) + " Yrs",xo+35,yo+38);
-      text( parse_pop(this.population),xo+145,yo+23);
-      text(str(this.connect),xo+145,yo+38);
+      text(addx+tipox,xo+35,yo+18);
+      text(str(this.give_age()) + " Yrs",xo+35,yo+33);
+      text( parse_pop(this.population),xo+145,yo+18);
+      text(str(this.connect),xo+145,yo+33);
 
 
 

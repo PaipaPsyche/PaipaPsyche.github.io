@@ -95,6 +95,59 @@ function rango_mina(){
 
 }
 
+// COLORBAR======================
+function bar_proportion(dictio,colors, xo, yo, w, h) {
+
+  let total = 0;
+
+  let props = {};
+
+
+  for (let elem in dictio) {
+
+    total += dictio[elem]
+
+  }
+
+  for (let elem in dictio) {
+
+    props[elem] = dictio[elem] / total;
+
+  }
+
+
+  let prev_point=0;
+
+  for (let elem in props) {
+
+    push();
+
+    fill(colors[elem]);
+
+    let dx = int(props[elem]*w);
+
+    rect(xo+prev_point,yo,dx,h);
+
+    pop();
+
+    prev_point+= dx;
+
+  }
+}
+
+
+
+
+
+//COLORBAR======================
+
+
+
+
+
+
+
+
 // function poll(){
 //   let classes_M = {"1":0,"2":0,"3":0,"4":0,"5":0,"-1":0};
 //   let classes_C = {1:0,2:0,3:0};
@@ -563,7 +616,10 @@ function draw() {
 
 
 
+if(CENTROS.length>0){
 
+  bar_proportion(classes_M,DICT_C_M,655,yo+80,350,5);
+}
 
 
 
