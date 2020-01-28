@@ -22,7 +22,8 @@ var thresholdr = 0.7;
 var thresholdf = 0.7;
 
 var population_reg = [];
-var n_reg_pop = 5;
+var pop_inc=0;
+var n_reg_pop = 50;
 
 var T=0;
 var dT = 1;
@@ -456,7 +457,7 @@ function draw() {
 
     let resta = fuel_prod+food_prod-consume;
 
-    let profit =(resta/(abs(resta)+1))*log(max(abs(resta),1))+meanl;
+    let profit =0.5*five+(resta/(abs(resta)+1))*log(max(abs(resta),1))+meanl;
 
     polling  = {"POLL_CEN":classes_M,"POLL_CAN":classes_C,"WPOP":world_pop,"PRFT":(profit).toFixed(3),"MEANL":meanl,
                 "WFUEL":fuel_prod,"WFOOD":food_prod,"WCONS":consume,"MAXAGE":[maxage,maxage_city,trace],
@@ -483,6 +484,12 @@ function draw() {
     else{
       population_reg = population_reg.slice(1,population_reg.length)
       population_reg.push(polling["WPOP"])
+
+      let suma_dif =0;
+      for(var i =0;i<population_reg.length-1;i++){
+        suma_dif+=(population_reg[i+1]-population_reg[i])
+      }
+      pop_inc = suma_dif/(n_reg_pop-1);
     }
     //console.log(population_reg);
 
@@ -567,17 +574,17 @@ function draw() {
   yo=-22;
 
 
-  text("Seeds : ",xo,yo+35);
-  text("Map : ",xo,yo+50);
-  text("Difficulty : ",xo,yo+65);
-  text("Era : ",xo,yo+80);
+  text("Seeds: ",xo,yo+35);
+  text("Map: ",xo,yo+50);
+  text("Difficulty: ",xo,yo+65);
+  text("Growth: ",xo,yo+80);
 
 
   fill([255,255,255]);
   text(str(max(buenas-malas,0)),xo+60,yo+35);
   text(["Standard","Fuel","Food","Terrain"][pintar_rec],xo+60,yo+50);
   text(str(int(map(m.DIFF,0.3,0.7,80,10))+"%"),xo+60,yo+65);
-  text("Hee Hee",xo+60,yo+80);
+  text(str(int(pop_inc)),xo+60,yo+80);
 
   xo = 375;
 
@@ -634,7 +641,7 @@ if(CENTROS.length>0){
     text("AUTO-EXPLORE",xo,yo+40);
 
   }
-  if(profit>6){
+  if(profit>7){
     fill([250,255,0]);
     text("GOLDEN TIMES",xo+105,yo+40);
   }
@@ -647,7 +654,7 @@ if(CENTROS.length>0){
       random(CENTROS).desconectar();
     }
   }
-  if(profit<-4){
+  if(profit<-5){
     fill([255,155,30]);
     text("FAMINE",xo+55,yo+60);
     killrate =0.1*log(-min(resta,-1));
@@ -661,7 +668,7 @@ if(CENTROS.length>0){
 
 
 
-  if(CENTROS.length>0 & (activate_auto==1 | profit>6)& mult!=0){
+  if(CENTROS.length>0 & (activate_auto==1 | profit>7)& mult!=0){
 
     if(random()<0.05 | activate_auto==1){
 

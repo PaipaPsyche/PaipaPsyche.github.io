@@ -134,7 +134,13 @@ class mapa{
 
           if(pintar_rec == 1){
             if(this.M_petro[x][y]>thresholdr){
-              rgba=[0,0,0,30*sin(T)+200];
+
+              if(tipo>0){
+                rgba=[0,0,0,30*sin(T)+200];
+              }
+              else{
+                rgba=[10,180,120,50*sin(T)+200];
+              }
             }
           }
           if(pintar_rec == 2){
