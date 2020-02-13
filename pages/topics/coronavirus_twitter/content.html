@@ -35,7 +35,7 @@ body {
 	  color: blue;
 	}
 	.plot{
-		width:85%;
+		width:95%;
 		display: block;
 margin-left: auto;
 margin-right: auto;
@@ -56,7 +56,7 @@ margin-right: auto;
 	}
 
 	h3{
-		color:#bad2ff;
+		color:#0099ff;
 		font-size:18pt;
 	}
 
@@ -200,8 +200,14 @@ the Tweets sample, taking into account that a higher frequency implies greater r
 <img src="DataImages/wordCloud.png" class="plot" />
 </div>
 <p>	The illustration speaks for itself.</p>
+<h3>Hashtag Frequency</h3>
+<p>From the hashtgas used by people, those used in the least relevant tweets are discarded, likewise, only those that make any sense within the context of the coronavirus are preserved. It is expected
+	 that the most used hashtag is <b>#coronavirus</b>, but then the other hastags found within the sample are exposed:</p>
+
+<img src="DataImages/hashtags_coronavirus.png" class="plot" />
+
 <h3>Polarity</h3>
-<p>The polarity analysis is a score that shows the positive and negative impact of keywords within a sentence. The keyword analysis is pre-trained with movie reviews obtained from opinion forums to
+<p>The polarity analysis is a score that shows the positive and negative effects of keywords within a sentence. The keyword analysis is pre-trained with movie reviews obtained from opinion forums to
 	establish a relationship between common words in the expression of an opinion and the feeling generated. This allows you to classify the Tweets given the words they contain in order to determine a
 	feeling or polarity for each one. Depending on this polarity value, the tweet is classified as "Good" or "Bad" if it has a strong feeling inclined to either of these two polarities. If the feeling
 	 is not relevant, it is classified as "not interesting." Below is how the tweets behaved for a population of approximately 600 users per day who talked about the topic.</p>
@@ -218,5 +224,16 @@ the Tweets sample, taking into account that a higher frequency implies greater r
 </div>
 <p>take into account that from the action of 600 users a day a reach of almost 120 thousand individuals was achieved. "Coronavirus" is a concept that spreads from public opinion, knowing that this study was conducted without taking into account publications made
 	 by official news sources or any scientific source of information.</p>
+
+ <h3>Propagation and Resistance</h3>
+ <p>We are going to quantify the average number of people reached by tweet for each day. This amount is calculated by taking out the resonance rate achieved by tweets made on the same day, thus obtaining
+	  a number greater than or equal to one corresponding to the number of possible replicas achieved on average for each tweet made on the subject; This number is the spread index.</p>
+
+<p>Another number of interest is to quantify how many tweets are left behind given their low subjectivity and neutral polarity. Any Tweet of low impact is considered discarded by the social trend movement
+	and its rate with respect to the amount of daily tweets is called the resistance index. This number between zero and one expresses the proportion of tweets that have to be lost from one day to another
+	given their low interest rate. The following shows how these indices behave over time and a trend line associated with their behavior.</p>
+
+<img src="DataImages/propagation_coronavirus.png" class="plot" />
+
 </body>
 </html>
