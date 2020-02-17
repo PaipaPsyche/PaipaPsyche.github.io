@@ -15,6 +15,9 @@ body {
 		color:white
 
 	}
+	.sect{
+		color:#80bfff;
+	}
 
 	a:link {
 	  color: white;
@@ -56,8 +59,8 @@ margin-right: auto;
 	}
 
 	h3{
-		color:#0099ff;
-		font-size:18pt;
+		color:white;
+		font-size:17pt;
 	}
 
 	.qcent{
@@ -72,8 +75,28 @@ margin-right: auto;
 </style>
 </head>
 <body>
+<div>
+	<!-- <div width = "10%">
+		<img src="DataImages/twitter_logo.png" width="40px">
+	</div>
+	<div width = "50%">
+		<h1 id="coronavirus_outbreak" class="sect">Outbreak of Novel Coronavirus (2019-nCoV)</h1>
+	</div> -->
+	<table style="width: 70%">
 
-<h1 id="coronavirus_outbreak">Outbreak of Novel Coronavirus (2019-nCoV)</h1>
+		<tr>
+			<td>  <img src="DataImages/biohazard.png" width="45px"> </td>
+			<td>
+				<h1 id="coronavirus_outbreak" class="sect">Outbreak of Novel Coronavirus (2019-nCoV)</h1>
+			 </td>
+		</tr>
+
+	</table>
+
+
+
+</div>
+
 <p>The year 2020 began with a lot of bad news, among them is the high political tension between the US and Iran,
 	monstrous fires that threaten a cosniderable part of Australia and its fauna, and the topic of which I am
 	going to talk to you today: The spread of the Novel coronavirus 2019-nCoV. To make a brief introduction to
@@ -122,8 +145,17 @@ margin-right: auto;
 <hr>
 		<br />
 		<br />
+		<table style="width: 35%">
 
-		<h1 id="study_case">About this study</h1>
+			<tr>
+				<td>  <img src="DataImages/twitter.png" width="45px"> </td>
+				<td>
+					<h1 id="study_case" class="sect">About this study</h1>
+				 </td>
+			</tr>
+
+		</table>
+
 
 <h3>Twitter as a Global Agent</h3>
 <p>Twitter is a social network known to almost everyone since, in addition to being a social network with hundreds
@@ -162,7 +194,7 @@ meanings.[..] </i></q>
 
 </div>
 
-<p style="font-size:12pt;"> -Taken from <a href="https://www.wired.com/2007/06/st-thompson-4/">Wired</a><p>
+<p style="font-size:12pt;"> -Taken from <a href="https://en.wikipedia.org/wiki/Sentiment_analysis">Wikipedia</a><p>
 
 <p>Natural language processing is, in other terms, an area of ​​study in the development of Artificial Intelligence that tells us about the way in which computers can interpret
 	human language, creating rules between words and characters in order to assign them some syntactic value. In quantifying these properties, it is easy to notice patterns of association
@@ -186,7 +218,20 @@ meanings.[..] </i></q>
 <hr>
 <br>
 <br>
-<h1 id="observe_data">Observing Twitter Data</h1>
+
+<table style="width: 35%">
+
+	<tr>
+		<td>  <img src="DataImages/python.png" width="45px"> </td>
+		<td>
+<h1 id="observe_data " class="sect">Observing Twitter Data</h1>
+		 </td>
+	</tr>
+
+</table>
+
+
+
 <p>Making a preliminary exploration of the data, the appearance of the subject is observed as a global trend from the first day of the year 2020. But beyond the frequency with which the tweets appear, the
 analysis of sentiment throws relevant data on the nature of the tweets.</p>
 
@@ -199,13 +244,14 @@ the Tweets sample, taking into account that a higher frequency implies greater r
 <div>
 <img src="DataImages/wordCloud.png" class="plot" />
 </div>
-<p>	The illustration speaks for itself.</p>
+<p>	The illustration speaks for itself. </p>
 <h3>Hashtag Frequency</h3>
 <p>From the hashtgas used by people, those used in the least relevant tweets are discarded, likewise, only those that make any sense within the context of the coronavirus are preserved. It is expected
 	 that the most used hashtag is <b>#coronavirus</b>, but then the other hastags found within the sample are exposed:</p>
 
 <img src="DataImages/hashtags_coronavirus.png" class="plot" />
-
+<p>It is importnat to mention (as you may have suspected) that these are not all of the hashtags retrieved, but are the most relevant (or most frequent) since many of them appeared one time or where
+written with terrible ortography. The other <i>ignored</i> hashtags correspond to a <b>12.5%</b> of the total sample, <i>#coronavirus</i> correspond to a <b>37.2%</b> and the other <b>50.3%</b> corresponds to the ones here displayed. </p>
 <h3>Polarity</h3>
 <p>The polarity analysis is a score that shows the positive and negative effects of keywords within a sentence. The keyword analysis is pre-trained with movie reviews obtained from opinion forums to
 	establish a relationship between common words in the expression of an opinion and the feeling generated. This allows you to classify the Tweets given the words they contain in order to determine a
@@ -227,13 +273,27 @@ the Tweets sample, taking into account that a higher frequency implies greater r
 
  <h3>Propagation and Resistance</h3>
  <p>We are going to quantify the average number of people reached by tweet for each day. This amount is calculated by taking out the resonance rate achieved by tweets made on the same day, thus obtaining
-	  a number greater than or equal to one corresponding to the number of possible replicas achieved on average for each tweet made on the subject; This number is the spread index.</p>
+	  a number greater than or equal to one corresponding to the number of possible replicas achieved on average for each tweet made on the subject; This number is the propagation index.</p>
 
 <p>Another number of interest is to quantify how many tweets are left behind given their low subjectivity and neutral polarity. Any Tweet of low impact is considered discarded by the social trend movement
 	and its rate with respect to the amount of daily tweets is called the resistance index. This number between zero and one expresses the proportion of tweets that have to be lost from one day to another
 	given their low interest rate. The following shows how these indices behave over time and a trend line associated with their behavior.</p>
 
 <img src="DataImages/propagation_coronavirus.png" class="plot" />
+
+
+
+<h3>Subjectivity Analysis</h3>
+<p>The sentiment analysis model recognizes keywords to determine the degree of subjectivity of a statement. This applied to the tweets quantifies how close they are to be a fact or an opinion according to the vocabulary used in their writing. To determine the
+	 propagation of opinions and facts, the proportion of subjective tweets, resistance and resonance by date is taken into account. With this, there is a value corresponding to the volume of tweets with transcendence (echo) classified as fact or opinion.</p>
+<img src="DataImages/opinion_coronavirus.png" class="plot" />
+<p>By increasing the daily rate of objective tweets using the propagation index and accumulating this value by dates given the persistence in the network of tweets, a new amount arises corresponding to the propagation of objectivity and subjectivity.
+	These amounts correspond to the potential per day of each tweet to generate responses in each of these categories according to objectivity; it is measured in the same units as resonance, as it is also a metric for spreding. Focusing specifically on opinions, one can quantify how many opinions are propagated by each equally
+	propagated fact: this rate is the subjectivity persistence.</p>
+<img src="DataImages/subj_coronavirus.png" class="plot" />
+
+
+
 
 </body>
 </html>
