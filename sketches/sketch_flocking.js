@@ -2,7 +2,7 @@ let flock;
 let alphax  = 25;
 let pmut;
 let pflip = 0.1;
-let  n_flock = 200;
+let  n_flock =200;
 let W;
 let H;
 
@@ -15,7 +15,7 @@ function setup() {
 
   flock = new Flock();
   let add_one  = random([1,2,3,4]);
-  let add_minus = random([0,1,1]);
+  let add_minus = random([0,1,2]);
   // Add an initial set of boids into the system
   for (let i = 0; i < n_flock; i++) {
     let b = new Boid(random(width),random(height));
@@ -72,15 +72,15 @@ function Boid(x, y) {
   this.genes = {
     "DOM": random(),
     "SHP": random(1,2),
-    "R": random(100,250),
-    "G": random(100,250),
-    "B": random(100,250)
+    "R": random(50,210),
+    "G": random(50,210),
+    "B": random(50,210)
   }
   this.myC = {"R":this.genes["R"],"G":this.genes["G"],"B":this.genes["B"]};
   //this.c = createVector(random(0,255),random(0,255),random(0,255));
   this.r = 3.5;
   this.maxspeed = random(2,4);    // Maximum speed
-  this.maxforce = 0.05; // Maximum steering force
+  this.maxforce = 0.06; // Maximum steering force
   this.infected = 0;
   this.one = 0;
 
@@ -97,8 +97,8 @@ Boid.prototype.infect = function(boid) {
 
 
 this.infected =1;
-this.maxforce = 0.01
-this.maxspeed= random([0,0,0,0,0,0.1,3])
+this.maxforce = 0.03
+this.maxspeed= random([0,0,0,0,0,0.1,0.5,1])
 
 }
 
@@ -114,7 +114,7 @@ Boid.prototype.cure = function(boid){
   // this.genes["B"]=0;
   this.infected =-1;
   this.maxforce = 0.5;
-  this.maxspeed=5;
+  this.maxspeed=4;
   }
 
 
@@ -157,7 +157,7 @@ Boid.prototype.mutate = function(boid) {
   this.genes["G"]=boid.genes["G"];
   this.genes["B"]=boid.genes["B"];
 
-  if(boid.one==1){
+  if(boid.one==1 & this.infected!=1){
   this.infect(boid)}
   else if(boid.one==-1){
     this.cure(boid)
@@ -203,8 +203,8 @@ Boid.prototype.flock = function(boids) {
 // Method to update location
 Boid.prototype.update = function() {
 
-  if(this.one==1){this.genes["R"]=0;this.genes["G"]=0;this.genes["B"]=255}
-  if(this.one==-1){this.genes["R"]=255;this.genes["G"]=0;this.genes["B"]=0}
+  if(this.one==1){this.genes["R"]=0;this.genes["G"]=0;this.genes["B"]=255;this.maxforce = 0.2;this.maxspeed=4;}
+  if(this.one==-1){this.genes["R"]=255;this.genes["G"]=0;this.genes["B"]=0;this.maxforce=0.2;this.maxspeed=4;}
   if(random()<pow(pmut,3)/10 & this.infected!=0){this.skip()}
 
   // Update velocity
@@ -242,11 +242,11 @@ if(this.one!=0){
   fill([this.genes["R"],
   this.genes["G"],
 this.genes["B"]]);
-  stroke(map(sin(frameCount/5),-1,1,0,255))
+  stroke(map(sin(frameCount*this.velocity.mag()/50),-1,1,0,255))
 
-
-  let xx = 2*this.r*cos(this.one*frameCount/8+1)
-  let yy = 2*this.r*sin(this.one*frameCount/8)
+  let R =  this.r *(1.2+this.velocity.mag()/2)
+  let xx = R*cos(this.one*frameCount*this.velocity.mag()/100)
+  let yy = R*sin(this.one*frameCount*this.velocity.mag()/91)
 
   circle(xx,yy,1);
   circle(-xx,-yy,1);
@@ -365,7 +365,14 @@ Boid.prototype.align = function(boids) {
   for (let i = 0; i < boids.length; i++) {
     let d = p5.Vector.dist(this.position,boids[i].position);
     if ((d > 0) && (d < neighbordist)) {
-      sum.add(boids[i].velocity);
+
+      if(boids[i].one!=0 & this.one!=0 & this.one!=boids[i].one){
+        sum.add(createVector(randomGaussian(0,1),randomGaussian(0,1)));
+      }
+      else {
+        sum.add(boids[i].velocity);
+      }
+
       if(random()<pmut & boids[i].one!=0 & this.one==0){this.mutate(boids[i]);}
 
       count++;
@@ -386,13 +393,34 @@ Boid.prototype.align = function(boids) {
 // Cohesion
 // For the average location (i.e. center) of all nearby boids, calculate steering vector towards that location
 Boid.prototype.cohesion = function(boids) {
-  let neighbordist = 50;
+  let neighbordist = 60;
   let sum = createVector(0, 0);   // Start with empty vector to accumulate all locations
   let count = 0;
   for (let i = 0; i < boids.length; i++) {
     let d = p5.Vector.dist(this.position,boids[i].position);
-    if ((d > 0) && (d < neighbordist)) {
-      sum.add(boids[i].position); // Add location
+    if ((d > 0) && (d < neighbordist) ) {
+      if(this.one!=0 & boids[i].one!=0 & boids[i].one!=this.one){
+        count--; // Add location
+      }
+      else {
+        sum.add(boids[i].position); // Add location
+      }
+      if(d<0.5*neighbordist & this.infected==1 & boids[i].infected==1 ){
+        push();
+        stroke(155);
+        line(this.position.x,this.position.y,boids[i].position.x,boids[i].position.y)
+        pop();
+      }
+      // if(d<0.5*neighbordist & this.infected==-1 & boids[i].infected==-1 ){
+      //   push();
+      //   stroke(55);
+      //   //noFill()
+      //   //circle(this.position.x,this.position.y,d)
+      //   line(this.position.x,this.position.y,boids[i].position.x,boids[i].position.y)
+      //   pop();
+      // }
+
+
       count++;
     }
   }
