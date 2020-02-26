@@ -139,11 +139,12 @@ Boid.prototype.cure = function(boid){
     // this.genes["G"]=0;
     // this.genes["B"]=0;
     this.infected =0;
-    this.maxspeed = random(2,4);    // Maximum speed
-    this.maxforce = 0.06;
-    if(random()<map(2*pflip,0,2,0,0.5)){
-      this.velocity = this.velocity.mult(-1);
-    }
+    this.maxspeed = random(2,5);    // Maximum speed
+    this.maxforce = 0.08;
+    // if(random()<map(2*pflip,0,2,0,0.5)){
+    //   this.velocity = this.velocity.mult(-1);
+    // }
+    this.velocity = createVector(random(-1, 1), random(-1, 1)).mult(2*this.velocity.mag());
     }
 
 
