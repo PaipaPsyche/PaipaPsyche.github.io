@@ -207,12 +207,13 @@ function check_spot(XX_a,YY_a){
 
 
     if(rango_mina()!=0 & buenas-malas>0 & activate_auto==0){
-      if( rango_mina().T<=4){
-        rango_mina().connect+=10;
-        rango_mina().evaluar_tipo();
-
-        malas=malas+1;
-      }
+      console.log(rango_mina().nombre["NAME"].toUpperCase())
+      // if( rango_mina().T<=4){
+      //   rango_mina().connect+=10;
+      //   rango_mina().evaluar_tipo();
+      //
+      //   malas=malas+1;
+      // }
 
     }
 

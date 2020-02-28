@@ -70,7 +70,7 @@ class centro {
     this.Y = y;
     this.T = t;
     this.connect = 0;
-    this.pop = int(random(100));
+    this.pop = 2+int(random(100));
     this.prov = 0;
     this.mis_canales = [];
     this.born = T;
