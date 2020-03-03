@@ -144,7 +144,10 @@ Boid.prototype.cure = function(boid){
     // if(random()<map(2*pflip,0,2,0,0.5)){
     //   this.velocity = this.velocity.mult(-1);
     // }
-    this.velocity = createVector(random(-1, 1), random(-1, 1)).mult(2*this.velocity.mag());
+    let vel  = this.velocity.copy();
+    this.velocity=boid.velocity.copy();
+    boid.velocity=vel;
+    //this.velocity = createVector(random(-1, 1), random(-1, 1)).mult(2*this.velocity.mag());
     }
 
 
@@ -222,7 +225,7 @@ Boid.prototype.update = function() {
 
   if(this.one==1){this.genes["R"]=0;this.genes["G"]=0;this.genes["B"]=255;this.maxforce = 0.2;this.maxspeed=4;}
   if(this.one==-1){this.genes["R"]=255;this.genes["G"]=0;this.genes["B"]=0;this.maxforce=0.2;this.maxspeed=4;}
-  if(this.one==2){this.genes["R"]=0;this.genes["G"]=255;this.genes["B"]=30;this.maxforce=0.5;this.maxspeed=4;}
+  if(this.one==2){this.genes["R"]=0;this.genes["G"]=255;this.genes["B"]=30;this.maxforce=0.2;this.maxspeed=6;}
   //if(random()<pow(pmut,3)/10 & this.infected!=0){this.skip()}
 
   // Update velocity
