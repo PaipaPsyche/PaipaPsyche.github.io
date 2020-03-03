@@ -247,6 +247,8 @@ function check_spot(XX_a,YY_a){
           //console.log(nuevo.in_mountain,nuevo.in_food,nuevo.in_fuel)
 
           var nc = new canal(clst,nuevo,1);
+          nuevo.origin_name  = clst.origin_name
+
           CANALES.push(nc);
           nuevo.mis_canales.push(CANALES[CANALES.length-1]);
           clst.mis_canales.push(CANALES[CANALES.length-1]);
@@ -278,25 +280,29 @@ function check_spot(XX_a,YY_a){
       //
       // }
 
-      else if(buenas-malas>0 & distancia(nuevo,clst)>(W+H)/8){
+      else if(m.MAPA[XX][YY]<0.53 & buenas-malas>0 & distancia(nuevo,clst)>(W+H)/8){
         malas=malas+1;
         nuevo.T=1;
         nuevo.evaluar_tipo();
         nuevo.is_origin=1;
         let nombre_nuevo = gen_nombre(nuevo);
-        console.log(nombre_nuevo["NAME"])
+        let arr_nom = split(nombre_nuevo["NAME"]," ")
+        nuevo.origin_name=arr_nom[arr_nom.length-1]
+        //console.log(nombre_nuevo["NAME"])
         nuevo.nombre=nombre_nuevo;
         CENTROS.push(nuevo);
 
       }
 
     }
-    else if(buenas-malas>0){
+    else if(m.MAPA[XX][YY]<0.53 & buenas-malas>0){
       malas=malas+1;
       nuevo.T=1;
       nuevo.evaluar_tipo();
       nuevo.is_origin=1;
       let nombre_nuevo = gen_nombre(nuevo);
+      let arr_nom = split(nombre_nuevo["NAME"]," ")
+      nuevo.origin_name=arr_nom[arr_nom.length-1]
       nuevo.nombre=nombre_nuevo;
       CENTROS.push(nuevo);
 

@@ -19,7 +19,8 @@ class canal {
     this.Y1 = el1.Y;
     this.X2 = el2.X;
     this.Y2 = el2.Y;
-
+    this.ph1 = random(-5,5);
+    this.ph2 = random(-5,5);
 
 
 
@@ -88,8 +89,8 @@ class canal {
 
 
 
-    let promx = floor((ee1.X+ee2.X)/2);
-    let promy = floor((ee1.Y+ee2.Y)/2);
+    let promx = floor((ee1.X+ee2.X)/2)+this.ph1;
+    let promy = floor((ee1.Y+ee2.Y)/2)+this.ph2;
 
     bezier(ee1.X, ee1.Y,ee1.X, promy,promx, ee1.Y,promx, promy);
     bezier(promx, promy,promx, ee2.Y,ee2.X, promy,ee2.X, ee2.Y);

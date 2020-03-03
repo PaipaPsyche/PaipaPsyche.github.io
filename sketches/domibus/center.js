@@ -33,8 +33,8 @@ var DICT_MIN_CON = {
 
 
 var DICT_DESC = {
-  1: "Station",
-  2: "Base",
+  1: "Camp",
+  2: "settlement",
   3: "Town",
   4: "City",
   5: "Metrópolis"
@@ -43,14 +43,26 @@ var DICT_DESC = {
 
 var DICT_NAME_RANGE = {
   0:"נול",
-  1:"איינער",
+  1:"צוויי",
   2:"צוויי",
   3:"דריי",
-  4:"פיר",
-  5:"פינף",
-  6:"זעקס",
-  7:"זיבן",
-  8:"אַכט"
+  4:"דריי",
+  5:"דריי",
+  6:"פיר",
+  7:"פיר",
+  8:"פיר",
+  9:"פינף",
+  10:"פינף",
+  11:"פינף",
+  12:"זעקס",
+  13:"זעקס",
+  14:"זעקס",
+  15:"זעקס",
+  16:"זעקס",
+  17:"זיבן",
+  18:"זיבן",
+  19:"זיבן",
+  20:"אַכט"
 
 
 }
@@ -75,6 +87,7 @@ class centro {
     this.mis_canales = [];
     this.born = T;
     this.is_origin = 0;
+    this.origin_name = "";
 
 
     this.in_fuel = 0;
@@ -103,7 +116,7 @@ class centro {
 
   }
   desconectar() {
-    this.connect--;
+    this.connect=this.connect--;
     this.population = int(this.population * 0.4*(1+random()));
     this.evaluar_tipo();
 
@@ -114,7 +127,7 @@ class centro {
   }
 
   score_center() {
-    return this.give_age() + 100 * this.connect;
+    return log(this.population + 1)+this.connect+2*log(this.give_age());
   }
 
   give_high_canal(ARR) {
@@ -240,12 +253,15 @@ class centro {
       this.genfuel = this.T <= 0 ? 0 : 0.1 * this.in_fuel * (10 + this.connect + this.T * 100 * log(this.population + 1));
 
       if(this.T>0){
-      this.maxpop = int(DICT_P_MIN[abs(this.T)]*(1+random())*(1.001**this.give_age()));
-      let popgrowth = map(abs(this.T)*(this.genfuel+this.genfood),0,100000,0.5,1.5);
+        this.maxpop = int(DICT_P_MIN[abs(this.T)]*(1+random())*(1.001**this.give_age()));
+        let popgrowth = map(abs(this.T)*(this.genfuel+this.genfood),0,100000,0.5,1.5);
 
-      let dndt = popgrowth*((this.maxpop-this.population)/(this.maxpop+1))*this.population;
+        let dndt = popgrowth*((this.maxpop-this.population)/(this.maxpop+1))*this.population;
 
-      this.population=max(0,this.population+dndt);
+        this.population=max(0,this.population+dndt);
+        if(this.connect>=3 & random()<0.01){
+          this.population++;
+        }
 
       }
       else if(random()>0.1){
@@ -262,8 +278,8 @@ class centro {
 
 
 
-      this.consumo = this.T <= 0 ? 0 : 0.005 * log(this.give_age() + 1) * (this.T * 60 * log(this.population+1) * (1 + 0.5 * this.in_mountain));
-      this.consumo = this.consumo*(1+(log(this.population+1)*0.1))
+      this.consumo = this.T <= 0 ? 0 : 0.012 * log(this.give_age() + 1) * (this.T * 60 * log(this.population+1) * (1 + 0.5 * this.in_mountain));
+      this.consumo = this.consumo*(1+(log(this.population+1)*0.05))*(1/max(1,this.connect))
 
 
       this.cost = this.in_food * 300 + this.infuel * 1000 + this.in_mountain * 800;
@@ -313,6 +329,7 @@ class centro {
       text("Age : ",xo,yo+33);
       text("Pop. : ",xo+95,yo+18);
       text("Range : ",xo+95,yo+33);
+      text("Clan : ",xo+210,yo+18);
 
 
       fill([255,255,255]);
@@ -324,8 +341,9 @@ class centro {
 
       text(addx+tipox,xo+35,yo+18);
       text(str(this.give_age()) + " Yrs",xo+35,yo+33);
-      text( parse_pop(this.population),xo+145,yo+18);
-      text(str(this.connect),xo+145,yo+33);
+      text( parse_pop(this.population),xo+140,yo+18);
+      text(str(max(this.connect,0))+" - "+DICT_NAME_RANGE[constrain(this.connect,1,20)],xo+140,yo+33);
+      text(this.origin_name,xo+245,yo+18);
 
 
 
