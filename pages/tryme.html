@@ -49,17 +49,20 @@
         <tr>
           <td>  <a href="tryme/flocking.html"><img src="images/p5.jpg" width="200px" ></a> </td>
           <td>
-            <p>Flocking Algorythm tomado de Daniel Shiffmann - The coding Train. Se configuran 2 celulas capaces de convertir a las demas por cercanía.</p>
+            <p>Base: <i>Flocking Algorythm tomado de Daniel Shiffmann - The coding Train</i></p>
 
 
-            <!-- <p>Al comienzo se puede poner un semilla correspondiente a una ciudad grande a partir de la cual se originará el imperio. Cada nueva estación que
-              se ponga en el mapa debe estar conectada a una estación cercana al igual que subirá de nivel a medida que conecte a si misma mas y más estaciones.
-              Despues de lograr poner 5 ciudades grandes, el juego dará más semillas para originar nuevas ciduades grandes sin necesidad de estar conectadas a otros puntos
-              o subir de nivel cualquer estacion a ciudad grande. El rango de conectividad de las estaciones cambia según su rango.
+           <p>El algoritmo de flocking o enjambre surge a partir de individuos móviles por un campo definido siguiendo 3 simples reglas: agruparse con los vecinos, evitar
+             sobrepoblar areas cercanas y alinear su velocidad con los vecinos. Esto da lugar al comportamiento de agrupaciones fluctuantes entre individuos o <i>células</i> que se puede observar en una
+             simulación de enjambre normal. En este caso las reglas del juego cambian cuando se insertan individuos llamados <i>"shifters"</i> que tienen cierta probabilidad de alterar a sus vecinos.
               </p>
 
-              <p><b>CONTROLES : </b> Con click derechose crean nuevas estaciones si estas estan dentro del rango de conexion de otra estación. Si esta muy lejos de cualquier estación y dispone de semillas,
-              hacer click genera una nueva ciudad grande desconectada. con la letra M del teclado cambia la vista de mapas de recursos. con la letra A del teclado se prende y apaga el modo de auto-exloración. </p> -->
+              <p>Los tipos de shifters son: Los <i>Knitters (Azules)</i> fijan algunas células formando redes y realintizan otras. Los <i>Flockers (Rojos)</i> hacen que las celulas se comporten como una unidad rápida fuertemente vinculada
+                a su vecindad, y los <i>Healers (verdes)</i> que reinician la célula. Lo realmente interesante de este pequeño ecosistema es la forma en la que este escenario aleatorio regido po rreglas simples comienza a imitar comportamientos
+                que se pueden observar en la naturaleza: cacería, trampas, asedio, lucha entre Shifters, unidad multicelular, acorralamiento,  entre otros.
+              </p>
+
+              <p><b>CONTROLES : </b> Arrastrar el click sobre la pantalla crea neuvas células. </p> 
 
            </td>
         </tr>
