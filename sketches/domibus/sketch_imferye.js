@@ -51,6 +51,8 @@ var killrate=1;
 
 var titulo = "אימפעריע";
 
+let last_lost_leg = 0;
+let lost_leg_off = 0;
 
 function keyTyped() {
 if(key =='m'){
@@ -74,8 +76,7 @@ if(key =='k' & rango_mina()!=0 & random()<killrate){
 }
 
 if(key =='f'){
-console.log(primero);
-console.log(last_five);
+console.log(CENTROS.length)
 }
 }
 
@@ -227,6 +228,7 @@ function check_spot(XX_a,YY_a){
       nuevo.asignar_valores_mapa(m);
       let nombre_nuevo = gen_nombre(nuevo);
       nuevo.nombre=nombre_nuevo;
+      nuevo.ground_level = m.MAPA[XX][YY]
 
 
 
@@ -464,7 +466,7 @@ function draw() {
 
     let resta = fuel_prod+food_prod-consume;
 
-    let profit =0.5*five+(resta/(abs(resta)+1))*log(max(abs(resta),1))+meanl;
+    let profit =0.3*five+(resta/(abs(resta)+1))*log(max(abs(resta),1))+meanl;
 
     polling  = {"POLL_CEN":classes_M,"POLL_CAN":classes_C,"WPOP":world_pop,"PRFT":(profit).toFixed(3),"MEANL":meanl,
                 "WFUEL":fuel_prod,"WFOOD":food_prod,"WCONS":consume,"MAXAGE":[maxage,maxage_city,trace],
@@ -623,7 +625,9 @@ function draw() {
 
   fill([255,255,255]);
   text(str(polling["PRFT"]),xo+70,yo+35);
-  text(str(polling["MAXAGE"][2] - polling["MAXAGE"][0])+" Yrs",xo+70,yo+50);
+
+  let lst_leg = polling["MAXAGE"][2] - polling["MAXAGE"][0]
+  text(str(lst_leg + lost_leg_off)+" Yrs",xo+70,yo+50);
   text(str(polling["MAXAGE"][0])+" Yrs.",xo+70,yo+65);
   text(str(polling["MAXAGE"][2])+" Yrs.",xo+70,yo+80);
 
@@ -703,4 +707,7 @@ if(mult==0){
   text(" PAUSE ",W/2,H/2);
   pop();
 }
+
+
+
 }

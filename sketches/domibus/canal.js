@@ -19,8 +19,8 @@ class canal {
     this.Y1 = el1.Y;
     this.X2 = el2.X;
     this.Y2 = el2.Y;
-    this.ph1 = random(-5,5);
-    this.ph2 = random(-5,5);
+    this.ph1 = random(-7,7);
+    this.ph2 = random(-7,7);
 
 
 

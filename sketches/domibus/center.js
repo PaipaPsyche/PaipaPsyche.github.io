@@ -37,7 +37,7 @@ var DICT_DESC = {
   2: "settlement",
   3: "Town",
   4: "City",
-  5: "Metrópolis"
+  5: "Metropolis"
 };
 
 
@@ -89,6 +89,8 @@ class centro {
     this.is_origin = 0;
     this.origin_name = "";
 
+    this.ground_level = 0 ;
+
 
     this.in_fuel = 0;
     this.in_food = 0;
@@ -116,7 +118,7 @@ class centro {
 
   }
   desconectar() {
-    this.connect=this.connect--;
+    this.connect--;
     this.population = int(this.population * 0.4*(1+random()));
     this.evaluar_tipo();
 
@@ -249,17 +251,17 @@ class centro {
   evolve() {
     //if(this.T<0 & this.population>100 & random()<0.005){this.population = this.population*random();}
     if (mult != 0) {
-      this.genfood = this.T <= 0 ? 0 : 0.1 * this.in_food * (10 + this.connect + this.T * 100 * log(this.population + 1));
-      this.genfuel = this.T <= 0 ? 0 : 0.1 * this.in_fuel * (10 + this.connect + this.T * 100 * log(this.population + 1));
+      this.genfood = this.T <= 0 ? 0 : 0.15 * this.in_food * (10 + this.connect + this.T * 100 * log(this.population + 1));
+      this.genfuel = this.T <= 0 ? 0 : 0.15 * this.in_fuel * (10 + this.connect + this.T * 100 * log(this.population + 1));
 
       if(this.T>0){
-        this.maxpop = int(DICT_P_MIN[abs(this.T)]*(1+random())*(1.001**this.give_age()));
-        let popgrowth = map(abs(this.T)*(this.genfuel+this.genfood),0,100000,0.5,1.5);
+        this.maxpop = min(int(DICT_P_MIN[abs(this.T)]*(1+random(0.4,0.6))*(1.001**this.give_age())),10**8);
+        let popgrowth = map(abs(this.T)*(this.genfuel+this.genfood),0,100000,0.5,1.2);
 
-        let dndt = popgrowth*((this.maxpop-this.population)/(this.maxpop+1))*this.population;
+        let dndt = int(0.5*popgrowth*((this.maxpop-this.population)/(this.maxpop+1))*this.population);
 
         this.population=max(0,this.population+dndt);
-        if(this.connect>=3 & random()<0.01){
+        if(random()<0.01*this.connect){
           this.population++;
         }
 
@@ -278,7 +280,7 @@ class centro {
 
 
 
-      this.consumo = this.T <= 0 ? 0 : 0.012 * log(this.give_age() + 1) * (this.T * 60 * log(this.population+1) * (1 + 0.5 * this.in_mountain));
+      this.consumo = this.T <= 0 ? 0 : 0.03 * log(this.give_age() + 1) * (this.T * 60 * log(this.population+1) * (1 + 0.5 * this.in_mountain));
       this.consumo = this.consumo*(1+(log(this.population+1)*0.05))*(1/max(1,this.connect))
 
 
