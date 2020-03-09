@@ -258,7 +258,7 @@ class centro {
         this.maxpop = min(int(DICT_P_MIN[abs(this.T)]*(1+random(0.4,0.6))*(1.001**this.give_age())),10**8);
         let popgrowth = map(abs(this.T)*(this.genfuel+this.genfood),0,100000,0.5,1.2);
 
-        let dndt = int(0.5*popgrowth*((this.maxpop-this.population)/(this.maxpop+1))*this.population);
+        let dndt = int(0.35*popgrowth*((this.maxpop-this.population)/(this.maxpop+1))*this.population);
 
         this.population=max(0,this.population+dndt);
         if(random()<0.01*this.connect){

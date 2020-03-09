@@ -36,7 +36,7 @@ let END_NAME = ["rys", "llus", "shiba", "ndi", "rsei", "cury", "rth", "rte", "sc
   "nginus", "rnet", "ster", "star", "ridas", "ston", "tani", "ton", "nata", "sky", "nov", "rys", "leude",
   "riana", "berg", "ton","tzen" , "ris", "nksy", "kov", "rok", "gnar", " nde", "lsar"]
 
-let VOCAL = ["a", "e", "i", "o", "u"," "]
+let VOCAL = ["a", "e", "i", "o", "u"]
 let SILABAS = [];
 
 let C_SILABAS = [
@@ -81,6 +81,14 @@ let C_SILABAS = [
   ["ch", "r"],
   ["sh", "r"],
   ["br", "sh"],
+  ["k", "sh"],
+  ["sh", "k"],
+  ["x", "n"],
+  ["cr", "sh"],
+  ["cr", "x"],
+  ["p", "ss"],
+  ["s", "x"],
+  ["v", "nt"],
   ["g", "st"]
 ]
 
@@ -118,8 +126,8 @@ function gen_nombre(elemento) {
   let long = int(random(2));
   for (let i = 0; i < (1 + long); i++) {
     raiz = raiz + random(SILABAS)
-    if (random() > 0.7) {
-      raiz = raiz + random(["-", " ", "'"]) + random(SILABAS);
+    if (random() > 0.8) {
+      raiz = raiz + random(["-", "'"]) + random(SILABAS);
     }
   }
 
