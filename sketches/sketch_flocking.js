@@ -2,7 +2,7 @@ let flock;
 let alphax  = 25;
 let pmut;
 let pflip = 0.3;
-let  n_flock =250;
+let  n_flock =20;
 let maxconnect;
 let W;
 let H;
@@ -266,8 +266,10 @@ this.genes["B"]]);
   stroke(map(sin(frameCount*this.velocity.mag()/50),-1,1,0,255))
 
   let R =  this.r *(1.2+this.velocity.mag()/2)
-  let xx = R*cos(this.one*frameCount*this.velocity.mag()/100)
-  let yy = R*sin(this.one*frameCount*this.velocity.mag()/91)
+
+
+  let xx = R*cos(this.one*frameCount/100)+this.velocity.mag()
+  let yy = R*sin(this.one*frameCount/91)+this.velocity.mag()
 
   circle(xx,yy,1);
   circle(-xx,-yy,1);
