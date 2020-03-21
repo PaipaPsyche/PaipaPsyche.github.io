@@ -42,6 +42,35 @@
       </p>
     </div>
 
+
+
+    <div class="card">
+      <h2> Vectors en p5.js </h2>
+      <table style="width: 100%">
+
+        <tr>
+          <td>  <a href="tryme/flocking.html"><img src="images/p5.jpg" width="200px" ></a> </td>
+          <td>
+            <!-- <p>Base: <i>Flocking Algorythm tomado de Daniel Shiffmann - The coding Train</i></p> -->
+
+
+           <p> Se genera grupo de lineas que conforman un conjunto de lineas de campo representando una interacción determinada
+                con la posición del Puntero en la pantalla.
+              </p>
+
+              <p>Los vectores rotan a velocidades diferentes entre ellas pero de valor entero, lo que implica eventuales alineaciones del campo respecto al puntero.
+                  Al haber más de un tipo de linea, se diferencian por color y cada tipo de linea reacciona diferente al Puntero-
+              </p>
+
+              <p><b>CONTROLES : </b> El click del mouse cambia la dirección en la que avanza el tiempo, la tecla <b>P</b> pausa el avance del tiempo. </p>
+
+           </td>
+        </tr>
+
+      </table>
+
+    </div>
+
     <div class="card">
       <h2> Organisms en p5.js </h2>
       <table style="width: 100%">
@@ -62,7 +91,7 @@
                 que se pueden observar en la naturaleza: cacería, trampas, asedio, lucha entre Shifters, unidad multicelular, acorralamiento,  entre otros.
               </p>
 
-              <p><b>CONTROLES : </b> Arrastrar el click sobre la pantalla crea neuvas células. </p> 
+              <p><b>CONTROLES : </b> Arrastrar el click sobre la pantalla crea neuvas células. </p>
 
            </td>
         </tr>
@@ -128,8 +157,25 @@
                       o subir de nivel cualquer estacion a ciudad grande. El rango de conectividad de las estaciones cambia según su rango.
                       </p>
 
-                      <p><b>CONTROLES : </b> Con click derechose crean nuevas estaciones si estas estan dentro del rango de conexion de otra estación. Si esta muy lejos de cualquier estación y dispone de semillas,
-                      hacer click genera una nueva ciudad grande desconectada. con la letra M del teclado cambia la vista de mapas de recursos. con la letra A del teclado se prende y apaga el modo de auto-exloración. </p>
+                      <p><b>CONTROLES : </b> Con click derecho se crean nuevas estaciones, siempre y cuando esten dentro del rango de conexión de otra estación. Si esta muy lejos de cualquier estación y se dispone de SEEDS,
+                      hacer click genera una nueva ciudad grande desconectada.
+                    <br>
+                      <b>Controles del teclado :</b>
+                      <br>
+                      <b> M : </b>Cambia la vista de mapas de recursos [normal - combustible - comida - terreno].
+                      <br>
+                      <b> A : </b>Enciende/apaga el modo de auto-exloración.
+                      <br>
+                      <b> P : </b>Pausa/despusa el juego.
+                      <br>
+                      <b> K : </b>(con el cursor sobre una estación) Golpea fuertemente la estación. Muchos golpes pueden matar una estación.
+                      <br>
+                      <b> R : </b>Enciende/apaga el modo 'ignorar ruinas'.
+                      <br>
+                      <b> V : </b>Enciende/apaga la progpagación de un virus letal que ataca ciudades de forma arbitraria.
+
+
+                     </p>
 
                    </td>
                 </tr>
