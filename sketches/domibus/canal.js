@@ -2,13 +2,19 @@ var DICT_R_C = {
   0: 0.2,
   1: 1,
   2: 1.5,
-  3: 2
+  3: 2,
+  11:1,
+  12:1.5,
+  13:2
 };
 var DICT_C_C = {
   0: [0, 0, 0, 180],
   1: [200, 0, 0],
   3: [200, 5, 0],
-  2: [220, 0, 1]
+  2: [220, 0, 1],
+  11:[50,100,200],
+  12:[50,10,200],
+  13:[50,50,200],
 };
 class canal {
 
@@ -38,15 +44,28 @@ class canal {
     } else if ((el1.T + el2.T) < 5) {
       this.T = 2;
 
-    } else {
+    } else if((el1.T + el2.T) < 11)  {
       this.T = 3;
 
-    }
 
-    if (el1.T == -1 | el2.T == -1) {
+  } else if((el1.T + el2.T) < 21)  {
+    this.T = 11;
+
+  }
+  else if((el1.T + el2.T) < 24)  {
+    this.T = 12;
+
+  }
+  else{
+    this.T=13;
+  }
+
+    if ((el1.T == -1 | el2.T == -1) & (el1.T+el2.T<11)) {
       this.T = 1;
     }
-
+    if ((el1.T == -1 | el2.T == -1) & (el1.T+el2.T>=10)) {
+      this.T = 11;
+    }
 
     if (el1.T == -1 & el2.T == -1) {
       this.T = 0;
@@ -76,7 +95,7 @@ class canal {
     noFill();
     //line(this.X1, this.Y1, this.X2, this.Y2);
 
-
+    if(this.T<10){
 
     let set_els=[this.EL1,this.EL2];
     let election = random()>0.5?0:1;
@@ -94,6 +113,12 @@ class canal {
 
     bezier(ee1.X, ee1.Y,ee1.X, promy,promx, ee1.Y,promx, promy);
     bezier(promx, promy,promx, ee2.Y,ee2.X, promy,ee2.X, ee2.Y);
+    }
+    else{
+      line(this.EL1.X,this.EL1.Y,this.EL2.X,this.EL2.Y)
+    }
+
+
     pop();
   }
 

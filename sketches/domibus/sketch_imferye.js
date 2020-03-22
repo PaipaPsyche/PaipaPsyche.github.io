@@ -16,6 +16,11 @@ var scaleY=0.006;
 
 var buenas_off=0;
 
+var limit_GT = 7;
+var limit_FM = -4.5;
+
+
+
 var threshold1 = 0.5;
 var threshold2 = 0.68;
 var thresholdr = 0.7;
@@ -47,6 +52,8 @@ var show_ruinas=1;
 
 var last_five=3;
 
+var last_profit = 0;
+var begin = 0;
 var killrate=1;
 
 var titulo = "אימפעריע";
@@ -136,7 +143,47 @@ function bar_proportion(dictio,colors, xo, yo, w, h) {
 
   }
 }
+function bar_profit(prof, xo, yo, w, h) {
 
+  let pos_p  = map(prof,-13,13,yo+h,yo)
+  pos_p = max(min(pos_p,yo+h),yo)
+
+
+  let h1 = map(limit_FM,-13,13,yo+h,yo)
+  let h2 = map(limit_GT,-13,13,yo+h,yo)
+
+  let h_pos  = h2
+  let h_norm  = h1-h2
+  let h_neg  = h-h1
+
+
+  fill(0,255,0);
+  rect(xo,yo,w,h_pos);
+  fill(255,255,0);
+  rect(xo,yo+h_pos,w,h_norm);
+  fill(255,0,0);
+  rect(xo,yo+h_pos+h_norm,w,h_neg);
+
+
+
+  fill(0);
+  stroke(0);
+
+  rect(xo,pos_p+1.5,w,3)
+  strokeWeight(0.5);
+  textSize(12);
+  fill(255);
+  push()
+  translate(xo+w,pos_p)
+  rotate(PI/2)
+  if(prof<limit_FM){
+    fill(255,0,0)
+  }
+  text((prof).toFixed(2),-10,-3)
+  pop()
+  //
+
+}
 
 
 
@@ -312,6 +359,39 @@ function check_spot(XX_a,YY_a){
 
 
     }
+    //& last_profit>limit_GT)
+    else if(CENTROS.length!=0 & last_profit>limit_GT){
+      let nuevo = new centro(XX,YY,11);
+      nuevo.in_ocean=1;
+      nuevo.asignar_valores_mapa(m);
+      let nombre_nuevo = gen_nombre(nuevo);
+      nuevo.nombre=nombre_nuevo;
+      nuevo.ground_level = m.MAPA[XX][YY]
+      let clst=nuevo.give_closest(CENTROS);
+      let clst_real=nuevo.give_closest_all(CENTROS);
+
+      if(clst.ground_level<0.53 & distancia(nuevo,clst)<=clst.maxdist & distancia(nuevo,clst)>clst.mindist & distancia(nuevo,clst_real)>5){
+        CENTROS.push(nuevo);
+        //console.log(nuevo.in_mountain,nuevo.in_food,nuevo.in_fuel)
+
+        var nc = new canal(clst,nuevo,11);
+        nuevo.origin_name  = clst.origin_name
+
+        CANALES.push(nc);
+        nuevo.mis_canales.push(CANALES[CANALES.length-1]);
+        clst.mis_canales.push(CANALES[CANALES.length-1]);
+
+        nuevo.conectar();
+        nuevo.evaluar_tipo();
+        clst.conectar();
+        clst.evaluar_tipo();
+    }
+
+
+    }
+
+
+
   }
 }
 
@@ -328,7 +408,7 @@ function mouseClicked(){
 function get_maxlvl(){
   let maxlvl = 0;
   for(var i =0;i<CENTROS.length;i++){
-    if(CENTROS[i].T>maxlvl){
+    if(CENTROS[i].T>maxlvl & CENTROS[i].in_ocean==0){
       maxlvl=CENTROS[i].T;
     }
   }
@@ -390,6 +470,9 @@ background(0);
 function draw() {
 
 
+
+
+
   let five=0;
   m.pintar();
 
@@ -438,14 +521,16 @@ function draw() {
 
     let elected = CENTROS[i];
 
-    sumal+=elected.T;
+    let tt = elected.T;
+    if (tt>10){tt=tt-10}
+    sumal+=tt;
 
     if(elected.T>0 | show_ruinas==1){
     elected.pintar(T);
   }
     if(elected.T==5){five++;}
     let score=elected.score_center();
-    if(elected.T==mxlvl){cand.push([elected,score])}
+    if(elected.T==mxlvl & elected.in_ocean==0){cand.push([elected,score])}
 
 
     classes_M[str(elected.T)]++;
@@ -471,6 +556,19 @@ function draw() {
     polling  = {"POLL_CEN":classes_M,"POLL_CAN":classes_C,"WPOP":world_pop,"PRFT":(profit).toFixed(3),"MEANL":meanl,
                 "WFUEL":fuel_prod,"WFOOD":food_prod,"WCONS":consume,"MAXAGE":[maxage,maxage_city,trace],
               "ACTVS":activas};
+    console.log(activas)
+    if(CENTROS.length>0 & activas==0){
+      mult=0;
+      push()
+      textSize(30);
+      text("GAME OVER",W/2-60,H/2)
+      pop()
+    }
+
+
+
+    last_profit=profit;
+
 
 
 
@@ -636,7 +734,8 @@ function draw() {
 
 if(CENTROS.length>0){
 
-  bar_proportion(classes_M,DICT_C_M,655,yo+80,350,5);
+  bar_proportion(classes_M,DICT_C_M,680,yo+80,350,5);
+  bar_profit(profit,650,5,10,55)
 }
 
 
@@ -652,7 +751,7 @@ if(CENTROS.length>0){
     text("AUTO-EXPLORE",xo,yo+40);
 
   }
-  if(profit>7){
+  if(profit>limit_GT){
     fill([250,255,0]);
     text("GOLDEN TIMES",xo+105,yo+40);
   }
@@ -665,7 +764,7 @@ if(CENTROS.length>0){
       random(CENTROS).desconectar();
     }
   }
-  if(profit<-5){
+  if(profit<limit_FM){
     fill([255,155,30]);
     text("FAMINE",xo+55,yo+60);
     killrate =0.1*log(-min(resta,-1));
@@ -698,7 +797,7 @@ if(CENTROS.length>0){
 
 
 }
-if(mult==0){
+if(mult==0 & activas>0){
   push();
   fill([0,0,0,100]);
   noStroke();
