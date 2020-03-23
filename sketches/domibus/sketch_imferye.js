@@ -760,13 +760,13 @@ function draw() {
 
   fill([255,255,80]);
 
-  text("Profit Gap : ",xo,yo+35);
+  text("Active/Total : ",xo,yo+35);
   text("Lost legacy : ",xo,yo+50);
   text("Oldest City : ",xo,yo+65);
   text("Origin : ",xo,yo+80);
 
   fill([255,255,255]);
-  text((best_prof-worst_prof).toFixed(2),xo+70,yo+35);
+  text(polling["ACTVS"]+"/"+CENTROS.length,xo+70,yo+35);
 
   let lst_leg = polling["MAXAGE"][2] - polling["MAXAGE"][0]
   text(str(lst_leg + lost_leg_off)+" Yrs",xo+70,yo+50);
