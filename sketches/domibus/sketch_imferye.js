@@ -16,9 +16,12 @@ var scaleY=0.006;
 
 var buenas_off=0;
 
-var limit_GT = 7;
-var limit_FM = -4.5;
-
+var limit_GT = 9;
+var limit_FM = -3;
+var best_prof = 0;
+var worst_prof = 0;
+var last_marine = 0 ;
+var new_marine_permission=0;
 
 
 var threshold1 = 0.5;
@@ -32,11 +35,13 @@ var n_reg_pop = 50;
 
 var T=0;
 var dT = 1;
+var prosperity_years=0;
 
 var mult= 1;
 
 var buenas=1;
 var malas = 0;
+
 
 var pintar_rec=0;
 
@@ -145,6 +150,10 @@ function bar_proportion(dictio,colors, xo, yo, w, h) {
 }
 function bar_profit(prof, xo, yo, w, h) {
 
+
+
+
+
   let pos_p  = map(prof,-13,13,yo+h,yo)
   pos_p = max(min(pos_p,yo+h),yo)
 
@@ -156,7 +165,8 @@ function bar_profit(prof, xo, yo, w, h) {
   let h_norm  = h1-h2
   let h_neg  = h-h1
 
-
+  stroke(0);
+  strokeWeight(1);
   fill(0,255,0);
   rect(xo,yo,w,h_pos);
   fill(255,255,0);
@@ -169,19 +179,23 @@ function bar_profit(prof, xo, yo, w, h) {
   fill(0);
   stroke(0);
 
-  rect(xo,pos_p+1.5,w,3)
+  rect(xo,pos_p+1.5,w,2)
   strokeWeight(0.5);
-  textSize(12);
+  textSize(11);
   fill(255);
   push()
-  translate(xo+w,pos_p)
-  rotate(PI/2)
+  textAlign(CENTER);
+  translate(xo+w/2,h+5)
+
   if(prof<limit_FM){
     fill(255,0,0)
   }
-  text((prof).toFixed(2),-10,-3)
+  if(prof>limit_GT){
+    fill(0,255,0)
+  }
+  text((prof).toFixed(2),0,11)
   pop()
-  //
+
 
 }
 
@@ -360,11 +374,11 @@ function check_spot(XX_a,YY_a){
 
     }
     //& last_profit>limit_GT)
-    else if(CENTROS.length!=0 & last_profit>limit_GT){
+    else if(CENTROS.length!=0 & last_profit>limit_GT & m.MAPA[XX][YY]<0.95*threshold1 & new_marine_permission == 1){
       let nuevo = new centro(XX,YY,11);
       nuevo.in_ocean=1;
       nuevo.asignar_valores_mapa(m);
-      let nombre_nuevo = gen_nombre(nuevo);
+      let nombre_nuevo = gen_code(nuevo);
       nuevo.nombre=nombre_nuevo;
       nuevo.ground_level = m.MAPA[XX][YY]
       let clst=nuevo.give_closest(CENTROS);
@@ -372,6 +386,7 @@ function check_spot(XX_a,YY_a){
 
       if(clst.ground_level<0.53 & distancia(nuevo,clst)<=clst.maxdist & distancia(nuevo,clst)>clst.mindist & distancia(nuevo,clst_real)>5){
         CENTROS.push(nuevo);
+        last_marine++;
         //console.log(nuevo.in_mountain,nuevo.in_food,nuevo.in_fuel)
 
         var nc = new canal(clst,nuevo,11);
@@ -505,6 +520,7 @@ function draw() {
   let maxage  = 0;
   let maxage_city= "";
   let trace=0;
+  let marine = 0;
   let sumal=0;
   let activas=0;
 
@@ -522,7 +538,7 @@ function draw() {
     let elected = CENTROS[i];
 
     let tt = elected.T;
-    if (tt>10){tt=tt-10}
+    if (tt>10){tt=tt-10;marine++;}
     sumal+=tt;
 
     if(elected.T>0 | show_ruinas==1){
@@ -532,8 +548,8 @@ function draw() {
     let score=elected.score_center();
     if(elected.T==mxlvl & elected.in_ocean==0){cand.push([elected,score])}
 
-
-    classes_M[str(elected.T)]++;
+    if(elected.T<10){
+    classes_M[str(elected.T)]++;}
     world_pop+=elected.population;
     fuel_prod+=elected.genfuel;
     food_prod+=elected.genfood;
@@ -552,22 +568,50 @@ function draw() {
     let resta = fuel_prod+food_prod-consume;
 
     let profit =0.3*five+(resta/(abs(resta)+1))*log(max(abs(resta),1))+meanl;
-
+    profit = profit*0.7-1.5;
+    if(profit>best_prof){
+      best_prof=profit;
+    }
+    if(profit<worst_prof){
+      worst_prof=profit;
+    }
     polling  = {"POLL_CEN":classes_M,"POLL_CAN":classes_C,"WPOP":world_pop,"PRFT":(profit).toFixed(3),"MEANL":meanl,
                 "WFUEL":fuel_prod,"WFOOD":food_prod,"WCONS":consume,"MAXAGE":[maxage,maxage_city,trace],
-              "ACTVS":activas};
-    console.log(activas)
+              "ACTVS":activas,"MARINE":marine};
+
+
+
+    let age = polling["MAXAGE"][2]
+    new_marine_permission = int((age/150)-marine)>0?1:0;
     if(CENTROS.length>0 & activas==0){
       mult=0;
+
+
+
+      let score;
+
+
+      score = map(best_prof,-15,15,-1,1) + map(worst_prof,-15,15,-1,1) + map(last_lost_leg/age,0,1,1,-1) + log(age) +map(prosperity_years/age,0,1,0,2)
+      score = int(map(score,-3,5+log(20000),0,10000))
+
       push()
+      textAlign(CENTER);
       textSize(30);
-      text("GAME OVER",W/2-60,H/2)
+      fill(255)
+      text("GAME OVER",W/2,H/2)
+      textSize(20);
+      text("FINAL SCORE "+score+" / 10000",W/2,H/2+30)
       pop()
+
     }
 
 
+    if(polling["MAXAGE"][2] - polling["MAXAGE"][0] < polling["MAXAGE"][2]){
+    last_lost_leg=  polling["MAXAGE"][2] - polling["MAXAGE"][0]
+    }
 
     last_profit=profit;
+
 
 
 
@@ -716,13 +760,13 @@ function draw() {
 
   fill([255,255,80]);
 
-  text("Profit : ",xo,yo+35);
+  text("Profit Gap : ",xo,yo+35);
   text("Lost legacy : ",xo,yo+50);
   text("Oldest City : ",xo,yo+65);
   text("Origin : ",xo,yo+80);
 
   fill([255,255,255]);
-  text(str(polling["PRFT"]),xo+70,yo+35);
+  text((best_prof-worst_prof).toFixed(2),xo+70,yo+35);
 
   let lst_leg = polling["MAXAGE"][2] - polling["MAXAGE"][0]
   text(str(lst_leg + lost_leg_off)+" Yrs",xo+70,yo+50);
@@ -735,7 +779,7 @@ function draw() {
 if(CENTROS.length>0){
 
   bar_proportion(classes_M,DICT_C_M,680,yo+80,350,5);
-  bar_profit(profit,650,5,10,55)
+  bar_profit(profit,660,3,10,42)
 }
 
 
@@ -754,6 +798,7 @@ if(CENTROS.length>0){
   if(profit>limit_GT){
     fill([250,255,0]);
     text("GOLDEN TIMES",xo+105,yo+40);
+    prosperity_years++;
   }
   if(activate_virus==1 ){
     fill([0,255,0]);
@@ -778,9 +823,10 @@ if(CENTROS.length>0){
 
 
 
-  if(CENTROS.length>0 & (activate_auto==1 | profit>7)& mult!=0){
+  if(CENTROS.length>0 & (activate_auto==1 | profit>limit_GT)& mult!=0){
 
     if(random()<0.05 | activate_auto==1){
+
 
     if(random()<0.9){
       var centroelecto=CENTROS[CENTROS.length-1];

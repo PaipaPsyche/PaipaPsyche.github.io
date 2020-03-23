@@ -15,9 +15,9 @@ var DICT_C_M = {
   "3": [0, 40, 200],
   "4": [20, 190, 0],
   "5": [255, 255, 0],
-  "11": [0, 150, 255],
-  "12": [50, 185, 255],
-  "13": [0, 255, 155]
+  "11": [0, 180, 255],
+  "12": [60, 125, 255],
+  "13": [255, 255, 0]
 }
 
 
@@ -35,11 +35,11 @@ var DICT_P_MIN = {
 var DICT_MIN_CON = {
   1: 3,
   2: 5,
-  3: 7,
+  3: 8,
   4: 11,
   5: 8,
   11: 3,
-  12: 5,
+  12: 6,
   13: 7};
 
 
@@ -87,9 +87,9 @@ var DICT_R_MINMAX = {
   3: [15, 80],
   4: [15, 120],
   5: [20, 160],
-  11: [35, 50],
-  12: [35, 60],
-  13: [35, 80],
+  11: [50, 80],
+  12: [50, 100],
+  13: [50, 100],
 };
 
 class centro {
@@ -113,6 +113,8 @@ class centro {
     this.in_food = 0;
     this.in_mountain = 0;
     this.in_ocean = 0;
+    this.name_change=0;
+
 
     this.cost = 0;
 
@@ -228,7 +230,7 @@ class centro {
   evaluar_tipo() {
 
 
-
+    this.connect = max(0,this.connect)
     this.T = 1;
     for (var i = 2; i <= 5; i++) {
       if (this.connect >= DICT_MIN_CON[i - 1] & this.population>=0.8*DICT_P_MIN[i-1]) {
@@ -241,6 +243,11 @@ class centro {
         if (this.connect >= DICT_MIN_CON[i - 1] & this.population>=0.8*DICT_P_MIN[i-1]) {
           this.T = i;
         }
+        if(this.name_change==0 & this.T==13){
+          this.nombre = gen_nombre(this);
+          this.name_change=1;
+        }
+
       }
 
 
@@ -284,11 +291,11 @@ class centro {
       if(this.T>10){realt=this.T-10}
 
 
-      this.genfood = this.T <= 0 ? 0 : 0.15 * this.in_food * (10 + this.connect + realt * 100 * log(this.population + 1));
-      this.genfuel = this.T <= 0 ? 0 : 0.15 * this.in_fuel * (10 + this.connect + realt * 100 * log(this.population + 1));
+      this.genfood = this.T <= 0 ? 0 : 0.18 * this.in_food * (10 + this.connect + realt * 100 * log(this.population + 1)*log(2+this.give_age()));
+      this.genfuel = this.T <= 0 ? 0 : 0.18 * this.in_fuel * (10 + this.connect + realt * 100 * log(this.population + 1)*log(2+this.give_age()));
 
       if(this.T>0){
-        this.maxpop = min(int(DICT_P_MIN[abs(this.T)]*(1+random(0.4,0.6))*(1.001**this.give_age())),10**8);
+        this.maxpop = min(int(DICT_P_MIN[abs(this.T)]*(1+random(0.4,0.6))*(1.001**this.give_age()))+3**this.connect,10**8);
         let popgrowth = map(abs(realt)*(this.genfuel+this.genfood),0,100000,0.5,1.2);
 
         let dndt = int(0.35*popgrowth*((this.maxpop-this.population)/(this.maxpop+1))*this.population);
@@ -315,19 +322,21 @@ class centro {
 
 
 
-      this.consumo = this.T <= 0 ? 0 : 0.03 * log(this.give_age() + 1) * (realt * 60 * log(this.population+1) * (1 + 0.5 * this.in_mountain));
+      this.consumo = this.T <= 0 ? 0 : 0.05 * log(this.give_age() + 1) * (realt * 70 * log(this.population+1) * (1 + 0.5 * this.in_mountain));
       this.consumo = this.consumo*(1+(log(this.population+1)*0.05))*(1/max(1,this.connect))
       if(this.T>10){
-        let m_consumo = map(this.ground_level,0,0.5,1,1.5)
+        let m_consumo = map(this.ground_level,0,0.5,1.5,1)
         this.consumo=this.consumo*m_consumo
       }
 
-      this.cost = this.in_food * 300 + this.infuel * 1000 + this.in_mountain * 800;
+
 
       this.genfood = int(this.genfood);
       this.genfuel = int(this.genfuel);
       this.consumo = int(this.consumo);
       this.population = floor(this.population);
+
+      this.cost = log((this.genfuel+this.genfood+1)/max(this.consumo,1));
     }
   }
 
@@ -350,7 +359,7 @@ class centro {
 
       textSize(12);
       //textSize(15);
-      let xo = 680;
+      let xo = 685;
       let yo = 18;
 
 
@@ -370,13 +379,36 @@ class centro {
       text("Pop. : ",xo+105,yo+18);
       text("Range : ",xo+105,yo+33);
       text("Clan : ",xo+210,yo+18);
+      text("Rate : ",xo+210,yo+33);
 
 
       fill([255,255,255]);
 
-      let tipox = this.T == -1 ? "Ruins" : DICT_DESC[this.T];
+      let tipox="";
+      let addx = "";
 
-      let addx = this.T==-1 & this.maxlevel>=4?"City ":"";
+      if(this.T ==-1){
+        tipox = "Ruins"
+      if(this.maxlevel>10 & this.maxlevel<13){
+        tipox = "Debrye"
+      }
+      else if(this.maxlevel>=4 & this.maxlevel<10){
+        addx = "City "
+      }
+      else if( this.maxlevel>=13){
+        addx = "Sunken "
+      }
+
+
+      }
+      else {
+        tipox =  DICT_DESC[this.T];
+      }
+
+      // let tipox = this.T == -1 ? "Ruins" : DICT_DESC[this.T];
+      // tipox = this.T == -1 & this.maxlevel<13 & this.maxlevel>10? "Debrye" : tipox;
+      // let addx = this.T==-1 & this.maxlevel>=4 & this.maxlevel<10?"City ":"";
+      // addx = this.T==-1 & this.maxlevel>=13?"Underwater ":"";
 
 
       text(addx+tipox,xo+35,yo+18);
@@ -384,6 +416,7 @@ class centro {
       text( parse_pop(this.population),xo+150,yo+18);
       text(str(max(this.connect,0))+" - "+DICT_NAME_RANGE[constrain(this.connect,1,20)],xo+150,yo+33);
       text(this.origin_name,xo+245,yo+18);
+      text((this.cost).toFixed(2),xo+245,yo+33);
 
 
 
@@ -404,7 +437,8 @@ class centro {
 
 
     stroke(0);
-    if(this.in_fuel+this.in_food>0){stroke(155);}
+    this.R = int(map(log(this.population+1),0,20,3,16))/2
+    if(this.in_fuel+this.in_food>0 & this.T>0){stroke(155);}
     strokeWeight(1);
     if(this.T<10){
     circle(this.X, this.Y, this.R)}
@@ -412,9 +446,18 @@ class centro {
       push();
       translate(this.X,this.Y)
       beginShape();
-      vertex(0, -this.R );
-      vertex(-this.R, this.R );
-      vertex(this.R, this.R );
+      if(this.T==13){
+        vertex(0, this.R );
+        vertex(-this.R, -this.R );
+        vertex(this.R, -this.R );
+      }
+      else{
+        vertex(0, -this.R );
+        vertex(-this.R, this.R );
+        vertex(this.R, this.R );
+
+      }
+
       endShape(CLOSE);
       pop();
     } //+sin(T*(this.T+1)*0.3));

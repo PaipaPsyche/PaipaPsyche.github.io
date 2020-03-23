@@ -89,8 +89,17 @@ let C_SILABAS = [
   ["p", "ss"],
   ["s", "x"],
   ["v", "nt"],
-  ["g", "st"]
+  ["g", "st"],
+  ["l", "gdr"],
+  ["pr", "g"],
+  ["s", "nt"],
+  ["cl", "st"],
+  ["f", "nst"],
+  ["f", "ck"],
+  ["fr", "g"],
+  ["fl", "r"]
 ]
+
 
 
 
@@ -113,7 +122,19 @@ function add_silabas() {
 
 
 
+function gen_code(elemento){
 
+  let root = elemento.give_closest(CENTROS).origin_name
+  let sigla = root.substring(0,3).toUpperCase()
+
+  let number = 1000+last_marine;
+
+
+  return {
+    "NAME": sigla+"-"+number,
+    "RAIZ": root
+  }
+}
 
 
 
