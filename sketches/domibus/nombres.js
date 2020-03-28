@@ -7,14 +7,14 @@ let POST_FOSA = ["Rift ", "Crack ", "pit ", "Abyss ", "Fault "]
 let POST_VALLE = ["Valley ", "Arids ", "Plains ", "Jungle ", "River ", "Cave ","Tropics","Desert",
  " Fields ", " Swamp "," savanna","Farms", "Camps", " Oasis" , "Pond" , "Park","Taiga","Grassland",
 "Plateau","Woodland","Chaparral", "Pass"]
-let POST_WATER = ["Sea ", "Lake ", "Waters", "Extension ", "Point ","Strait"]
+let POST_WATER = ["Sea ", "Waters", "Extension ", "Point ","Strait"]
 let POST_SHORE = ["Shore ", "Port ", "Reef ", "Gulf ", "Bottom ","Bay",
 "Coast ", "Landing ", "Beach ", "Delta ","Cliff","Cape","Peninsula"]
 
 
 let POST_NAME = ["Ville ", "Dale ", "Post ", "Stand ", " Gate", " Rise", " Fort ", " Bridge ",
                 " Watch ", " Lair ", " Castle "," Rock"," Wall"," State"," Village"];
-let PRE_NAME = ["Mines of ","United ","Saint ", "The ", "Last ", "", "Front ","Rocky" ,
+let PRE_NAME = ["Mines of ","United ","Saint ", "The ", "Last ", "", "Front ","Rocky " ,
  "Will of ", "Forge ", "Temple of ", "Camp of ","Fort ","South " , "North ","East ","West "]
 let ORIGIN_NAME = ["Fist of ", "Land of ", "Fire of the first ", "Hammer of ", "Light of ",
   " Mother ", "Path of ", "Nest of ", "Guard of ", "Rise of ", "Dawn of ","Gathering of the ","Ark of the "
@@ -54,6 +54,20 @@ let C_SILABAS = [
   ["p", ""],
   ["d", ""],
   ["f", ""],
+  ["", "c"],
+  ["", "v"],
+  ["", "b"],
+  ["", "n"],
+  ["", "m"],
+  ["", "l"],
+  ["", "s"],
+  ["", "sh"],
+  ["", "ch"],
+  ["", "t"],
+  ["", "r"],
+  ["", "p"],
+  ["", "d"],
+  ["", "f"],
   ["r", "s"],
   ["pr", ""],
   ["tr", ""],
@@ -144,11 +158,14 @@ function gen_nombre(elemento) {
   let valor = m.MAPA[elemento.X][elemento.Y];
   let tipo = m.M_tipos[elemento.X][elemento.Y];
 
-  let long = int(random(2));
+  let long = int(random(3));
   for (let i = 0; i < (1 + long); i++) {
     raiz = raiz + random(SILABAS)
     if (random() > 0.8) {
       raiz = raiz + random(["-", "'"]) + random(SILABAS);
+    }
+    else if (random() > 0.7) {
+      raiz = raiz + random(VOCAL);
     }
   }
 
@@ -203,21 +220,26 @@ function gen_nombre(elemento) {
     nombre = raiz;
   }
 
-  if (tipo == -2) {
-    nombre = raiz + " " + random(POST_FOSA);
+  if(random()<0.3){
 
+    if (tipo == -2) {
+      nombre = raiz + " " + random(POST_FOSA);
+
+    }
+
+    if (tipo == -1) {
+      nombre = raiz + " " + random(POST_WATER);
+
+    }
+
+    if (tipo == 1 & valor < 0.53) {
+      nombre = raiz + " " + random(POST_SHORE);
+
+
+    }
   }
 
-  if (tipo == -1) {
-    nombre = raiz + " " + random(POST_WATER);
 
-  }
-
-  if (tipo == 1 & valor < 0.53) {
-    nombre = raiz + " " + random(POST_SHORE);
-
-
-  }
 
 
 

@@ -295,7 +295,7 @@ class centro {
       this.genfuel = this.T <= 0 ? 0 : 0.18 * this.in_fuel * (10 + this.connect + realt * 100 * log(this.population + 1)*log(2+this.give_age()));
 
       if(this.T>0){
-        this.maxpop = min(int(DICT_P_MIN[abs(this.T)]*(1+random(0.4,0.6))*(1.001**this.give_age()))+3**this.connect,10**8);
+        this.maxpop = int(DICT_P_MIN[abs(this.T)]*(1+random(0.4,0.65))*(1.001**this.give_age()))+3**min(this.connect,15);
         let popgrowth = map(abs(realt)*(this.genfuel+this.genfood),0,100000,0.5,1.2);
 
         let dndt = int(0.35*popgrowth*((this.maxpop-this.population)/(this.maxpop+1))*this.population);
@@ -437,11 +437,21 @@ class centro {
 
 
     stroke(0);
-    this.R = int(map(log(this.population+1),0,20,3,16))/2
+    // this.R = int(map(log(this.population+1),0,20,3,16))/2
+    this.R = DICT_R_M[abs(this.T)]
+    if(this.T==-1){this.R = this.R-1}
     if(this.in_fuel+this.in_food>0 & this.T>0){stroke(155);}
     strokeWeight(1);
     if(this.T<10){
-    circle(this.X, this.Y, this.R)}
+
+    if(this.is_origin!=0){
+      rect(this.X-this.R,this.Y-this.R,2*this.R,2*this.R)
+    }
+    else{
+
+    circle(this.X, this.Y, this.R)
+    }
+  }
     else {
       push();
       translate(this.X,this.Y)
