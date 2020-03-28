@@ -108,7 +108,7 @@ Boid.prototype.infect = function(boid) {
 
 this.infected =1;
 this.maxforce = 0.03
-this.maxspeed= random([0,0,0,0,0.5,1.2])
+this.maxspeed= random([0,0,0,0,0,0,0.5,1.2])
 
 }
 
@@ -206,9 +206,27 @@ Boid.prototype.flock = function(boids) {
   let ali = this.align(boids);      // Alignment
   let coh = this.cohesion(boids);   // Cohesion
   // Arbitrarily weight these forces
-  sep.mult(1.5);
-  ali.mult(1.0);
-  coh.mult(1.0);
+
+  let mult_sep  = 1.5;
+  let mult_ali  = 0.9;
+  let mult_coh  = 1;
+
+  if(this.infected==1){
+    mult_coh=1.2
+    mult_sep=1.2
+  }
+  if(this.one!=0 | this.infected==-1){
+    mult_sep = 1.05
+    mult_ali=1
+
+  }
+
+
+  sep.mult(mult_sep);
+  ali.mult(mult_ali);
+  coh.mult(mult_coh);
+
+
 
 
   // sep.mult(random(0.5,2));
@@ -379,6 +397,8 @@ Boid.prototype.separate = function(boids) {
   return steer;
 }
 
+
+
 // Alignment
 // For every nearby boid in the system, calculate the average velocity
 Boid.prototype.align = function(boids) {
@@ -390,7 +410,7 @@ Boid.prototype.align = function(boids) {
     if ((d > 0) && (d < neighbordist)) {
 
       if(boids[i].one!=0 & this.one!=0 & this.one!=boids[i].one){
-        sum.add(createVector(randomGaussian(0,1),randomGaussian(0,1)));
+        sum.add(createVector(randomGaussian(0,2),randomGaussian(0,2)));
       }
       else {
         sum.add(boids[i].velocity);
@@ -420,6 +440,9 @@ Boid.prototype.cohesion = function(boids) {
   let neighbordist = 60;
   let sum = createVector(0, 0);   // Start with empty vector to accumulate all locations
   let count = 0;
+
+  let count_boxes = 0;
+
   for (let i = 0; i < boids.length; i++) {
     let d = p5.Vector.dist(this.position,boids[i].position);
     if ((d > 0) && (d < neighbordist) ) {
@@ -428,6 +451,7 @@ Boid.prototype.cohesion = function(boids) {
       }
       else {
         sum.add(boids[i].position); // Add location
+        if(boids[i].infected==1 & d<neighbordist/2){ count_boxes++;}
       }
       if(d<0.5*neighbordist & this.infected==1 & boids[i].infected==1 & n_connect>0){
         push();
@@ -449,10 +473,25 @@ Boid.prototype.cohesion = function(boids) {
       count++;
     }
   }
+
+  let mult_vel =this.one!=0?1:map(1-(count_boxes/(count+1)),0,1,0.7,1);
+
+  this.velocity=this.velocity.mult(mult_vel)
+
+
   if (count > 0) {
     sum.div(count);
     return this.seek(sum);  // Steer towards the location
   } else {
     return createVector(0, 0);
   }
+}
+
+
+Boid.prototype.special_tasks = function(boids) {
+
+
+
+
+
 }
