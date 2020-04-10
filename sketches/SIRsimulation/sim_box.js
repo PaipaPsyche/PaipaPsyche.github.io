@@ -6,8 +6,6 @@ class simulation {
     this.H = h;
 
 
-    this.ended = 0;
-
     this.plot = new plot(atts_sim["margin"], atts_sim["margin"])
     this.poll = {
       "suceptible": 0,
@@ -65,20 +63,30 @@ class simulation {
       if (this.changes > 0) {
         this.boids[i].set_posterior()
       }
-      this.boids[i].evolve(this.boids)
+      if(atts_sim["active"]==1){
+
+      this.boids[i].evolve(this.boids);
       if (advance == 1) {
         this.boids[i].plus_day(this.poll["infected"] / this.boids.length)
       }
-      this.boids[i].paint()
+
       if (advance == 1) {
         this.poll[this.boids[i].state["state"]]++;
         this.poll["total"]++;
       }
+    }
+
+
+      this.boids[i].paint()
+
 
     }
     this.changes = 0
+    if(random()<0.005){
+      this.changes = 1;
+    }
 
-    if (advance == 1) {
+    if (advance == 1 && atts_sim["active"]==1) {
       atts_sim["day"]++;
       this.plot.add_day(this.poll)
     }
@@ -86,7 +94,8 @@ class simulation {
     push()
 
     if (this.poll["infected"] == 0) {
-      this.ended = 1;
+      atts_sim["ended"]=1;
+      pause();
     }
 
     fill(255)
@@ -125,6 +134,9 @@ class simulation {
     this.plot.paint()
 
   }
+
+
+
 
 
 

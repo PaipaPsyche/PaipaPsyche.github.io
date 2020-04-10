@@ -52,7 +52,7 @@ class boid {
       this.state["days_infected"]++;
 
       let frac_days = map(this.state["days_infected"] / atts_sim["days_tolerance"], 0, 1, 0, 0.1)
-      if (random() < frac_days & this.state["days_infected"] > atts_sim["min_days"]) {
+      if (random() < frac_days & this.state["days_infected"] > 0.5*atts_sim["days_tolerance"]) {
         let mult = prop_inf > atts_sim["coverage_rate"] ? map(prop_inf / atts_sim["coverage_rate"], 1, 5, 1, 10) : 1;
 
         if (random() < atts_sim["p_death"] * mult) {
@@ -134,7 +134,7 @@ class boid {
     // }
     //console.log(this.acc.mag())
     this.acc.add(random_vel(atts_sim["dacc"])).limit(2 * atts_sim["dacc"] / (1 + 2 * atts_sim["distancing"]))
-    let limit_vel = 1
+    let limit_vel = 0.5
     if (this.obedience == 1) {
 
       limit_vel = map(atts_sim["restriction"], 0, 1, 1, 0.05) * map(atts_sim["distancing"], 0, 1, 1, 0.5);
@@ -143,26 +143,52 @@ class boid {
     this.velocity.add(this.acc).limit(limit_vel * atts_sim["maxvel"] * atts_sim["disp_index"])
     this.position.add(this.velocity);
 
-    if (this.position.x < this.x_bounds[0]) {
-      this.position.x = this.x_bounds[0]
-      this.velocity.x = -this.velocity.x
-    }
+    if(atts_sim["closed"]==0){
 
-    if (this.position.x > this.x_bounds[1]) {
-      this.position.x = this.x_bounds[1]
-      this.velocity.x = -this.velocity.x
-    }
+      if (this.position.x < this.x_bounds[0]) {
+        this.position.x = this.x_bounds[1]
 
-    if (this.position.y < this.y_bounds[0]) {
-      this.position.y = this.y_bounds[0]
-      this.velocity.y = -this.velocity.y
-    }
+      }
 
-    if (this.position.y > this.y_bounds[1]) {
-      this.position.y = this.y_bounds[1]
-      this.velocity.y = -this.velocity.y
-    }
+      if (this.position.x > this.x_bounds[1]) {
+        this.position.x = this.x_bounds[0]
 
+      }
+
+      if (this.position.y < this.y_bounds[0]) {
+        this.position.y = this.y_bounds[1]
+
+      }
+
+      if (this.position.y > this.y_bounds[1]) {
+        this.position.y = this.y_bounds[0]
+
+      }
+    }else{
+
+      if (this.position.x < this.x_bounds[0]) {
+        this.position.x = this.x_bounds[0]
+        this.velocity.x = -this.velocity.x
+      }
+
+      if (this.position.x > this.x_bounds[1]) {
+        this.position.x = this.x_bounds[1]
+        this.velocity.x = -this.velocity.x
+      }
+
+      if (this.position.y < this.y_bounds[0]) {
+        this.position.y = this.y_bounds[0]
+        this.velocity.y = -this.velocity.y
+      }
+
+      if (this.position.y > this.y_bounds[1]) {
+        this.position.y = this.y_bounds[1]
+        this.velocity.y = -this.velocity.y
+      }
+
+
+
+    }
 
 
     this.refresh(boids);

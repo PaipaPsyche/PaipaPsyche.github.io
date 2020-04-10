@@ -12,7 +12,7 @@ let att_butt_maxvel = {
   "dval": 0.05,
   "low": 0,
   "high": 1,
-  "init": 0.8,
+  "init": 0.5,
   "W": 160,
   "H": 35,
   "dtype": "d",
@@ -85,6 +85,19 @@ let att_butt_contg = {
   "butt_rad": 0.4
 }
 
+let att_butt_days = {
+  "key": "days_tolerance",
+  "text": "Incubation period in days",
+  "dval": 1,
+  "low": 1,
+  "high": 100,
+  "init": 9,
+  "W": 160,
+  "H": 35,
+  "dtype": "i",
+  "butt_rad": 0.4
+}
+
 
 
 
@@ -133,6 +146,22 @@ let att_butt_dist = {
   "dtype": "i",
   "butt_rad": 0.25
 }
+
+
+
+let att_butt_closed = {
+  "key": "closed",
+  "text": "Closed experiment",
+  "dval": 1,
+  "low": 0,
+  "high": 1,
+  "init": 1,
+  "W": 160,
+  "H": 20,
+  "dtype": "i",
+  "butt_rad": 0.25
+}
+
 
 
 var att_butt_set = {

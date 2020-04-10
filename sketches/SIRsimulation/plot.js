@@ -115,7 +115,7 @@ class plot {
       text(texto_d, this.position.x + 490, this.position.y + 0.2 * H)
 
       fill([175, 155, 155])
-      text(texto_f, this.position.x + 600, this.position.y + 0.2 * H)
+      text(texto_f, this.position.x + 610, this.position.y + 0.2 * H)
 
       pop()
 
@@ -135,7 +135,13 @@ class plot {
       let tot = this.days[this.days.length - 1]["total"] - this.days[this.days.length - 1]["suceptible"]
       push()
       fill([155, 175, 155])
-      text("Growth Rate " + (100 * diff / tot).toFixed(2) + "%", this.position.x + 720, this.position.y + 0.2 * H)
+      text("Growth Rate " + (100 * diff / tot).toFixed(2) + "%", this.position.x + 740, this.position.y + 0.2 * H)
+      pop()
+
+      push()
+      fill([100, 245, 155])
+      let dr = this.days[this.days.length - 1]["dead"]/tot
+      text("Death Rate " + (100 * dr).toFixed(2) + "%", this.position.x + 870, this.position.y + 0.2 * H)
       pop()
 
 

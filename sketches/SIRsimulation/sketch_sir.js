@@ -18,6 +18,8 @@ let paused = 0;
 
 
 let atts_sim = {
+  "active":1,
+  "ended":0,
   "n": 700,
   "p_zero": 1,
   "obedience_rate": 0.8,
@@ -26,8 +28,8 @@ let atts_sim = {
   "dt_day": 25,
   "maxvel": 1.5,
   "disp_index": 0.5,
-  "dacc": 0.04,
-  "r_infect": 3,
+  "dacc": 0.4,
+  "r_infect": 3.2,
   "inf_rate": 0.4,
   "wash": 0,
   "restriction": 0,
@@ -40,7 +42,8 @@ let atts_sim = {
   "margin": 18,
   "plt_max_days": 80,
   "coverage_rate": 0.1,
-  "lim_width": 850
+  "lim_width": 850,
+  "closed":1
 
 }
 
@@ -52,11 +55,13 @@ let butt_obd;
 let butt_n;
 let butt_covrg;
 let butt_mort;
+let butt_days;
 
 
 let butt_wash;
 let butt_rest;
 let butt_dist;
+let butt_closed;
 
 let butt_set;
 
@@ -102,7 +107,8 @@ function setup() {
   butt_contg = new slider_val(xo + 200, yo + 95, att_butt_contg);
   buttons[butt_contg.atts["key"]] = butt_contg
 
-
+  butt_days = new slider_val(xo, yo + 260, att_butt_days);
+  buttons[butt_days.atts["key"]] = butt_days
 
 
   butt_rest = new toogle(xo + 200, yo + 150, att_butt_rest);
@@ -113,6 +119,9 @@ function setup() {
 
   butt_dist = new toogle(xo + 200, yo + 220, att_butt_dist);
   buttons[butt_dist.atts["key"]] = butt_dist
+
+  butt_closed = new toogle(xo + 200, yo + 255, att_butt_closed);
+  buttons[butt_closed.atts["key"]] = butt_closed
 
   butt_set = new press(xo, H - 30, att_butt_set);
   buttons[butt_set.atts["key"]] = butt_set
@@ -133,19 +142,19 @@ function setup() {
 
 
 function pause() {
-  noLoop()
-  paused = 1
+  atts_sim["active"]=0
 }
 
 function unpause() {
-  loop()
-  paused = 0
+  if(atts_sim["ended"]=0){
+  atts_sim["active"]=1}
+
 }
 
 
 function keyPressed() {
   if (key == "p") {
-    if (paused == 0) {
+    if (atts_sim["active"]=1) {
       pause();
     } else {
       unpause();
@@ -175,8 +184,11 @@ function reset() {
   att_butt_mort["init"] = get_val("p_death");
   att_butt_contg["init"] = get_val("inf_rate");
   att_butt_dist["init"] = get_val("distancing");
+  att_butt_days["init"] = get_val("days_tolerance");
+  att_butt_closed["init"] = get_val("closed");
   atts_sim["day"] = 0;
-  sim_act.ended = 0;
+  atts_sim["ended"] = 0;
+  atts_sim["active"] = 1;
   preload();
   setup();
   draw();
@@ -220,11 +232,13 @@ function draw() {
   for (let butt of butt_keys) {
     buttons[butt].paint()
   }
+
   let adv = T % atts_sim["dt_day"] == 0 ? 1 : 0;
 
   sim_act.run(adv)
-  if (sim_act.ended) {
+  if (atts_sim["ended"]==1) {
     pause();
   }
+
   T++;
 }
