@@ -2,7 +2,7 @@ let flock;
 let alphax  = 25;
 let pmut;
 let pflip = 0.3;
-let  n_flock =20;
+let  n_flock =0;
 let maxconnect;
 let W;
 let H;
@@ -21,19 +21,43 @@ function setup() {
   // Add an initial set of boids into the system
   for (let i = 0; i < n_flock; i++) {
     let b = new Boid(random(width),random(height));
-    if(add_one>0 ){b.one=1;add_one-=1;}
-    else if(add_minus>0){
-      if(random()<0.3){
-        b.one=2;
-      }
-      else{
-        b.one=-1;
-      }
-      add_minus-=1;
-      }
+    // if(add_one>0 ){b.one=1;add_one-=1;}
+    // else if(add_minus>0){
+    //   if(random()<0.3){
+    //     b.one=2;
+    //   }
+    //   else{
+    //     b.one=-1;
+    //   }
+    //   add_minus-=1;
+    //   }
     flock.addBoid(b);
   }
 }
+
+
+function add_knitter(x,y){
+  let b = new Boid(x,y);
+  b.one = 1
+  flock.addBoid(b);
+}
+function add_healer(x,y){
+  let b = new Boid(x,y);
+  b.one = 2
+  flock.addBoid(b);
+}
+function add_flocker(x,y){
+  let b = new Boid(x,y);
+  b.one = -1
+  flock.addBoid(b);
+}
+function add_random(){
+  let b = new Boid(random(width),random(height));
+  b.one = random([1,-1,2])
+  flock.addBoid(b);
+}
+
+
 
 function draw() {
   background(0);
@@ -43,6 +67,28 @@ function draw() {
 // Add a new boid into the System
 function mouseDragged() {
   flock.addBoid(new Boid(mouseX, mouseY));
+}
+
+
+
+function keyPressed(){
+  if(key =="h"){
+    add_healer(mouseX,mouseY);
+  }
+  if(key =="k"){
+    add_knitter(mouseX,mouseY);
+  }
+  if(key =="f"){
+    add_flocker(mouseX,mouseY);
+  }
+  if(key =="r"){
+    add_random();
+  }
+}
+
+
+function deviceShaken(){
+  add_random()
 }
 
 // The Nature of Code
@@ -107,8 +153,8 @@ Boid.prototype.infect = function(boid) {
 
 
 this.infected =1;
-this.maxforce = 0.03
-this.maxspeed= random([0,0,0,0,0,0,0.5,1.2])
+this.maxforce = 0.05
+this.maxspeed= random([0,0,0,0,0,0.1,0.5,1.5])
 
 }
 
@@ -207,16 +253,15 @@ Boid.prototype.flock = function(boids) {
   let coh = this.cohesion(boids);   // Cohesion
   // Arbitrarily weight these forces
 
-  let mult_sep  = 1.5;
-  let mult_ali  = 0.9;
+  let mult_sep  = 1.8;
+  let mult_ali  = 0.8;
   let mult_coh  = 1;
 
   if(this.infected==1){
     mult_coh=1.2
-    mult_sep=1.2
   }
   if(this.one!=0 | this.infected==-1){
-    mult_sep = 1.05
+    mult_sep = 1.3
     mult_ali=1
 
   }
