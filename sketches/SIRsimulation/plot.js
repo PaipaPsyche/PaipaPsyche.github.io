@@ -93,7 +93,7 @@ class plot {
       let texto_c = poll["infected"] + " Infected " + "(" + (100 * poll["infected"] / poll["total"]).toFixed(2) + "%)"
       let texto_d = poll["dead"] + " Dead " + "(" + (100 * poll["dead"] / poll["total"]).toFixed(2) + "%)"
       let texto_e = poll["cured"] + " Cured " + "(" + (100 * poll["cured"] / poll["total"]).toFixed(2) + "%)"
-      let texto_f = "Infected Rate " + (100 * (1 - poll["suceptible"] / poll["total"])).toFixed(2) + "%"
+      let texto_f = "P(I) " + (100 * (1 - poll["suceptible"] / poll["total"])).toFixed(2) + "%"
       push()
 
       textSize(16);
@@ -135,13 +135,22 @@ class plot {
       let tot = this.days[this.days.length - 1]["total"] - this.days[this.days.length - 1]["suceptible"]
       push()
       fill([155, 175, 155])
-      text("Growth Rate " + (100 * diff / tot).toFixed(2) + "%", this.position.x + 740, this.position.y + 0.2 * H)
+      text("Growth " + (100 * diff / tot).toFixed(2) + "%", this.position.x + 690, this.position.y + 0.2 * H)
       pop()
 
       push()
       fill([100, 245, 155])
       let dr = this.days[this.days.length - 1]["dead"]/tot
-      text("Death Rate " + (100 * dr).toFixed(2) + "%", this.position.x + 870, this.position.y + 0.2 * H)
+      text("P(D) " + (100 * dr).toFixed(2) + "%", this.position.x + 790, this.position.y + 0.2 * H)
+      pop()
+
+      push()
+      fill([150, 125, 175])
+
+      var avg = (this.days[this.days.length - 1]["infection"]["sum_rate"] / tot).toFixed(2)
+      var most = int(this.days[this.days.length - 1]["infection"]["most"])
+      var most_rate = (this.days[this.days.length - 1]["infection"]["most_rate"]).toFixed(2)
+      text(avg +" | "+ most_rate + " | " +most, this.position.x + 880, this.position.y + 0.2 * H)
       pop()
 
 

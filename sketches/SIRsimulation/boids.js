@@ -11,7 +11,8 @@ class boid {
 
     this.state = {
       "state": "suceptible",
-      "days_infected": 0
+      "days_infected": 0,
+      "infected":0
 
     }
 
@@ -115,6 +116,7 @@ class boid {
 
           if (random() < (atts_sim["inf_rate"] * p_infect_rate)) {
             bd.infect()
+            this.state["infected"]++;
           }
         }
       }

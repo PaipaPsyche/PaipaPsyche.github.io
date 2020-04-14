@@ -23,7 +23,7 @@ let atts_sim = {
   "n": 700,
   "p_zero": 1,
   "obedience_rate": 0.8,
-  "r_boids": 2.5,
+  "r_boids": 4.5,
   "day": 0,
   "dt_day": 25,
   "maxvel": 1.5,
@@ -43,7 +43,8 @@ let atts_sim = {
   "plt_max_days": 80,
   "coverage_rate": 0.1,
   "lim_width": 850,
-  "closed":1
+  "closed":1,
+  "density_th":0.03
 
 }
 

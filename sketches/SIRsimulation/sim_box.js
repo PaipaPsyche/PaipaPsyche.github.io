@@ -32,6 +32,24 @@ class simulation {
       }
     }
 
+    this.adjust_density()
+
+  }
+
+
+  calculate_density(){
+    var Abox = this.W * this.H;
+    var Aboids = this.boids.length * (PI*atts_sim["r_boids"]**2);
+
+    return Aboids/Abox;
+  }
+
+
+  adjust_density(){
+    if(this.calculate_density()>atts_sim["density_th"]){
+      var ideal_r = sqrt(this.W*this.H*atts_sim["density_th"]/(PI*this.boids.length))
+      atts_sim["r_boids"] = ideal_r;
+    }
 
 
   }
@@ -54,7 +72,13 @@ class simulation {
         "infected": 0,
         "dead": 0,
         "cured": 0,
-        "total": 0
+        "total": 0,
+        "infection":{
+          "most":0,
+          "sum_rate":0,
+          "most_rate":0
+
+        }
       };
     }
 
@@ -73,6 +97,17 @@ class simulation {
       if (advance == 1) {
         this.poll[this.boids[i].state["state"]]++;
         this.poll["total"]++;
+        if(this.boids[i].state["state"]!="suceptible"){
+          let rate =this.boids[i].state["days_infected"]>0?this.boids[i].state["infected"]/(this.boids[i].state["days_infected"]):0;
+          if( this.boids[i].state["infected"]>this.poll["infection"]["most"]){
+            this.poll["infection"]["most"]=this.boids[i].state["infected"];
+          }
+          if( rate>this.poll["infection"]["most_rate"]){
+            this.poll["infection"]["most_rate"]=rate;
+          }
+          this.poll["infection"]["sum_rate"]+=rate;
+
+        }
       }
     }
 

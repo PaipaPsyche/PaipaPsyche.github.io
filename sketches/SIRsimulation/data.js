@@ -37,7 +37,7 @@ let att_butt_n = {
   "text": "Population",
   "dval": 50,
   "low": 50,
-  "high": 1200,
+  "high": 1000,
   "init": 600,
   "W": 160,
   "H": 35,
