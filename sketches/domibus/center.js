@@ -114,6 +114,7 @@ class centro {
     this.in_mountain = 0;
     this.in_ocean = 0;
     this.name_change=0;
+    this.in_peak = 0;
 
 
     this.cost = 0;
@@ -178,6 +179,19 @@ class centro {
     return closest_elem;
   }
 
+  closest_mark(){
+    let ans = ""
+    let  mindist = 50;
+
+    for(let m of MARCAS){
+      if(dist(this.X,this.Y,m.X,m.Y)<mindist){
+        ans =m;
+        mindist = dist(this.X,this.Y,m.X,m.Y)
+      }
+    }
+    return ans;
+  }
+
 
   give_closest_all(ARR) {
     let closest = 1000;
@@ -220,6 +234,7 @@ class centro {
     this.in_fuel = m.M_petro[this.X][this.Y];
     this.in_food = m.M_food[this.X][this.Y];
     this.in_mountain = m.M_tipos[this.X][this.Y] == 2 ? 1 : 0;
+    this.in_peak = m.M_tipos[this.X][this.Y] == 3 ? 1 : 0;
 
 
     this.evaluar_tipo();
@@ -298,9 +313,9 @@ class centro {
         this.maxpop = int(DICT_P_MIN[abs(this.T)]*(1+random(0.4,0.65))*(1.001**this.give_age()))+3**min(this.connect,15);
         let popgrowth = map(abs(realt)*(this.genfuel+this.genfood),0,100000,0.5,1.2);
 
-        let dndt = int(0.35*popgrowth*((this.maxpop-this.population)/(this.maxpop+1))*this.population);
+        let dndt = int(0.25*popgrowth*((this.maxpop-this.population)/(this.maxpop+1))*this.population);
         if(this.T>10){
-          dndt = 0.8*dndt
+          dndt = 0.6*dndt
         }
         this.population=max(0,this.population+dndt);
         if(random()<0.01*this.connect){
@@ -308,7 +323,7 @@ class centro {
         }
 
       }
-      else if(random()>0.1){
+      else if(random()<0.1){
         this.population=int(this.population*random());
       }
 
@@ -322,19 +337,22 @@ class centro {
 
 
 
-      this.consumo = this.T <= 0 ? 0 : 0.05 * log(this.give_age() + 1) * (realt * 70 * log(this.population+1) * (1 + 0.5 * this.in_mountain));
-      this.consumo = this.consumo*(1+(log(this.population+1)*0.05))*(1/max(1,this.connect))
+      this.consumo = this.T <= 0 ? 0 : 0.065 * log(this.give_age() + 1) * (realt * 70 * log(this.population+1) * (1 + 0.7 * this.in_mountain));
+      this.consumo = this.consumo*(1+(log(this.population+2)*0.05))*(1/max(1,this.connect))
       if(this.T>10){
         let m_consumo = map(this.ground_level,0,0.5,1.5,1)
         this.consumo=this.consumo*m_consumo
       }
 
+      if(this.in_peak==1){
+        this.consumo = this.consumo * map(this.ground_level,threshold3,1,1.2,2);
+      }
 
 
       this.genfood = int(this.genfood);
       this.genfuel = int(this.genfuel);
       this.consumo = int(this.consumo);
-      this.population = floor(this.population);
+      this.population = floor(min(this.population,5*(10**8)));
 
       this.cost = log((this.genfuel+this.genfood+1)/max(this.consumo,1));
     }

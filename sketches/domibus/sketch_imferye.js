@@ -10,6 +10,9 @@ var CENTROS = [];
 var MINAS = [];
 var CANALES=[];
 var BOTONES=[];
+var MARCAS =[];
+
+var effects = [];
 
 var scaleX=0.006;
 var scaleY=0.006;
@@ -26,6 +29,7 @@ var new_marine_permission=0;
 
 var threshold1 = 0.5;
 var threshold2 = 0.68;
+var threshold3 = 0.75;
 var thresholdr = 0.7;
 var thresholdf = 0.7;
 
@@ -91,8 +95,6 @@ if(key =='f'){
 console.log(CENTROS.length)
 }
 }
-
-
 
 
 
@@ -374,7 +376,7 @@ function check_spot(XX_a,YY_a){
 
     }
     //& last_profit>limit_GT)
-    else if(CENTROS.length!=0 & last_profit>limit_GT & m.MAPA[XX][YY]<0.95*threshold1 & new_marine_permission == 1){
+    else if(CENTROS.length!=0 & last_profit>limit_GT & m.MAPA[XX][YY]>0.4*threshold1 & m.MAPA[XX][YY]<0.95*threshold1 & new_marine_permission == 1){
       let nuevo = new centro(XX,YY,11);
       nuevo.in_ocean=1;
       nuevo.asignar_valores_mapa(m);
@@ -567,7 +569,7 @@ function draw() {
 
     let resta = fuel_prod+food_prod-consume;
 
-    let profit =0.3*five+(resta/(abs(resta)+1))*log(max(abs(resta),1))+meanl;
+    let profit =0.2*five+(resta/(abs(resta)+1))*log(max(abs(resta),1))+meanl;
     profit = profit*0.7-1.5;
     if(profit>best_prof){
       best_prof=profit;
@@ -612,7 +614,9 @@ function draw() {
 
     last_profit=profit;
 
-
+    for(var i = 0;i<MARCAS.length;i++){
+      MARCAS[i].paint()
+    }
 
 
 

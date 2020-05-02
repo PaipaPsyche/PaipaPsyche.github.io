@@ -44,7 +44,7 @@ let atts_sim = {
   "coverage_rate": 0.1,
   "lim_width": 850,
   "closed":1,
-  "density_th":0.03
+  "density_th":0.04
 
 }
 

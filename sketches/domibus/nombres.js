@@ -1,8 +1,17 @@
 //let PRE_ALTO = ["Mount ","Peak ","Top ","High ","Hill of ","Forest of"];
-let POST_ALTO = ["Hill ", "Mountains ", "Mountain", "Cannon ", "Hills ","Tundra",
- "Woods ","Cave ","Peak ","Mount ","Peaks "," ","Upper ","Boulder","Mesa"]
 
-let POST_FOSA = ["Rift ", "Crack ", "pit ", "Abyss ", "Fault "]
+
+let POST_TOP=[ "Mountains ", "Mountain", "Tundra","Peak ","Mount ","Peaks ","Upper ", "Mount","Glacier"]
+
+let POST_BOT=["Rift ", "Crack ", "pit ", "Abyss ", "Fault ","Trench ","Deep"]
+
+
+
+
+let POST_ALTO = ["Hill ", "Mountains ", "Mountain", "Cannon ", "Hills ","Tundra",
+ "Woods ","Cave ","Peak ","Mount ","Peaks "," ","Upper ","Boulder","Mesa", "Mount"]
+
+let POST_FOSA = ["Rift ", "Crack ", "pit ", "Abyss ", "Fault ","Trench ","Deep"]
 
 let POST_VALLE = ["Valley ", "Arids ", "Plains ", "Jungle ", "River ", "Cave ","Tropics","Desert",
  " Fields ", " Swamp "," savanna","Farms", "Camps", " Oasis" , "Pond" , "Park","Taiga","Grassland",
@@ -11,6 +20,13 @@ let POST_WATER = ["Sea ", "Waters", "Extension ", "Point ","Strait"]
 let POST_SHORE = ["Shore ", "Port ", "Reef ", "Gulf ", "Bottom ","Bay",
 "Coast ", "Landing ", "Beach ", "Delta ","Cliff","Cape","Peninsula"]
 
+
+
+let POST_EPIC_LOW=["Sea ", "Sunken ruins", "underwater chimneys", "Ocean", "electric anomaly","magnetic anomaly",
+  " underwater volcano", "perpetual storm","Currents" ,"Sunken city", "Crater" ]
+let POST_EPIC_HIGH=["Crater","Tunnels","Firepit", "Volcano" ,"Hidden Beach", "Salt valley", "Obsidian Terrains",
+                "Ruins","Carbon deposit","Fossil site", "Magma deposit", "electric anomaly","magnetic anomaly",
+              "Lost city" , "Falls"]
 
 let POST_NAME = ["Ville ", "Dale ", "Post ", "Stand ", " Gate", " Rise", " Fort ", " Bridge ",
                 " Watch ", " Lair ", " Castle "," Rock"," Wall"," State"," Village"];
@@ -52,6 +68,14 @@ let C_SILABAS = [
   ["t", ""],
   ["r", ""],
   ["p", ""],
+  ["m", "r"],
+  ["h", ""],
+  ["", "n"],
+  ["sn", "p"],
+  ["sl", "p"],
+  ["cr", "ss"],
+  ["cr", "st"],
+  ["sn", "p"],
   ["d", ""],
   ["f", ""],
   ["", "c"],
@@ -64,10 +88,32 @@ let C_SILABAS = [
   ["", "sh"],
   ["", "ch"],
   ["", "t"],
+  ["b", "rg"],
+  ["v", "rg"],
+  ["b", "ltr"],
+  ["m", "tt"],
+  ["ph", "r"],
+  ["chr", "st"],
+  ["m", "tr"],
+  ["d", "m"],
+  ["g", "th"],
+  ["t", "nc"],
+  ["d", "st"],
+  ["r", "st"],
   ["", "r"],
-  ["", "p"],
+  ["sc", "r"],
+  ["r", "pt"],
+  ["cr", "sc"],
   ["", "d"],
   ["", "f"],
+  ["", "p"],
+  ["v", "nd"],
+  ["d", "sh"],
+  ["s", "mps"],
+  ["n", "gh"],
+  ["h", "gh"],
+  ["n", "x"],
+  ["cr", "z"],
   ["r", "s"],
   ["pr", ""],
   ["tr", ""],
@@ -150,26 +196,22 @@ function gen_code(elemento){
   }
 }
 
-
-
-function gen_nombre(elemento) {
+function gen_root(elemento){
   let raiz = "";
   let nombre = "";
-  let valor = m.MAPA[elemento.X][elemento.Y];
-  let tipo = m.M_tipos[elemento.X][elemento.Y];
+
 
   let long = int(random(3));
   for (let i = 0; i < (1 + long); i++) {
     raiz = raiz + random(SILABAS)
-    if (random() > 0.8) {
+    if (random() > 0.8 && i<long/2 && i>2) {
       raiz = raiz + random(["-", "'"]) + random(SILABAS);
     }
     else if (random() > 0.7) {
       raiz = raiz + random(VOCAL);
     }
   }
-
-  if (raiz.length > 7 & random() > 0.2) {
+  if (raiz.length > 7 & random() < 0.2) {
     raiz = raiz.slice(4, raiz.length - 1)
   }
 
@@ -177,52 +219,49 @@ function gen_nombre(elemento) {
     raiz = raiz+random(SILABAS)
   }
 
-  if (elemento.is_origin == 1) {
-    raiz = random(ORIGIN_NAME) + raiz;
-    nombre = raiz;
-    return {
-      "NAME": nombre,
-      "RAIZ": raiz
-    };
+  return {
+        "NAME": nombre,
+        "RAIZ": raiz
+      };
+}
+
+function name_markpoint(elemento){
+  let name = gen_root(elemento)
+  if(elemento.desc==""){
+    name =  complement_name(name["NAME"],name["RAIZ"],elemento.type,elemento.ground_level,"epic");
+    return name;
   }
 
+ name = complement_name(name["NAME"],name["RAIZ"],elemento.type,elemento.ground_level,"mark");
 
-  if (random() > 0.2 & CENTROS.length > 1) {
-    raiz = "";
-    if (elemento.give_closest(CENTROS).nombre["RAIZ"].length > 4) {
-      let word = elemento.give_closest(CENTROS).nombre["RAIZ"].split(" ")
-      raiz = word.pop().slice(0, min(4, word.length))  + random(END_NAME);
-    } else {
-      raiz = elemento.give_closest(CENTROS).nombre["RAIZ"] + random(SILABAS);
+return name;
+}
+
+function complement_name(nombre,raiz,tipo,valor,el_type){
+
+  if(el_type=="epic"){
+
+    if(tipo>0){
+      nombre = raiz + " " + random(POST_EPIC_HIGH);
+    }else{
+      nombre = raiz + " " + random(POST_EPIC_LOW);
     }
-    raiz = random(VOCAL) + raiz;
+
+    return {
+          "NAME": nombre,
+          "RAIZ": raiz
+        };
+
   }
 
 
+  if (tipo ==-3) {
+    nombre = raiz + " " + random(POST_BOT);
 
-
-
-
-  if (random() < 0.4) {
-    raiz = raiz  + random(END_NAME);
   }
-  if (random() < 0.2) {
-    raiz = random(PRE_NAME) + raiz;
-  }
-
-  // if(random()>0.5){
-  //   raiz=raiz+random(END_NAME);
-  // }
-  // else if(random()<0.5){
-  //   raiz=random(PRE_NAME)+raiz;
-  // }
-  if (nombre == "") {
-    nombre = raiz;
-  }
-
   if(random()<0.3){
 
-    if (tipo == -2) {
+    if (tipo== -2) {
       nombre = raiz + " " + random(POST_FOSA);
 
     }
@@ -241,27 +280,107 @@ function gen_nombre(elemento) {
 
 
 
-
-
-
-
-
-  if (tipo == 1) {
+ if (tipo == 1) {
     if (random() < 0.2) {
       nombre = raiz + " " + random(POST_VALLE);
     } else if (random() < 0.3) {
-      nombre = raiz + random(VOCAL) + " " + random(POST_NAME)
+      nombre = raiz + random(VOCAL)
     }
 
   }
-  if (tipo == 2 & random() < 0.4) {
+
+  if(tipo==3){
+
+    nombre = raiz + " " + random(POST_TOP);
+  }
+   else if (tipo == 2 & random() < 0.4) {
     if (random() < 0.6) {
       nombre = raiz + " " + random(POST_ALTO);
-    } else if (random() < 0.2) {
-      nombre = raiz + " " + random(POST_NAME);
     }
 
   }
+  return {
+        "NAME": nombre,
+        "RAIZ": raiz
+      };
+
+
+}
+
+
+
+
+
+function gen_nombre(elemento) {
+
+  let name = gen_root(elemento);
+  let nombre = name["NAME"];
+  let raiz = name["RAIZ"];
+  let tipo = m.M_tipos[elemento.X][elemento.Y];
+  let valor = m.MAPA[elemento.X][elemento.Y];
+
+  if (elemento.is_origin == 1) {
+    raiz = random(ORIGIN_NAME) + raiz;
+    nombre = raiz;
+    return {
+      "NAME": nombre,
+      "RAIZ": raiz
+    };
+  }
+
+  if(random()<0.3 && MARCAS.length>0 && elemento.closest_mark()!=""){
+
+    raiz = "";
+    if (elemento.closest_mark().name.length > 6) {
+      let word = elemento.closest_mark().name.split(" ")[0]
+      raiz = word.slice(0, min(4, word.length))  + random(END_NAME);
+      //console.log(elemento.closest_mark().name,word,  raiz)
+    } else {
+      raiz = elemento.closest_mark().name + random(SILABAS);
+    }
+    raiz = random(VOCAL) + raiz;
+
+  }
+  else if (random() > 0.2 & CENTROS.length > 1) {
+    raiz = "";
+    if (elemento.give_closest(CENTROS).nombre["RAIZ"].length > 4) {
+      let word = elemento.give_closest(CENTROS).nombre["RAIZ"].split(" ")[0]
+      raiz = word.slice(0, min(4, word.length))  + random(END_NAME);
+    } else {
+      raiz = elemento.give_closest(CENTROS).nombre["RAIZ"] + random(SILABAS);
+    }
+    raiz = random(VOCAL) + raiz;
+  }
+
+
+
+
+
+
+  if (random() < 0.4) {
+    raiz = raiz  + random(END_NAME);
+  }
+  if (random() < 0.2) {
+    raiz = random(PRE_NAME) + raiz;
+  }
+
+  if (nombre == "") {
+    nombre = raiz;
+  }
+
+  name = this.complement_name(nombre,raiz,tipo,valor,"centro");
+
+  if(raiz.length>9){
+    if(random()<0.5){
+      raiz = raiz.slice(0,int(raiz.length/2))
+    }else{
+      raiz = raiz.slice(0,9)
+    }
+
+  }
+
+  nombre = name["NAME"];
+  raiz = name["RAIZ"];
 
 
   if (elemento.give_closest_all(CENTROS).T == -1) {

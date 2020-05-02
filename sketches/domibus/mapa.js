@@ -58,10 +58,20 @@ class mapa{
 
     let suma_tierra=0;
 
+    let lower =[0,0,1];
+    let higher=[0,0,0];
+
+    let add_marks=[];
+    let max_marks=1+random([1,2,3]);
+
+    let beaches = [];
+    let mountains = [];
+
     for(var y=0;y<this.H;y++){
 
       for(var x=0;x<this.W;x++){
         var tipo = 0;
+        var in_range_mark = (x<(this.W-50) && x>(50) && y<(this.H-30) && y>H_chart)?1:0;
 
         var value = this.MAPA[x][y];
         if(value>threshold1){
@@ -70,11 +80,30 @@ class mapa{
         if(value>threshold2){
           tipo=2;
         }
+        if(value>threshold3){
+          tipo=3;
+        }
         if(value<0.95*threshold1){
           tipo=-1;
         }
         if(value<0.7*threshold1){
           tipo=-2;
+        }
+        if(value<0.4*threshold1){
+          tipo=-3;
+        }
+
+        if(random()<1E-5  && add_marks.length<max_marks && in_range_mark==1 && tipo!=0){
+          add_marks.push([x,y,value,tipo]);
+        }
+
+
+
+        if(value>higher[2] && in_range_mark==1){
+          higher = [x,y,value,tipo];
+        }
+        if(value<lower[2] && in_range_mark==1){
+          lower = [x,y,value,tipo];
         }
         this.M_tipos[x][y]=tipo;
 
@@ -93,6 +122,16 @@ class mapa{
 
       }
     }
+
+    MARCAS.push(new markpoint(lower[0],lower[1],lower[2],lower[3]))
+    MARCAS.push(new markpoint(higher[0],higher[1],higher[2],higher[3]))
+    MARCAS[1].desc = "Highest point"
+    MARCAS[0].desc = "Lowest point"
+    for(let mark of add_marks){
+      MARCAS.push(new markpoint(mark[0],mark[1],mark[2],mark[3]))
+    }
+
+
     //console.log(suma_tierra,(this.W*this.H),suma_tierra/(this.W*this.H));
     this.DIFF= suma_tierra/(this.W*this.H);
 
@@ -121,6 +160,12 @@ class mapa{
           }
           else if(tipo ==2){
           rgba = [80+value*80,80,0,255];
+          }
+          else if(tipo ==3){
+          rgba = [255-value*80,255-value*80,255-value*80,255-value*80];
+          }
+          else if(tipo ==-3){
+          rgba = [0,0,80,255];
           }
           else if(tipo ==-1){
           rgba = [0,20,150,255];
