@@ -1,7 +1,7 @@
 let edit_cell_width = 15;
 let edit_margin = 1;
 let edit_xo = 580
-let edit_yo = 350;
+let edit_yo = 480;
 let edit_dx =edit_cell_width+2*edit_margin;
 
 class amino{
@@ -42,7 +42,34 @@ class amino{
 
 
 
+class button_do{
+  constructor(x,y,doing,r=4,c=[0,25,250]){
+    this.R = r;
+    this.x=x;
+    this.y=y;
+    this.do=doing;
+    this.C = c;
+  }
+  click(){
+    if(dist(this.x,this.y,mouseX,mouseY)<3*this.R){
+        this.do()
 
+    }
+  }
+  paint(){
+    push()
+    translate(this.x,this.y)
+
+    fill(this.C)
+    beginShape();
+
+    vertex(-this.R, 2*this.R);
+    vertex(-this.R, -2*this.R);
+    vertex(3*this.R, 0);
+  endShape(CLOSE);
+  pop()
+  }
+}
 
 
 class  button_submit{

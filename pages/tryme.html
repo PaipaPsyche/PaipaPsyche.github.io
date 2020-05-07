@@ -41,6 +41,79 @@
         y quemar un poco de su tiempo.
       </p>
     </div>
+    <div class="card">
+      <h2> 2D Cellular Automata in p5.js </h2>
+      <table style="width: 100%">
+
+        <tr>
+          <td>  <a href="tryme/dna_cell_2d.html"><img src="images/p5.jpg" width="200px" ></a> </td>
+          <td>
+            <!-- <p>Base: <i>Flocking Algorythm tomado de Daniel Shiffmann - The coding Train</i></p> -->
+
+
+           <p> A celular automaton is a system in which a grid of cells determines its state (ON or OFF) according to rules stablished on the states of a
+              determined neighborhood of cells in the grid. The system behaves according to a set of <i>game rules</i> that commands each cell in the grid to adopt in the net step
+              a state based on the previous states of the neighbors.
+              </p>
+
+              <p>These Game rules are codified in a structure similar to DNA. Each cell has 8 neighbors, so there are 9 states each cell hast to handle (including own state). As ech one of these
+                states are values 0 (OFF) or 1 (ON), the number of different possible neighborhood configurations are 2 to the power  of 9, or 512. Each configuration has a response ,for example, if the inmediate left
+                neighbor is ON, then this cell turns ON as well.  If we assign each one of this states to a position in a
+                512-length string, and in this string we store the response, the result is a 512-length string of 0's and 1's describing the behaviour of the system. This might be codified to be expressed as genes
+                in the form of alfanumeric values and colors. This 512-string is called the "rule code".
+              </p>
+
+              <p>This means that a single rule code describes the unique behavior of a system and, moreover, there exist as much as 2 to the power of 512 possible rule code configurations. In other words,
+              <b>there are more than 10 million million million million</b> . . . (25 times million) . . . <b>million million million possible systems. </b></p>
+
+
+              <p>This gene structure was, in a beginning, a way to store compressed data information of the state, but as experimentation went on I realized common beahviors tend to be stored in the same Gene.
+                experimentation with cellular automata is easy and fun as long as you find the beauty of the patterns made by simpple binary rules. These systems are controversial in the study of life emergence and
+                complex systems, for example, you may know the famous  "Conway's Game of Life" which is an specific rule code for 2D cellular automata that ressemebles organic movement from simple configurations. </p>
+
+                <p><b>CONTROL: </b> Mouse Click may allow you to interact with sliders and buttons in the simulator. Load-Save butttons are for inserting or retrieving codified genomes in case there's a rule code you
+                  dont want to lose. Mode determines wether you want to condition the system on "total neighbor rules" or case by case. The system will evolve untill the max. generation limit is reached. You could modify this
+                  limit with the slider in the bottom or setting the time to "infinite". In the "Behavior programation Module" you can configure specific cases and its response, where the 3X3 grid represents the neighboorhood with the
+                  evaluated cell is in the middle. The cell apart represents the response, the green button is to modify the genome with the case displayed in the module. The case setting line in the bottom is to create rules based on the number of
+                  neighbors, to create a rule press the blue button, to evaluate the created rules press the white button in the mode module and to delete al created rules press the red button.
+
+
+                  </thead>
+              <br>
+                <b>Keyboard :</b>
+                <br>
+                <b> ENTER : </b>Runs/Stops the simulation .
+                <br>
+                <b> R : </b>Create random rule code.
+                <br>
+                <b> E : </b>Evolves a single step.
+                <br>
+                <b> 0 : </b>Create empty rule code.
+                <br>
+                <b> M : </b>Mutates a random gene.
+                <br>
+                <b> P : </b>Switches the state of a random cell.
+                <br>
+                <b> B : </b>Sets all cells to OFF.
+                <br>
+                <b> C : </b>Sets the center Cell to ON.
+                <br>
+                <b> H / V / D / A : </b>Sets an alternating pattern along the central (Horizontal / Vertical / Diagonal / Antidiagonal) respectively.
+                <br>
+                <b> 0 / 1 : </b>create arule code with only 0 / 1  respectively.
+
+
+
+               </p>
+
+           </td>
+        </tr>
+
+      </table>
+
+    </div>
+
+
 
     <div class="card">
       <h2> SIR simulation for viral behavior in p5.js </h2>

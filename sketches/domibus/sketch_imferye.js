@@ -595,6 +595,7 @@ function draw() {
 
       score = map(best_prof,-15,15,-1,1) + map(worst_prof,-15,15,-1,1) + map(last_lost_leg/age,0,1,1,-1) + log(age) +map(prosperity_years/age,0,1,0,2)
       score = int(map(score,-3,5+log(20000),0,10000))
+      score  = min(max(0,int(score*map(log(polling["MAXAGE"][2]+1),0,1E4,0.2,1)/100)),100);
 
       push()
       textAlign(CENTER);
@@ -602,7 +603,7 @@ function draw() {
       fill(255)
       text("GAME OVER",W/2,H/2)
       textSize(20);
-      text("FINAL SCORE "+score+" / 10000",W/2,H/2+30)
+      text("FINAL SCORE "+score+" / 100",W/2,H/2+30)
       pop()
 
     }

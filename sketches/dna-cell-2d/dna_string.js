@@ -37,6 +37,7 @@ paint(xo,yo,w,h){
 
     fill(255)
     noStroke()
+    textAlign(LEFT)
     text(this.encoded[2*i],marginx-55,i*dy+marginy+dy/2)
     text(this.encoded[2*i+1],w+10,i*dy+marginy+dy/2)
   }

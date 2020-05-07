@@ -11,7 +11,7 @@ ATTS = {
   gen :1,
   max_gen:15,
   neigh_check : [1,2,3,4,5,6,7,8,9],
-  n_side :100,
+  n_side :80,
   rect_cells : {
     xo:30,
     yo:40,
@@ -21,6 +21,8 @@ ATTS = {
     raw:"",
     enconded:""
   },
+  mode:"cases",
+  orders:[],
 
   fr:60
 }
@@ -50,14 +52,15 @@ COLORS={
 }
 
 VECINITY_COLORS={
-  1:[0,0,0],
-  2:[0,0,0],
-  3:[0,0,0],
-  4:[0,0,0],
-  5:[0,0,0],
-  6:[0,0,0],
-  7:[0,0,0],
-  8:[0,0,0]
+  0:[120,0,20],
+  1:[250,10,0],
+  2:[250,160,5],
+  3:[150,240,15],
+  4:[15,250,180],
+  5:[5,150,220],
+  6:[0,80,250],
+  7:[80,0,230],
+  8:[230,0,180]
 }
 
 //VARIABLES
@@ -71,8 +74,13 @@ let COMBS =[];
 let INDEXED ={};
 let dna;
 let gene_edit;
+let butt_order;
+let butt_mode;
+let butt_load;
+let butt_save;
+let butt_clear;
 
-
+let clickable=[];
 
 //FUNCTIONS
 
@@ -89,7 +97,7 @@ function setup(){
   //ATTS set
   ATTS.rect_cells.dx = ATTS.rect_cells.w/ATTS.n_side;
 
-  gen_random_rule();
+  gen_random_rule("0");
 
   for(let i = 0;i<ATTS.n_side;i++){
     CELLS[i]=[]
@@ -103,7 +111,10 @@ function setup(){
   make_buttons()
 
 
+
+
   gene_edit=new gene_editor(600,350)
+  clickable=[butt_load,butt_mode,butt_order,butt_save,gene_edit,butt_clear]
 
 }
 
@@ -123,6 +134,73 @@ function gen_random_rule(mode="r"){
 
 
 
+function read_orders(){
+
+  if(ATTS.orders.length >0 && ATTS.mode=="vecinity"){
+    console.log("readorders")
+    let new_indexed = {}
+
+
+      let keys = Object.keys(INDEXED);
+    for(let k of keys){
+      let val = evaluate_vecinity_key(k);
+      if(val){
+        new_indexed[k]=val;
+
+      }else{
+        new_indexed[k]=INDEXED[k]
+      }
+
+    }
+    INDEXED = new_indexed;
+
+    keys = Object.keys(COMBS);
+    for(let k of keys){
+      let kk = int(k)
+      let key = COMBS[kk]
+      let res = new_indexed[key]
+      if(int(rule_code[kk])!=int(res)){
+
+        change_gene(kk,res)
+      }
+
+    }
+  }
+  update_on_dna()
+  clear_orders()
+}
+
+
+
+function evaluate_vecinity_key(key){
+  if(key.length!=9){
+    console.log("evaluate vec.: not adecuate length - ",key)
+    return;
+  }
+    let neighbors = 0;
+    for(let i=1;i<key.length;i++){
+      neighbors+=int(key[i])
+    }
+      for(let ord of ATTS.orders){
+        //both inclusive
+        let mp_i = ord.mp_i
+        let mp_f = ord.mp_f
+
+        if(neighbors>= mp_i && neighbors<=mp_f){
+          if(ord.order =="survive" && str(key[0])=="1"){
+              return 1;
+          }else if(ord.order=="die"){
+            return 0;
+          }else if(ord.order=="born" && str(key[0])=="0"){
+            return 1;
+          }
+        }
+
+      }
+}
+
+
+
 function update_on_dna(){
   ATTS.rule.raw = rule_code;
   ATTS.rule.encoded = hiper_encode_rule(rule_code);
@@ -135,7 +213,7 @@ function update_on_dna(){
 function change_gene(pos,val){
   console.log("changed gene "+pos)
   console.log("---before "+rule_code[pos])
-    rule_code = rule_code.slice(0,pos)+val+rule_code.slice(pos+1,rule_code.length);
+    rule_code = rule_code.slice(0,pos)+str(val)+rule_code.slice(pos+1,rule_code.length);
     console.log("---after "+rule_code[pos])
     update_on_dna()
 }
@@ -164,9 +242,6 @@ function mutate_random_gene(){
 
 }
 
-
-
-
 function create_combs(){
   let baseN = Combinatorics.baseN(['0','1'], ATTS.neigh_check.length);
   let combs = baseN.toArray();
@@ -187,11 +262,12 @@ function set_rule(rule){
     rule_code=rule;
   }else if(rule.split("-").length==16){
     rule_code=hiper_decode_rule(rule)
+  }else if(Object.keys(genomes).indexOf(rule)>=0){
+    rule_code=hiper_decode_rule(genomes[rule])
   }else{
     console.log("unable to identify rule form")
   }
   update_on_dna()
-
 
 
 }
@@ -201,31 +277,110 @@ function tell_unique(nonUnique){
   return unique;
 }
 
-
-
-
-
-
 function make_buttons(){
- let xo =580
- let yo = 300;
+ let xo = 35
+ let yo = ATTS.rect_cells.w+60;
 
   //maxgen
-  slider_mg = createSlider(5,500,50,10);
-  slider_mg.position(xo, yo+15);
-  slider_mg.style('width', '120px');
-
-  //
-  // slider_mg = createSlider(1,100,1,20);
-  // slider_mg.position(xo, yo+15);
-  // slider_mg.style('width', '120px');
+  slider_mg = createSlider(5,1000,50,5);
+  slider_mg.position(xo, yo);
+  slider_mg.style('width', str(ATTS.rect_cells.w)+'px');
+  slider_mg.style('height', '2px');
+  //slider_mg.style('rotate', '-90');
+  slider_mg.style('background-color', 'black');
 
 
+  radio = createRadio();
+  radio.option('cases');
+  radio.option('vecinity');
+  radio.style('width', '160px');
+  radio.style('color', 'white');
+  radio.value("cases");
+  fill(255, 0, 0);
+  radio.position(550,340)
 
+
+
+  radio_g = createRadio();
+  radio_g.option('Limited');
+  radio_g.option('Infinite');
+  radio_g.style('width', '160px');
+  radio_g.style('color', 'white');
+  radio_g.value("Limited");
+  fill(255, 0, 0);
+  radio_g.position(550,425)
+
+
+  // A cell that has _ to _ neighbors must ___.;
+
+
+
+  sel_b1 = createSelect();
+  sel_b1.position(ATTS.rect_cells.xo+100, ATTS.rect_cells.w+75);
+  for(let i=0;i<=8;i++){
+  sel_b1.option(str(i));
+  }
+  sel_b1.selected('0');
+
+  sel_b2 = createSelect();
+  sel_b2.position(ATTS.rect_cells.xo+170, ATTS.rect_cells.w+75);
+  for(let i=0;i<=8;i++){
+  sel_b2.option(str(i));
+  }
+  sel_b2.selected('0');
+
+
+
+
+  sel_o = createSelect();
+  sel_o.position(ATTS.rect_cells.xo+305, ATTS.rect_cells.w+75);
+
+  sel_o.option("die");
+  sel_o.option("survive");
+  sel_o.option("born");
+
+  sel_o.selected("survive");
+
+  butt_order = new button_do(ATTS.rect_cells.xo+405, ATTS.rect_cells.w+75,create_order)
+  butt_mode = new button_do(550,365,set_mode,3,[250,250,250])
+
+
+  butt_save = new button_do(550,295,save_genome,4,[0,250,100])
+  butt_load = new button_do(620,295,load_genome,4,[250,250,20])
+  butt_clear = new button_do(ATTS.rect_cells.xo+435, ATTS.rect_cells.w+75,clear_orders,4,[250,20,20])
 
 }
 
 
+function clear_orders(){ATTS.orders=[]}
+
+function create_order(){
+  //validate
+  if((sel_b1.value()>sel_b2.value())){
+    alert("Wrong parameters, try again.")
+    return;
+  }
+
+
+
+  let order = {mp_i:sel_b1.value(),mp_f:sel_b2.value(),order:sel_o.value()}
+  ATTS.orders.push(order);
+console.log("A cell that has ",sel_b1.value()," to ",sel_b2.value()," neighbors must",sel_o.value())
+}
+
+function set_mode(){
+
+  let mode = radio.value()
+  if(mode!=ATTS.mode){
+    ATTS.mode = mode;
+
+  console.log("mode changed to ",mode);
+
+
+  }
+  read_orders();
+
+}
 
 
 function evaluate_cells(){
@@ -238,12 +393,16 @@ function evaluate_cells(){
       new_c[i][j] = new Cell(i,j,0);
       let str = CELLS[i][j].read_state()
       new_c[i][j].set(translate_state(str))
-
     }
   }
 
   return new_c;
 }
+
+function random_switch(){
+  random(random(CELLS)).switch()
+}
+
 
 
 function look_for(str){
@@ -314,6 +473,9 @@ function keyPressed(){
   if(key=="m"){
       mutate_random_gene()
   }
+  if(key=="p"){
+      random_switch()
+  }
   if(key=="c"){
     blank_center()
   }
@@ -322,6 +484,9 @@ function keyPressed(){
   }
   if(key=="0"){
     gen_random_rule("0")
+  }
+  if(key=="1"){
+    gen_random_rule("1")
   }
 
   if(keyCode==SHIFT){
@@ -346,7 +511,12 @@ function keyPressed(){
 
 
 function mouseClicked(){
-  gene_edit.click()
+
+
+  for(let c of clickable){
+    c.click()
+  }
+
   for(let i = 0;i<ATTS.n_side;i++){
     for(let j = 0;j<ATTS.n_side;j++){
       if(CELLS[i][j].mouseInRange()){
@@ -357,6 +527,8 @@ function mouseClicked(){
     }
   }
 }
+
+
 
 
 function evolve(){
@@ -381,22 +553,61 @@ function draw(){
       CELLS[i][j].paint();
     }
   }
-
-  if(ATTS.running==1 && ATTS.gen < ATTS.max_gen){
+  if(ATTS.running==1 && (radio_g.value()=="Infinite"||ATTS.gen < ATTS.max_gen)){
     evolve()
   }
 
 
 
   dna.paint(600,70,50,200)
-  gene_edit.paint()
+  for(let c of clickable){
+    c.paint()
+  }
   ATTS.max_gen=slider_mg.value()
+
+  if(ATTS.running==1){
+    push()
+    textAlign(LEFT)
+    textSize(12)
+    fill([0,180,0])
+    text("Running",ATTS.rect_cells.xo+ATTS.rect_cells.w/2-80,30)
+    pop()
+  }else{
+    push()
+    textSize(12)
+    fill([190,0,0])
+    text("Stop",ATTS.rect_cells.xo+ATTS.rect_cells.w/2-80,30)
+    pop()
+  }
+
+
+
+
   push()
+  textAlign(LEFT)
   textSize(16)
-  text("Generation : "+ATTS.gen+"/"+ATTS.max_gen,ATTS.rect_cells.xo,30)
+  let extra_txt = radio_g.value()=="Infinite"?"inf.":ATTS.max_gen;
+  text("Generation : "+ATTS.gen+"/"+extra_txt,ATTS.rect_cells.xo,30)
 
 
-  textSize(14)
-  text("max. generations",580,300)
+  textSize(15)
+  text("Mode",550,330)
+  text("Max. Generations",550,410)
+  text("Behavior Programation Module",550,470)
+
+
+
+
+  textSize(13)
+
+  text("Save            Load",565,300)
+  text("Update  ("+ATTS.orders.length+" orders)",565,370)
+  text("A cell that has               to               neghbors must",ATTS.rect_cells.xo, ATTS.rect_cells.w+80)
+
+
+  stroke(255)
+  line(550,310,700,310)
+  line(550,385,700,385)
+  line(550,455,700,455)
   pop()
 }

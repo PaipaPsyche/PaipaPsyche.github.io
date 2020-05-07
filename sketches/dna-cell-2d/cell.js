@@ -2,6 +2,7 @@ class Cell{
   constructor(i,j,s){
     this.coords = [i,j];
     this.state = s;
+    this.active_neighbors = 0;
   }
 
   set(s){
@@ -14,6 +15,32 @@ class Cell{
 
     return CELLS[coord1][coord2].state;
   }
+
+  // 
+  // evaluate_vecinity(orders){
+  //
+  //
+  //   for(let ord of orders){
+  //     //both inclusive
+  //     let mp_i = ord.markpoint.i
+  //     let mp_f = ord.markpoint.f
+  //
+  //     if(this.active_neighbors>= mp_i && this.active_neighbors<=mp_f){
+  //       this.execute(ord.order);
+  //     }
+  //
+  //   }
+  //
+  // }
+  //
+  // execute(ord){
+  //   if(ord == "death"){
+  //     this.state = 0;
+  //   }
+  //   if(ord == "life"){
+  //     this.state=1;
+  //   }
+  // }
 
   mouseInRange(){
     let x = ATTS.rect_cells.xo + ATTS.rect_cells.dx * this.coords[0];
@@ -28,13 +55,21 @@ class Cell{
     this.state = 1-this.state;
   }
 
+
   read_state(){
     let ans = '';
+    let act = 0;
     for(let i = 0;i<ATTS.neigh_check.length;i++){
       let neigh = ATTS.neigh_check[i]
       let val  = this.get_val(neigh);
       ans+=val
+      if(neigh!=1){
+        act+=int(val)
+
+      }
     }
+    //console.log(act);
+    this.active_neighbors = act;
     return ans;
   }
 
@@ -45,7 +80,14 @@ class Cell{
     push()
     stroke(0)
     strokeWeight(1.2);
-    fill(COLORS[this.state]);
+    this.read_state()
+    if(this.state==0){
+      fill(COLORS[this.state]);
+    }else{
+      //console.log(this.active_neighbors)
+      fill(VECINITY_COLORS[int(this.active_neighbors)]);
+    }
+
     rect(x,y,ATTS.rect_cells.dx,ATTS.rect_cells.dx);
     pop()
   }

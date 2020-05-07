@@ -157,6 +157,12 @@ let C_SILABAS = [
   ["f", "nst"],
   ["f", "ck"],
   ["fr", "g"],
+  ["p", "ch"],
+  ["l", "nt"],
+  ["n", "rd"],
+  ["h", "sh"],
+  ["ch", "h"],
+  ["w", "ng"],
   ["fl", "r"]
 ]
 
@@ -196,6 +202,27 @@ function gen_code(elemento){
   }
 }
 
+
+function mid_vocal(word){
+  let n = word.length
+  n = int(n/2);
+  let a = word.slice(0,n);
+  let b = word.slice(n,word.length);
+  let ans = a + random(VOCAL) + b;
+  return ans;
+}
+
+function mid_silaba(word){
+  let n = word.length
+  n = int(n/2);
+  let a = word.slice(0,n);
+  let b = word.slice(n,word.length);
+  let ans = a + random(SILABAS) + b;
+  return ans;
+}
+
+
+
 function gen_root(elemento){
   let raiz = "";
   let nombre = "";
@@ -211,13 +238,20 @@ function gen_root(elemento){
       raiz = raiz + random(VOCAL);
     }
   }
-  if (raiz.length > 7 & random() < 0.2) {
+  if (raiz.length > 8 & random() < 0.2) {
     raiz = raiz.slice(4, raiz.length - 1)
+    raiz = mid_vocal(raiz)
+    raiz = raiz + random(SILABAS);
   }
 
-  if (raiz.length<3){
-    raiz = raiz+random(SILABAS)
+  if (raiz.length<4){
+    raiz = mid_silaba(raiz);
+    raiz = mid_vocal(raiz);
+    raiz = raiz+ random(VOCAL);
+
+
   }
+
 
   return {
         "NAME": nombre,

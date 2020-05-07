@@ -93,7 +93,7 @@ class mapa{
           tipo=-3;
         }
 
-        if(random()<1E-5  && add_marks.length<max_marks && in_range_mark==1 && tipo!=0){
+        if(random()<1E-5 && random()<0.12  && add_marks.length<max_marks && in_range_mark==1 && tipo!=0){
           add_marks.push([x,y,value,tipo]);
         }
 
