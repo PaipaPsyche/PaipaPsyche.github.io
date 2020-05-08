@@ -79,6 +79,8 @@ let butt_mode;
 let butt_load;
 let butt_save;
 let butt_clear;
+let butt_blank;
+let butt_step;
 
 let clickable=[];
 
@@ -114,7 +116,8 @@ function setup(){
 
 
   gene_edit=new gene_editor(600,350)
-  clickable=[butt_load,butt_mode,butt_order,butt_save,gene_edit,butt_clear]
+  clickable=[butt_load,butt_mode,butt_order,butt_blank,
+    butt_save,gene_edit,butt_clear,butt_play,butt_step]
 
 }
 
@@ -135,20 +138,25 @@ function gen_random_rule(mode="r"){
 
 
 function read_orders(){
-
-  if(ATTS.orders.length >0 && ATTS.mode=="vecinity"){
+  let total_changed = 0;
+  if(ATTS.orders.length >0 && ATTS.mode=="neighborhood"){
     console.log("readorders")
     let new_indexed = {}
+
 
 
       let keys = Object.keys(INDEXED);
     for(let k of keys){
       let val = evaluate_vecinity_key(k);
-      if(val){
-        new_indexed[k]=val;
+      //console.log(k+" ---- "+val,val=="-",val!=0,val!=1)
+      if((val!=0 && val!=1) || val=="-"){
+        new_indexed[k]=INDEXED[k]
 
       }else{
-        new_indexed[k]=INDEXED[k]
+        //console.log("rule "+k + " NOT updated.")
+        total_changed++;
+        new_indexed[k]=int(val);
+        //console.log("rule "+k + " reinterprted as " + val,val=="")
       }
 
     }
@@ -160,12 +168,13 @@ function read_orders(){
       let key = COMBS[kk]
       let res = new_indexed[key]
       if(int(rule_code[kk])!=int(res)){
-
+        //console.log(rule_code[kk]+" ------ "+ int(res))
         change_gene(kk,res)
       }
 
     }
   }
+  console.log("A total of "+total_changed+" genes were overwritten.")
   update_on_dna()
   clear_orders()
 }
@@ -175,8 +184,10 @@ function read_orders(){
 function evaluate_vecinity_key(key){
   if(key.length!=9){
     console.log("evaluate vec.: not adecuate length - ",key)
-    return;
+    return "-";
   }
+    let ans = "-";
+
     let neighbors = 0;
     for(let i=1;i<key.length;i++){
       neighbors+=int(key[i])
@@ -187,16 +198,23 @@ function evaluate_vecinity_key(key){
         let mp_f = ord.mp_f
 
         if(neighbors>= mp_i && neighbors<=mp_f){
-          if(ord.order =="survive" && str(key[0])=="1"){
-              return 1;
+          if(ord.order =="survive"){
+            if(str(key[0])=="1"){
+              ans= 1;
+            }else{
+              ans= 0;
+            }
+
+
           }else if(ord.order=="die"){
-            return 0;
-          }else if(ord.order=="born" && str(key[0])=="0"){
-            return 1;
+            ans= 0;
+          }else if(ord.order=="born"){
+            ans= 1;
           }
         }
 
       }
+      return ans
 }
 
 
@@ -211,7 +229,7 @@ function update_on_dna(){
 
 
 function change_gene(pos,val){
-  console.log("changed gene "+pos)
+  console.log("changed gene "+ COMBS[pos] + " in position " + pos )
   console.log("---before "+rule_code[pos])
     rule_code = rule_code.slice(0,pos)+str(val)+rule_code.slice(pos+1,rule_code.length);
     console.log("---after "+rule_code[pos])
@@ -292,8 +310,8 @@ function make_buttons(){
 
   radio = createRadio();
   radio.option('cases');
-  radio.option('vecinity');
-  radio.style('width', '160px');
+  radio.option('neighborhood');
+  radio.style('width', '200px');
   radio.style('color', 'white');
   radio.value("cases");
   fill(255, 0, 0);
@@ -306,7 +324,7 @@ function make_buttons(){
   radio_g.option('Infinite');
   radio_g.style('width', '160px');
   radio_g.style('color', 'white');
-  radio_g.value("Limited");
+  radio_g.value("Infinite");
   fill(255, 0, 0);
   radio_g.position(550,425)
 
@@ -349,6 +367,12 @@ function make_buttons(){
   butt_load = new button_do(620,295,load_genome,4,[250,250,20])
   butt_clear = new button_do(ATTS.rect_cells.xo+435, ATTS.rect_cells.w+75,clear_orders,4,[250,20,20])
 
+
+  butt_play = new button_do(ATTS.rect_cells.xo+225,28,toggle_running,4,[255,0,0])
+
+  butt_step = new button_do(ATTS.rect_cells.xo+405,26,evolve,4,[200,200,0])
+  butt_blank = new button_do(ATTS.rect_cells.xo+485,26,blank,4,[100,100,100])
+
 }
 
 
@@ -378,7 +402,9 @@ function set_mode(){
 
 
   }
+  if(mode=="neighborhood"){
   read_orders();
+  }
 
 }
 
@@ -461,7 +487,9 @@ function blank_border(dir){
 
 }
 
-
+function toggle_running(){
+  ATTS.running = 1-ATTS.running;
+}
 function keyPressed(){
   if(key=="e"){
     evolve();
@@ -493,7 +521,7 @@ function keyPressed(){
     gen_random_rule()
   }
   if(keyCode==ENTER){
-    ATTS.running = 1-ATTS.running;
+    toggle_running()
   }
   if(key=="h"){
     blank_border("h")
@@ -555,6 +583,8 @@ function draw(){
   }
   if(ATTS.running==1 && (radio_g.value()=="Infinite"||ATTS.gen < ATTS.max_gen)){
     evolve()
+
+    //button color?
   }
 
 
@@ -566,6 +596,7 @@ function draw(){
   ATTS.max_gen=slider_mg.value()
 
   if(ATTS.running==1){
+    butt_play.C = [0,200,0]
     push()
     textAlign(LEFT)
     textSize(12)
@@ -573,6 +604,7 @@ function draw(){
     text("Running",ATTS.rect_cells.xo+ATTS.rect_cells.w/2-80,30)
     pop()
   }else{
+    butt_play.C = [200,0,0]
     push()
     textSize(12)
     fill([190,0,0])
@@ -601,6 +633,7 @@ function draw(){
   textSize(13)
 
   text("Save            Load",565,300)
+  text("Step              blank",ATTS.rect_cells.xo+370,30)
   text("Update  ("+ATTS.orders.length+" orders)",565,370)
   text("A cell that has               to               neghbors must",ATTS.rect_cells.xo, ATTS.rect_cells.w+80)
 

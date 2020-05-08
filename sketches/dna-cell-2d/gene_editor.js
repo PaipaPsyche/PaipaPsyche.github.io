@@ -112,7 +112,8 @@ class gene_editor{
   constructor(){
     this.panels = {}
     this.build_panels()
-    this.result=new amino({"i":4,"j":0})
+    this.result=new amino({"i":6,"j":0})
+    this.new_result =  new amino({"i":4,"j":0})
     this.sub = new button_submit(75+edit_xo,46+edit_yo,this)
   }
 
@@ -160,6 +161,10 @@ class gene_editor{
       this.result.switch()
       return;
     }
+    // if(this.new_result.inRange()){
+    //   this.new_result.switch()
+    //   return;
+    // }
     this.sub.click()
 
 
@@ -170,6 +175,7 @@ class gene_editor{
 
   build_panels(){
     let order =[9,8,7,2,1,6,3,4,5]
+
     for(let  i = 0;i<9;i++){
       this.panels[order[i]]=new amino({"i":floor(i/3),"j":i%3,"id":order[i]});
     }
@@ -182,12 +188,29 @@ class gene_editor{
 
 
   paint(){
+    this.new_result.set(translate_state(this.read()))
     push()
     for(let  i = 1;i<=9;i++){
       this.panels[i].paint()
     }
     this.result.paint()
+    this.new_result.paint()
     pop()
+
+    push()
+    stroke(255)
+    line(edit_xo+5*edit_dx+2, edit_yo+1*edit_dx-edit_cell_width/2,edit_xo+5*edit_dx+15, edit_yo+1*edit_dx-edit_cell_width/2)
+
+    fill(255)
+    beginShape();
+
+    vertex(edit_xo+5*edit_dx+10, edit_yo+1*edit_dx-edit_cell_width+4);
+    vertex(edit_xo+5*edit_dx+10, edit_yo+1*edit_dx-4);
+    vertex(edit_xo+5*edit_dx+16, edit_yo+1*edit_dx-edit_cell_width/2);
+    endShape(CLOSE);
+
+    pop()
+
 
     this.sub.paint()
   }

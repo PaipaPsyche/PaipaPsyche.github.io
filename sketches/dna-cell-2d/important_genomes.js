@@ -5,6 +5,8 @@ let genomes = {
 // "R4":"826o0q-1ri9zlu-1hgmbmx-138yesq-l3nf1-d0gnx5-h83fk9-19u1beo-afnmvv-10p7zc1-sqwg58-tyquja-2oux8v-1bnyze5-zvyw5-18jx9zy",
 // "R5":"4oysv4-gn9tvw-oly4vu-u8guhl-87woe1-iwdn2n-jkn1f0-chn7gy-f1h0yq-1ykykpw-6iu4h7-o8ttuz-10h28tg-1awuv3b-1upzi0m-11qupcy",
 // "R6":"jz6rk0-0-0-0-0-0-0-0-10mieio-0-0-0-0-0-0-0",
-"conway":"aw130-6iliv4-6iliv4-ym4ef4-6iliv4-ym4ef4-ym4ef4-1h9u1hc-6iliv4-ym4ef4-ym4ef4-1h9u1hc-ym4ef4-1h9u1hc-1h9u1hc-0"
-
+"conway":"aw130-6iliv4-6iliv4-ym4ef4-6iliv4-ym4ef4-ym4ef4-1h9u1hc-6iliv4-ym4ef4-ym4ef4-1h9u1hc-ym4ef4-1h9u1hc-1h9u1hc-0",
+"cyclic-patterns":"ricqo-4h35mo-0-zik0zk-1hcbxts-8vn08w-0-hra0hs-8vn08w-0-1h9u1hc-0-4fti4g-0-0-0",
+"maze-generator":"6imxn8-yww75s-yww75s-1mw464g-yww75s-1mw464g-1mw464g-hra0hs-yww75s-1mw464g-1mw464g-hra0hs-1mw464g-hra0hs-hra0hs-0",
+"triangle":"hrb2f4-0-1idsf0g-0-0-0-0-0-3bvh8g-0-0-0-0-0-0-0"
 }
