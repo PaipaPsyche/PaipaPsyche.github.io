@@ -73,6 +73,8 @@ let CELLS = [];
 let COMBS =[];
 let INDEXED ={};
 let dna;
+
+
 let gene_edit;
 let butt_order;
 let butt_mode;
@@ -81,6 +83,10 @@ let butt_save;
 let butt_clear;
 let butt_blank;
 let butt_step;
+let butt_random;
+let butt_zeroed;
+
+
 
 let clickable=[];
 
@@ -116,8 +122,8 @@ function setup(){
 
 
   gene_edit=new gene_editor(600,350)
-  clickable=[butt_load,butt_mode,butt_order,butt_blank,
-    butt_save,gene_edit,butt_clear,butt_play,butt_step]
+  clickable=[butt_load,butt_mode,butt_order,butt_blank,butt_random,
+    butt_save,gene_edit,butt_clear,butt_play,butt_step,butt_zeroed]
 
 }
 
@@ -359,19 +365,21 @@ function make_buttons(){
 
   sel_o.selected("survive");
 
-  butt_order = new button_do(ATTS.rect_cells.xo+405, ATTS.rect_cells.w+75,create_order)
-  butt_mode = new button_do(550,365,set_mode,3,[250,250,250])
-
+  butt_play = new button_do(ATTS.rect_cells.xo+225,28,toggle_running,4,[255,0,0])
+  butt_step = new button_do(ATTS.rect_cells.xo+405,26,evolve,4,[200,200,0])
+  butt_blank = new button_do(ATTS.rect_cells.xo+485,26,blank,4,[100,100,100])
 
   butt_save = new button_do(550,295,save_genome,4,[0,250,100])
   butt_load = new button_do(620,295,load_genome,4,[250,250,20])
+
+  butt_mode = new button_do(550,365,set_mode,3,[250,250,250])
+
+  butt_random = new button_do(ATTS.rect_cells.xo+525, ATTS.rect_cells.w+75,gen_random_rule,4,[200,20,200])
+  butt_zeroed = new button_do(ATTS.rect_cells.xo+525, ATTS.rect_cells.w+55,()=>{gen_random_rule("0")},4,[150,20,240])
+
   butt_clear = new button_do(ATTS.rect_cells.xo+435, ATTS.rect_cells.w+75,clear_orders,4,[250,20,20])
+  butt_order = new button_do(ATTS.rect_cells.xo+405, ATTS.rect_cells.w+75,create_order)
 
-
-  butt_play = new button_do(ATTS.rect_cells.xo+225,28,toggle_running,4,[255,0,0])
-
-  butt_step = new button_do(ATTS.rect_cells.xo+405,26,evolve,4,[200,200,0])
-  butt_blank = new button_do(ATTS.rect_cells.xo+485,26,blank,4,[100,100,100])
 
 }
 
@@ -633,9 +641,11 @@ function draw(){
   textSize(13)
 
   text("Save            Load",565,300)
+  text("Empty DNA",570,ATTS.rect_cells.w+60)
+  text("Random DNA",570,ATTS.rect_cells.w+80)
   text("Step              blank",ATTS.rect_cells.xo+370,30)
   text("Update  ("+ATTS.orders.length+" orders)",565,370)
-  text("A cell that has               to               neghbors must",ATTS.rect_cells.xo, ATTS.rect_cells.w+80)
+  text("A cell that has              to               neghbors must",ATTS.rect_cells.xo, ATTS.rect_cells.w+80)
 
 
   stroke(255)

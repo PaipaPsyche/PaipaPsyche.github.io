@@ -7,6 +7,8 @@ let genomes = {
 // "R6":"jz6rk0-0-0-0-0-0-0-0-10mieio-0-0-0-0-0-0-0",
 "conway":"aw130-6iliv4-6iliv4-ym4ef4-6iliv4-ym4ef4-ym4ef4-1h9u1hc-6iliv4-ym4ef4-ym4ef4-1h9u1hc-ym4ef4-1h9u1hc-1h9u1hc-0",
 "cyclic-patterns":"ricqo-4h35mo-0-zik0zk-1hcbxts-8vn08w-0-hra0hs-8vn08w-0-1h9u1hc-0-4fti4g-0-0-0",
-"maze-generator":"6imxn8-yww75s-yww75s-1mw464g-yww75s-1mw464g-1mw464g-hra0hs-yww75s-1mw464g-1mw464g-hra0hs-1mw464g-hra0hs-hra0hs-0",
-"triangle":"hrb2f4-0-1idsf0g-0-0-0-0-0-3bvh8g-0-0-0-0-0-0-0"
+"maze-gen":"6imxn8-yww75s-yww75s-1mw464g-yww75s-1mw464g-1mw464g-hra0hs-yww75s-1mw464g-1mw464g-hra0hs-1mw464g-hra0hs-hra0hs-0",
+"triangle":"hrb2f4-0-1idsf0g-0-0-0-0-0-3bvh8g-0-0-0-0-0-0-0",
+"square":"h5nlg5-1n6xdn8-1n6xdn8-nobxvk-1n6xdn8-nobxvk-nobxvk-ndk54w-1n6xdn9-nobxvk-nobxvk-ndk54w-nobxvk-ndk54w-ndk54w-hra0hs",
+"conway-4":"48cd-wct05-wct05-h5nlg4-wct05-h5nlg4-h5nlg4-1n6vyv4-wct05-h5nlg4-h5nlg4-1n6vyv4-h5nlg4-1n6vyv4-1n6vyv4-ndk54w"
 }
