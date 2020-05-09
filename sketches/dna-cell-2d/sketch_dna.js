@@ -12,7 +12,7 @@ ATTS = {
   bombing:0,
   max_gen:15,
   neigh_check : [1,2,3,4,5,6,7,8,9],
-  n_side :85,
+  n_side :75,
   rect_cells : {
     xo:30,
     yo:40,
@@ -22,7 +22,7 @@ ATTS = {
     raw:"",
     enconded:""
   },
-  mode:"cases",
+  mode:"single case",
   orders:[],
 
   fr:60,
