@@ -73,6 +73,21 @@ class Cell{
     return ans;
   }
 
+
+  give_color(){
+    if(this.state==0){
+      return COLORS[this.state];
+    }else{
+      if(sel_pal.value()=="Yellow"){
+        return COLORS[this.state];
+      }else{
+
+        return colors_dict[sel_pal.value()][int(this.active_neighbors)];
+      }
+
+    }
+  }
+
   paint(){
     let x = ATTS.rect_cells.xo + ATTS.rect_cells.dx * this.coords[0];
     let y = ATTS.rect_cells.yo + ATTS.rect_cells.dx * this.coords[1];
@@ -81,18 +96,9 @@ class Cell{
     stroke(0)
     strokeWeight(1.2);
     this.read_state()
-    if(this.state==0){
-      fill(COLORS[this.state]);
-    }else{
-      if(sel_pal.value()=="Yellow"){
-        fill(COLORS[this.state]);
-      }else{
 
-        fill(colors_dict[sel_pal.value()][int(this.active_neighbors)]);
-      }
-      //console.log(this.active_neighbors)
+    fill(this.give_color())
 
-    }
 
     rect(x,y,ATTS.rect_cells.dx,ATTS.rect_cells.dx);
     pop()

@@ -12,7 +12,7 @@ ATTS = {
   bombing:0,
   max_gen:15,
   neigh_check : [1,2,3,4,5,6,7,8,9],
-  n_side :80,
+  n_side :85,
   rect_cells : {
     xo:30,
     yo:40,
@@ -25,7 +25,8 @@ ATTS = {
   mode:"cases",
   orders:[],
 
-  fr:60
+  fr:60,
+  info:1
 }
 
 //CONSTANTS
@@ -103,6 +104,7 @@ let butt_blank;
 let butt_step;
 let butt_random;
 let butt_zeroed;
+let butt_info;
 
 
 
@@ -146,9 +148,59 @@ function setup(){
 
   gene_edit=new gene_editor(600,350)
   clickable=[butt_load,butt_mode,butt_order,butt_blank,butt_random,
-    butt_save,gene_edit,butt_clear,butt_play,butt_step,butt_zeroed]
+    butt_save,gene_edit,butt_clear,butt_play,butt_step,butt_zeroed,
+    butt_info]
+
+
+
+    ATTS.min_width = ATTS.rect_cells.xo+ATTS.rect_cells.w+260
+    if(W>(ATTS.min_width+200)){
+      let result= int(W-ATTS.min_width-10);
+      let div2 = document.getElementById('div2').style.width = str(result)+"px";
+      //div2.style("width",)
+
+
+    }else{
+      ATTS.info=0;
+      document.getElementById('div2').style.visibility = 'hidden';
+
+    }
+
+
+
 
 }
+
+
+
+
+function create_image(){
+  let img = createImage(ATTS.n_side,ATTS.n_side);
+  img.loadPixels();
+  for(let i = 0;i<ATTS.n_side;i++){
+    for(let j = 0;j<ATTS.n_side;j++){
+      let c = CELLS[i][j].give_color()
+          img.set(i, j,[c[0],c[1],c[2],255]);
+
+    }
+  }
+  img.updatePixels();
+
+  let scale  = 4;
+  img.resize(scale*ATTS.n_side,scale*ATTS.n_side)
+  save(img, 'my_genome.png');
+
+
+}
+
+
+
+
+
+
+
+
+
 
 
 function gen_random_rule(mode="r"){
@@ -402,6 +454,8 @@ function make_buttons(){
 
   sel_o.selected("survive");
 
+  butt_info = new button_do(ATTS.rect_cells.xo+ATTS.rect_cells.w+200,28,toggle_info,4,[0,100,255])
+
   butt_play = new button_do(ATTS.rect_cells.xo+200,28,toggle_running,4,[255,0,0])
   butt_step = new button_do(ATTS.rect_cells.xo+405,26,evolve,4,[200,200,0])
   butt_blank = new button_do(ATTS.rect_cells.xo+485,26,blank,4,[100,100,100])
@@ -417,6 +471,21 @@ function make_buttons(){
 //550,365
 
 }
+
+
+function toggle_info(){
+  ATTS.info=1-ATTS.info;
+  if(ATTS.info==1){
+    document.getElementById('div2').style.visibility = 'visible';
+
+  }
+  else{
+    document.getElementById('div2').style.visibility = 'hidden';
+  }
+
+
+}
+
 
 
 function clear_orders(){ATTS.orders=[]}
@@ -491,15 +560,92 @@ function blank_center(){
   CELLS[mid][mid].set(1)
 }
 
-function blank_figure(){
+function blank_figure(k){
   //blank()
   let mid = int(ATTS.n_side/2)
 
-  CELLS[mid-1][mid].set(1)
-  CELLS[mid+1][mid].set(1)
-  CELLS[mid][mid-1].set(1)
-  CELLS[mid][mid+1].set(1)
-  CELLS[mid][mid].set(1)
+  if(k=="2"){
+    CELLS[mid-1][mid].set(1)
+    CELLS[mid+1][mid].set(1)
+    CELLS[mid][mid-1].set(1)
+    CELLS[mid][mid+1].set(1)
+    CELLS[mid][mid].set(1)
+  }else if(k=="3"){
+    blank_figure("2")
+
+
+    CELLS[mid-2][mid+1].set(1)
+    CELLS[mid-2][mid-1].set(1)
+    CELLS[mid+2][mid-1].set(1)
+    CELLS[mid+2][mid+1].set(1)
+
+
+    CELLS[mid-1][mid+2].set(1)
+    CELLS[mid-1][mid-2].set(1)
+    CELLS[mid+1][mid-2].set(1)
+    CELLS[mid+1][mid+2].set(1)
+
+
+  }
+  else if(k=="4"){
+    blank_figure("3")
+
+    CELLS[mid-3][mid].set(1)
+    CELLS[mid+3][mid].set(1)
+    CELLS[mid][mid-3].set(1)
+    CELLS[mid][mid+3].set(1)
+
+
+    CELLS[mid-4][mid+1].set(1)
+    CELLS[mid-4][mid-1].set(1)
+    CELLS[mid+4][mid-1].set(1)
+    CELLS[mid+4][mid+1].set(1)
+
+
+    CELLS[mid-1][mid+4].set(1)
+    CELLS[mid-1][mid-4].set(1)
+    CELLS[mid+1][mid-4].set(1)
+    CELLS[mid+1][mid+4].set(1)
+
+
+  }
+  else if(k=="5"){
+    CELLS[mid][mid].set(1)
+    CELLS[mid][mid-1].set(1)
+    CELLS[mid][mid+1].set(1)
+    CELLS[mid][mid-2].set(1)
+    CELLS[mid][mid+2].set(1)
+    CELLS[mid-1][mid].set(1)
+    CELLS[mid+1][mid].set(1)
+    CELLS[mid-2][mid].set(1)
+    CELLS[mid+2][mid].set(1)
+    CELLS[mid][mid-3].set(1)
+    CELLS[mid][mid+3].set(1)
+    CELLS[mid-3][mid].set(1)
+    CELLS[mid+3][mid].set(1)
+
+
+    CELLS[mid-2][mid+2].set(1)
+    CELLS[mid+2][mid-2].set(1)
+    CELLS[mid-2][mid-2].set(1)
+    CELLS[mid+2][mid+2].set(1)
+
+    CELLS[mid-3][mid+1].set(1)
+    CELLS[mid+3][mid-1].set(1)
+    CELLS[mid-3][mid-1].set(1)
+    CELLS[mid+3][mid+1].set(1)
+
+    CELLS[mid-1][mid+3].set(1)
+    CELLS[mid+1][mid-3].set(1)
+    CELLS[mid-1][mid-3].set(1)
+    CELLS[mid+1][mid+3].set(1)
+
+
+
+
+  }
+
+
 }
 
 
@@ -552,9 +698,7 @@ function keyPressed(){
   if(key=="b"){
     blank();
   }
-  if(key=="f"){
-    blank_figure();
-  }
+
   if(key=="x"){
     ATTS.bombing = 1-ATTS.bombing
   }
@@ -563,6 +707,9 @@ function keyPressed(){
   }
   if(key=="1"){
     gen_random_rule("1")
+  }
+  if(key=="2" || key=="3" || key=="4" || key=="5" ) {
+    blank_figure(key);
   }
 
   if(keyCode==SHIFT){
@@ -628,6 +775,14 @@ function evolve(){
 
 //MAIN LOOP
 function draw(){
+  W = windowWidth;
+  if(W>(ATTS.min_width+200)){
+    let result= int(W-ATTS.min_width-10);
+    let div2 = document.getElementById('div2').style.width = str(result)+"px";
+    //div2.style("width",)
+
+
+  }
   background(0);
 
   fill(255)
@@ -687,9 +842,13 @@ function draw(){
 
   push()
   textAlign(LEFT)
-  textSize(16)
+  textSize(15)
   let extra_txt = radio_g.value()=="Infinite"?"inf.":ATTS.max_gen;
   text("Generation : "+ATTS.gen+"/"+extra_txt,ATTS.rect_cells.xo,30)
+
+
+
+
 
   text("Settings",550,330)
 
@@ -699,7 +858,7 @@ function draw(){
 
 
   textSize(13)
-
+  text(" Help ",ATTS.rect_cells.xo+ATTS.rect_cells.w+185,50)
   text("Save",570,265)
   text("Load",570,295)
   text("Palette",550,350)
