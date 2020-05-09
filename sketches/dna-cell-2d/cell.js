@@ -16,7 +16,7 @@ class Cell{
     return CELLS[coord1][coord2].state;
   }
 
-  // 
+  //
   // evaluate_vecinity(orders){
   //
   //
@@ -84,8 +84,14 @@ class Cell{
     if(this.state==0){
       fill(COLORS[this.state]);
     }else{
+      if(sel_pal.value()=="Yellow"){
+        fill(COLORS[this.state]);
+      }else{
+
+        fill(colors_dict[sel_pal.value()][int(this.active_neighbors)]);
+      }
       //console.log(this.active_neighbors)
-      fill(VECINITY_COLORS[int(this.active_neighbors)]);
+
     }
 
     rect(x,y,ATTS.rect_cells.dx,ATTS.rect_cells.dx);

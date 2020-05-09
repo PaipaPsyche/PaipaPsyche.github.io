@@ -71,38 +71,42 @@
                 experimentation with cellular automata is easy and fun as long as you find the beauty of the patterns made by simpple binary rules. These systems are controversial in the study of life emergence and
                 complex systems, for example, you may know the famous  "Conway's Game of Life" which is an specific rule code for 2D cellular automata that ressemebles organic movement from simple configurations. </p>
 
-                <p><b>CONTROL: </b> Mouse Click may allow you to interact with sliders and buttons in the simulator. Load-Save butttons are for inserting or retrieving codified genomes in case there's a rule code you
-                  dont want to lose (For example, try pressing "Load" and typing "conway"). Wuth other genomes it is necessary to copy-paste the desired encoded genome (alphanumeric sequence).
-                  Mode determines wether you want to condition the system on "total neighbor rules" or case by case. The system will evolve untill the max. generation limit is reached. You could modify this
-                  limit with the slider in the bottom or setting the time to "infinite". In the "Behavior programation Module" you can configure specific cases and its response, where the 3X3 grid represents the neighboorhood with the
-                  evaluated cell is in the middle. The cell apart represents the response, the green button is to modify the genome with the case displayed in the module. The case setting line in the bottom is to create rules based on the number of
-                  neighbors, to create a rule press the blue button, to evaluate the created rules press the white button in the mode module and to delete al created rules press the red button.
-
-
-                  </thead>
-              <br>
-                <b>Keyboard :</b>
-                <br>
+                <p style="color:white;">
+                  <b>CONTROL: </b> Mouse Click may allow you to switch cell states manually and  interact with sliders and buttons in the simulator. <b>Load - Save</b> butttons are for inserting or retrieving codified genomes in case there's a rule code you
+                  dont want to lose. <b>Random DNA</b> creates a random rule for the system and <b>Empty DNA</b> will create a rule code in zeros. Examples of genomes you can load easily are: <b> conway , conway-4 , maze-gen , square , triangle , tissue </b>.  With other genomes it is necessary to copy-paste the desired encoded genome (long alphanumeric sequence).</p>
+                  <p style="color:white;">
+                  In Settings you can change the color palette of the System . The system will evolve untill the max. generation limit is reached. You could modify this
+                  limit with the slider in the bottom or setting the <b>max generation</b> parameter to "infinite". In the <b>Behavior programation Module</b> you can configure specific cases and its response, where the 3X3 grid represents the neighboorhood with the
+                  evaluated cell is in the middle. The cells apart represents the actual response to that configuration (will set automatically) and the new response (modify manually with click).The green button is to modify the genome with the case displayed in the module.
+                  the "sinlge case option" is to apply only the case that is displayed, the "all rotations" option applies the rule to all 4 rotations of that case.
+                  </p>
+                  <p style="color:white;">
+                     The case setting line in the bottom is to create rules based on the number of neighbors, to create a rule press the blue button, to update the genome with the created rules press the white button  and to delete al created rules (before update) press the red button.</p>
+                <h3 style="color:white;">Keyboard :</h3>
+              <p style="color:white;">
                 <b> ENTER : </b>Runs/Stops the simulation .
                 <br>
-                <b> R : </b>Create random rule code.
+                <b> R : </b>Create random rule code (Random DNA button).
                 <br>
-                <b> E : </b>Evolves a single step.
+                <b> E : </b>Evolves a single step (Step button).
                 <br>
-                <b> 0 : </b>Create empty rule code.
+                <b> X : </b>Toogles bombing (switch random cell every generation).
                 <br>
                 <b> M : </b>Mutates a random gene.
                 <br>
                 <b> P : </b>Switches the state of a random cell.
                 <br>
-                <b> B : </b>Sets all cells to OFF.
+                <b> B : </b>Sets all cells to OFF (Blank button).
+                <br>
+                <b> I : </b>Inverts the value of every cell.
                 <br>
                 <b> C : </b>Sets the center Cell to ON.
                 <br>
                 <b> H / V / D / A : </b>Sets an alternating pattern along the central (Horizontal / Vertical / Diagonal / Antidiagonal) respectively.
                 <br>
-                <b> 0 / 1 : </b>create arule code with only 0 / 1  respectively.
-
+                <b> 0 / 1 : </b>create arule code with only 0 / 1  respectively (Empty DNA button).
+                <br>
+                <b> 2/3/4 : </b>Sets a figure of ON cells in the center.
 
 
                </p>

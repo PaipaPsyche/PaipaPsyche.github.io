@@ -9,6 +9,7 @@
 ATTS = {
   running : 0,
   gen :1,
+  bombing:0,
   max_gen:15,
   neigh_check : [1,2,3,4,5,6,7,8,9],
   n_side :80,
@@ -51,7 +52,10 @@ COLORS={
   1:[250,225,0]
 }
 
-VECINITY_COLORS={
+let colors_dict={}
+
+
+VECINITY_COLORS_A={
   0:[120,0,20],
   1:[250,10,0],
   2:[250,160,5],
@@ -62,6 +66,20 @@ VECINITY_COLORS={
   7:[80,0,230],
   8:[230,0,180]
 }
+VECINITY_COLORS_B={
+  0:[10,40,10],
+  1:[10,70,20],
+  2:[10,100,40],
+  3:[40,140,60],
+  4:[40,180,80],
+  5:[40,210,100],
+  6:[40,130,130],
+  7:[40,250,180],
+  8:[250,250,250]
+}
+
+
+
 
 //VARIABLES
 let W;
@@ -100,6 +118,11 @@ function setup(){
   W = windowWidth;
   H = windowHeight;
   createCanvas(W,H);
+
+  colors_dict={
+    "Jet":VECINITY_COLORS_A,
+    "Green gradient":VECINITY_COLORS_B
+  }
 
   frameRate(ATTS.fr)
   //ATTS set
@@ -145,7 +168,7 @@ function gen_random_rule(mode="r"){
 
 function read_orders(){
   let total_changed = 0;
-  if(ATTS.orders.length >0 && ATTS.mode=="neighborhood"){
+  if(ATTS.orders.length >0){
     console.log("readorders")
     let new_indexed = {}
 
@@ -186,7 +209,13 @@ function read_orders(){
 }
 
 
-
+function invert(){
+  for(let i = 0;i<ATTS.n_side;i++){
+    for(let j = 0;j<ATTS.n_side;j++){
+      CELLS[i][j].state = 1-CELLS[i][j].state;
+    }
+  }
+}
 function evaluate_vecinity_key(key){
   if(key.length!=9){
     console.log("evaluate vec.: not adecuate length - ",key)
@@ -315,24 +344,32 @@ function make_buttons(){
 
 
   radio = createRadio();
-  radio.option('cases');
-  radio.option('neighborhood');
-  radio.style('width', '200px');
+  radio.option('single case');
+  radio.option('all rotations');
+  radio.style('width', '300px');
   radio.style('color', 'white');
-  radio.value("cases");
+  radio.value("single case");
   fill(255, 0, 0);
-  radio.position(550,340)
-
+  radio.position(550,460)
 
 
   radio_g = createRadio();
   radio_g.option('Limited');
   radio_g.option('Infinite');
-  radio_g.style('width', '160px');
+  radio_g.style('width', '300px');
   radio_g.style('color', 'white');
   radio_g.value("Infinite");
   fill(255, 0, 0);
-  radio_g.position(550,425)
+  radio_g.position(550,400)
+
+  sel_pal = createSelect();
+  sel_pal.position(560,363);
+  sel_pal.option("Jet");
+  sel_pal.option("Green gradient");
+  sel_pal.option("Yellow");
+  sel_pal.selected("Jet");
+  sel_pal.style('height','15px')
+  sel_pal.style('font-size','12px')
 
 
   // A cell that has _ to _ neighbors must ___.;
@@ -347,7 +384,7 @@ function make_buttons(){
   sel_b1.selected('0');
 
   sel_b2 = createSelect();
-  sel_b2.position(ATTS.rect_cells.xo+170, ATTS.rect_cells.w+75);
+  sel_b2.position(ATTS.rect_cells.xo+160, ATTS.rect_cells.w+75);
   for(let i=0;i<=8;i++){
   sel_b2.option(str(i));
   }
@@ -365,21 +402,19 @@ function make_buttons(){
 
   sel_o.selected("survive");
 
-  butt_play = new button_do(ATTS.rect_cells.xo+225,28,toggle_running,4,[255,0,0])
+  butt_play = new button_do(ATTS.rect_cells.xo+200,28,toggle_running,4,[255,0,0])
   butt_step = new button_do(ATTS.rect_cells.xo+405,26,evolve,4,[200,200,0])
   butt_blank = new button_do(ATTS.rect_cells.xo+485,26,blank,4,[100,100,100])
 
-  butt_save = new button_do(550,295,save_genome,4,[0,250,100])
-  butt_load = new button_do(620,295,load_genome,4,[250,250,20])
+  butt_save = new button_do(550,260,save_genome,4,[0,250,100])
+  butt_load = new button_do(550,ATTS.rect_cells.w/2+40,load_genome,4,[250,250,20])
+  butt_random = new button_do(650, 260,gen_random_rule,4,[200,20,200])
+  butt_zeroed = new button_do(650, ATTS.rect_cells.w/2+40,()=>{gen_random_rule("0")},4,[150,20,240])
 
-  butt_mode = new button_do(550,365,set_mode,3,[250,250,250])
-
-  butt_random = new button_do(ATTS.rect_cells.xo+525, ATTS.rect_cells.w+75,gen_random_rule,4,[200,20,200])
-  butt_zeroed = new button_do(ATTS.rect_cells.xo+525, ATTS.rect_cells.w+55,()=>{gen_random_rule("0")},4,[150,20,240])
-
-  butt_clear = new button_do(ATTS.rect_cells.xo+435, ATTS.rect_cells.w+75,clear_orders,4,[250,20,20])
-  butt_order = new button_do(ATTS.rect_cells.xo+405, ATTS.rect_cells.w+75,create_order)
-
+  butt_clear = new button_do(ATTS.rect_cells.xo+420, ATTS.rect_cells.w+70,clear_orders,4,[250,20,20])
+  butt_order = new button_do(ATTS.rect_cells.xo+380, ATTS.rect_cells.w+70,create_order)
+  butt_mode = new button_do(ATTS.rect_cells.xo+500, ATTS.rect_cells.w+70,read_orders,4,[250,250,250])
+//550,365
 
 }
 
@@ -400,21 +435,6 @@ function create_order(){
 console.log("A cell that has ",sel_b1.value()," to ",sel_b2.value()," neighbors must",sel_o.value())
 }
 
-function set_mode(){
-
-  let mode = radio.value()
-  if(mode!=ATTS.mode){
-    ATTS.mode = mode;
-
-  console.log("mode changed to ",mode);
-
-
-  }
-  if(mode=="neighborhood"){
-  read_orders();
-  }
-
-}
 
 
 function evaluate_cells(){
@@ -471,6 +491,17 @@ function blank_center(){
   CELLS[mid][mid].set(1)
 }
 
+function blank_figure(){
+  //blank()
+  let mid = int(ATTS.n_side/2)
+
+  CELLS[mid-1][mid].set(1)
+  CELLS[mid+1][mid].set(1)
+  CELLS[mid][mid-1].set(1)
+  CELLS[mid][mid+1].set(1)
+  CELLS[mid][mid].set(1)
+}
+
 
 
 function blank_border(dir){
@@ -512,11 +543,20 @@ function keyPressed(){
   if(key=="p"){
       random_switch()
   }
+  if(key=="i"){
+      invert()
+  }
   if(key=="c"){
     blank_center()
   }
   if(key=="b"){
     blank();
+  }
+  if(key=="f"){
+    blank_figure();
+  }
+  if(key=="x"){
+    ATTS.bombing = 1-ATTS.bombing
   }
   if(key=="0"){
     gen_random_rule("0")
@@ -545,6 +585,17 @@ function keyPressed(){
   }
 }
 
+function mouseDragged(){
+  for(let i = 0;i<ATTS.n_side;i++){
+    for(let j = 0;j<ATTS.n_side;j++){
+      if(CELLS[i][j].mouseInRange()){
+        CELLS[i][j].switch()
+        return;
+      }
+
+    }
+  }
+}
 
 function mouseClicked(){
 
@@ -581,7 +632,9 @@ function draw(){
 
   fill(255)
 
-
+  if(ATTS.bombing==1 && ATTS.running==1){
+    random_switch()
+  }
 
 
   for(let i = 0;i<ATTS.n_side;i++){
@@ -597,7 +650,7 @@ function draw(){
 
 
 
-  dna.paint(600,70,50,200)
+  dna.paint(600,40,50,200)
   for(let c of clickable){
     c.paint()
   }
@@ -609,14 +662,23 @@ function draw(){
     textAlign(LEFT)
     textSize(12)
     fill([0,180,0])
-    text("Running",ATTS.rect_cells.xo+ATTS.rect_cells.w/2-80,30)
+    text("Running",ATTS.rect_cells.xo+ATTS.rect_cells.w/2-100,30)
     pop()
   }else{
     butt_play.C = [200,0,0]
     push()
     textSize(12)
     fill([190,0,0])
-    text("Stop",ATTS.rect_cells.xo+ATTS.rect_cells.w/2-80,30)
+    text("Stop",ATTS.rect_cells.xo+ATTS.rect_cells.w/2-100,30)
+    pop()
+  }
+
+
+  if(ATTS.bombing==1){
+    push()
+    textSize(12)
+    fill([210,210,0])
+    text("Bombing",ATTS.rect_cells.xo+ATTS.rect_cells.w/2,30)
     pop()
   }
 
@@ -629,28 +691,37 @@ function draw(){
   let extra_txt = radio_g.value()=="Infinite"?"inf.":ATTS.max_gen;
   text("Generation : "+ATTS.gen+"/"+extra_txt,ATTS.rect_cells.xo,30)
 
+  text("Settings",550,330)
 
-  textSize(15)
-  text("Mode",550,330)
-  text("Max. Generations",550,410)
-  text("Behavior Programation Module",550,470)
+  text("Behavior Programation Module",550,440)
 
 
 
 
   textSize(13)
 
-  text("Save            Load",565,300)
-  text("Empty DNA",570,ATTS.rect_cells.w+60)
-  text("Random DNA",570,ATTS.rect_cells.w+80)
+  text("Save",570,265)
+  text("Load",570,295)
+  text("Palette",550,350)
+  text("Max. Generations",550,385)
+  text("Empty DNA",670,295)
+  text("Random DNA",670,265)
   text("Step              blank",ATTS.rect_cells.xo+370,30)
-  text("Update  ("+ATTS.orders.length+" orders)",565,370)
+  text("Update",480,ATTS.rect_cells.w+75)
+
   text("A cell that has              to               neghbors must",ATTS.rect_cells.xo, ATTS.rect_cells.w+80)
+
+
+  textSize(11)
+  text(ATTS.orders.length+" orders",480,ATTS.rect_cells.w+90)
+  text("clear",440,ATTS.rect_cells.w+90)
+  text("send",400,ATTS.rect_cells.w+90)
+
 
 
   stroke(255)
   line(550,310,700,310)
-  line(550,385,700,385)
-  line(550,455,700,455)
+  line(550,420,700,420)
+  //line(550,455,700,455)
   pop()
 }

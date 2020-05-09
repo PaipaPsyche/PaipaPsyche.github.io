@@ -35,15 +35,75 @@
     <title>DNA automata 2D</title>
   </head>
   <body>
-    <script src="../../sketches/dna-cell-2d/sketch_dna.js"></script>
-    <script src="../../sketches/dna-cell-2d/math_utils.js"></script>
-    <script src="../../sketches/dna-cell-2d/cell.js"></script>
-    <script src="../../sketches/dna-cell-2d/dna_string.js"></script>
-    <script src="../../sketches/dna-cell-2d/gene_editor.js"></script>
-    <script src="../../sketches/dna-cell-2d/create_v_rule.js"></script>
-    <script src="../../sketches/dna-cell-2d/important_genomes.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/js-combinatorics@0.5"></script>
+    <div id="container" style="position:relative;">
+    <div id="div1" style="position:absolute; top:0; left:0;">
+
+      <script src="../../sketches/dna-cell-2d/sketch_dna.js"></script>
+      <script src="../../sketches/dna-cell-2d/math_utils.js"></script>
+      <script src="../../sketches/dna-cell-2d/cell.js"></script>
+      <script src="../../sketches/dna-cell-2d/dna_string.js"></script>
+      <script src="../../sketches/dna-cell-2d/gene_editor.js"></script>
+      <script src="../../sketches/dna-cell-2d/create_v_rule.js"></script>
+      <script src="../../sketches/dna-cell-2d/important_genomes.js"></script>
+
+      <script src="https://cdn.jsdelivr.net/npm/js-combinatorics@0.5"></script>
+
+    </div>
+    <div id="div2" style="position:absolute; width:40%; right:0; font-size: 13px;text-align: justify">
+
+      <h2 style="color:white;">2D Cellular Automata Lab</h2>
+      <p style="color:white;">
+        <b>CONTROL: </b> Mouse Click may allow you to switch cell states manually and  interact with sliders and buttons in the simulator. <b>Load - Save</b> butttons are for inserting or retrieving codified genomes in case there's a rule code you
+        dont want to lose. <b>Random DNA</b> creates a random rule for the system and <b>Empty DNA</b> will create a rule code in zeros. Examples of genomes you can load easily are: <b> conway , conway-4 , maze-gen , square , triangle , tissue </b>.  With other genomes it is necessary to copy-paste the desired encoded genome (long alphanumeric sequence).</p>
+        <p style="color:white;">
+        In Settings you can change the color palette of the System . The system will evolve untill the max. generation limit is reached. You could modify this
+        limit with the slider in the bottom or setting the <b>max generation</b> parameter to "infinite". In the <b>Behavior programation Module</b> you can configure specific cases and its response, where the 3X3 grid represents the neighboorhood with the
+        evaluated cell is in the middle. The cells apart represents the actual response to that configuration (will set automatically) and the new response (modify manually with click).The green button is to modify the genome with the case displayed in the module.
+        the "sinlge case option" is to apply only the case that is displayed, the "all rotations" option applies the rule to all 4 rotations of that case.
+        </p>
+        <p style="color:white;">
+           The case setting line in the bottom is to create rules based on the number of neighbors, to create a rule press the blue button, to update the genome with the created rules press the white button  and to delete al created rules (before update) press the red button.</p>
+      <h3 style="color:white;">Keyboard :</h3>
+    <p style="color:white;">
+      <b> ENTER : </b>Runs/Stops the simulation .
+      <br>
+      <b> R : </b>Create random rule code (Random DNA button).
+      <br>
+      <b> E : </b>Evolves a single step (Step button).
+      <br>
+      <b> X : </b>Toogles bombing (switch random cell every generation).
+      <br>
+      <b> M : </b>Mutates a random gene.
+      <br>
+      <b> P : </b>Switches the state of a random cell.
+      <br>
+      <b> B : </b>Sets all cells to OFF (Blank button).
+      <br>
+      <b> I : </b>Inverts the value of every cell.
+      <br>
+      <b> C : </b>Sets the center Cell to ON.
+      <br>
+      <b> H / V / D / A : </b>Sets an alternating pattern along the central (Horizontal / Vertical / Diagonal / Antidiagonal) respectively.
+      <br>
+      <b> 0 / 1 : </b>create arule code with only 0 / 1  respectively (Empty DNA button).
+      <br>
+      <b> 2/3/4 : </b>Sets a figure of ON cells in the center.
+
+
+     </p>
+
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
 
 
 </body></html>

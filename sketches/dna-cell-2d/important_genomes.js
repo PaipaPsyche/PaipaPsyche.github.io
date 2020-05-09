@@ -10,5 +10,6 @@ let genomes = {
 "maze-gen":"6imxn8-yww75s-yww75s-1mw464g-yww75s-1mw464g-1mw464g-hra0hs-yww75s-1mw464g-1mw464g-hra0hs-1mw464g-hra0hs-hra0hs-0",
 "triangle":"hrb2f4-0-1idsf0g-0-0-0-0-0-3bvh8g-0-0-0-0-0-0-0",
 "square":"h5nlg5-1n6xdn8-1n6xdn8-nobxvk-1n6xdn8-nobxvk-nobxvk-ndk54w-1n6xdn9-nobxvk-nobxvk-ndk54w-nobxvk-ndk54w-ndk54w-hra0hs",
-"conway-4":"48cd-wct05-wct05-h5nlg4-wct05-h5nlg4-h5nlg4-1n6vyv4-wct05-h5nlg4-h5nlg4-1n6vyv4-h5nlg4-1n6vyv4-1n6vyv4-ndk54w"
+"conway-4":"48cd-wct05-wct05-h5nlg4-wct05-h5nlg4-h5nlg4-1n6vyv4-wct05-h5nlg4-h5nlg4-1n6vyv4-h5nlg4-1n6vyv4-1n6vyv4-ndk54w",
+"tissue":"at7jz-5yf3wc-5yf3wc-oew1c0-6iegzg-zihx40-o9vje8-ynhkao-6h5cho-oevc1s-o9vjcw-ynztog-o9vjcw-1y6e8fk-1y4ofeo-1h9u1hc"
 }

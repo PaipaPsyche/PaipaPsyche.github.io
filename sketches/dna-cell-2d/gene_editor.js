@@ -138,13 +138,52 @@ class gene_editor{
 
   submit(){
     let config =  this.read()
-    let response = this.result.val;
-    let index = look_for(config);
+    let response = this.result.val
+    if(radio.value()=="single case"){
 
-    change_gene(index,response);
+      let index = look_for(config);
+
+      change_gene(index,response);
+
+
+    }else if(radio.value()=="all rotations"){
+
+      let rots = this.rotations(config)
+      for(let r of rots){
+        let index = look_for(r);
+        change_gene(index,response);
+      }
+
+    }
     this.blank()
 
+
   }
+
+  rotations(str){
+    //r1
+    let r1 = [0,7,8,1,2,3,4,5,6]
+    let r2 = [0,5,6,7,8,1,2,3,4]
+    let r3 = [0,3,4,5,6,7,8,1,2]
+
+
+    let r1_str = ""
+    let r2_str = ""
+    let r3_str = ""
+
+
+    for(let i = 0;i<9;i++){
+      r1_str+=str[r1[i]]
+      r2_str+=str[r2[i]]
+      r3_str+=str[r3[i]]
+    }
+
+    return [str,r1_str,r2_str,r3_str]
+
+  }
+
+
+
 
 
 
@@ -196,6 +235,15 @@ class gene_editor{
     this.result.paint()
     this.new_result.paint()
     pop()
+
+
+    push()
+    fill(255)
+    textSize(9)
+    text(" actual     new",edit_xo+4*edit_dx-5, edit_yo+1*edit_dx+5)
+    pop()
+
+
 
     push()
     stroke(255)
