@@ -105,6 +105,7 @@ let butt_step;
 let butt_random;
 let butt_zeroed;
 let butt_info;
+let butt_image;
 
 
 
@@ -149,7 +150,7 @@ function setup(){
   gene_edit=new gene_editor(600,350)
   clickable=[butt_load,butt_mode,butt_order,butt_blank,butt_random,
     butt_save,gene_edit,butt_clear,butt_play,butt_step,butt_zeroed,
-    butt_info]
+    butt_info,butt_image]
 
 
 
@@ -455,6 +456,7 @@ function make_buttons(){
   sel_o.selected("survive");
 
   butt_info = new button_do(ATTS.rect_cells.xo+ATTS.rect_cells.w+200,28,toggle_info,4,[0,100,255])
+  butt_image = new button_do(ATTS.rect_cells.xo+ATTS.rect_cells.w+200,78,create_image,4,[20,210,155])
 
   butt_play = new button_do(ATTS.rect_cells.xo+200,28,toggle_running,4,[255,0,0])
   butt_step = new button_do(ATTS.rect_cells.xo+405,26,evolve,4,[200,200,0])
@@ -859,6 +861,7 @@ function draw(){
 
   textSize(13)
   text(" Help ",ATTS.rect_cells.xo+ATTS.rect_cells.w+185,50)
+  text(" Save \n Image ",ATTS.rect_cells.xo+ATTS.rect_cells.w+185,100)
   text("Save",570,265)
   text("Load",570,295)
   text("Palette",550,350)
