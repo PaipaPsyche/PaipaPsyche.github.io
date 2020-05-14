@@ -133,7 +133,7 @@ let C_SILABAS = [
   ["th", ""],
   ["dr", ""],
   ["d", "ns"],
-  ["", "x"],
+  ["", "r"],
   ["", "rg"],
   ["", "rp"],
   ["", "st"],
@@ -145,9 +145,7 @@ let C_SILABAS = [
   ["sh", "k"],
   ["x", "n"],
   ["cr", "sh"],
-  ["cr", "x"],
   ["p", "ss"],
-  ["s", "x"],
   ["v", "nt"],
   ["g", "st"],
   ["l", "gdr"],
@@ -166,7 +164,40 @@ let C_SILABAS = [
   ["fl", "r"]
 ]
 
+let PRE_ERA_A=["dark ","golden","thousand year","first great","imperial","cursed","blessed","cruel","slow",
+"glorious","terror","false","violent","long","short","silver","iron","fierce","nameless","fast"]
+let PRE_ERA_B=["Neo","traditional","late","pre","post","super","multi","mini","early"]
+let PRE_ERA_C=["war","cold war","inquisition","infestation","fall","tremor","silence","growth","rebelion","revolution",
+"inflation","empire","kingdom","state","regime","unification","consolidation","glory","globalization","depression","disintegration"]
+function name_era(){
+  let n = era;
+  let orig = CENTROS[0].origin_name;
+  let randcit = random(CENTROS).nombre["NAME"]
+  let capname = cap.nombre["NAME"]
+  let att1 = random(PRE_ERA_A)
+  let att2 = random(PRE_ERA_B)
+  let item =  random(PRE_ERA_C)
+  let pres;
+    if(n==0){
+       pres = [`Rise of the ${orig}`,`Arrival of the ${orig}`,`The first ${orig}`,`${orig} Prima`,
+       `Early ${orig} colonies`,`First songs of the ${orig}`]
 
+    }
+    else if(n==1){
+      pres = [`${orig} colonialism`,`${att1} fall of ${capname}`,
+        `Pre industrial ${capname}`,`${orig} minning rush`,`${att2}-renaisance`,
+      `${att2}-colonialism`,`${att2}-imperialism`,`${att2} - ${capname}`]
+
+
+
+    }else if (n==2) {
+       pres = [`${orig} globalism`,`${capname} great depression`,
+        `The order of ${randcit}`,`${orig} illumination`,`The ${att1} ${item}`,
+      `${att1} industrialization`,`The ${randcit} minor ${item} `,`The ${capname}  ${item}`]
+
+    }
+    return (random(pres)).toLowerCase();
+}
 
 
 
@@ -242,6 +273,8 @@ function gen_root(elemento){
     raiz = raiz.slice(4, raiz.length - 1)
     raiz = mid_vocal(raiz)
     raiz = raiz + random(SILABAS);
+    if(random()>0.5){
+      raiz = raiz + random(VOCAL);}
   }
 
   if (raiz.length<4){
@@ -263,8 +296,10 @@ function name_markpoint(elemento){
   let name = gen_root(elemento)
   if(elemento.desc==""){
     name =  complement_name(name["NAME"],name["RAIZ"],elemento.type,elemento.ground_level,"epic");
+
     return name;
   }
+
 
  name = complement_name(name["NAME"],name["RAIZ"],elemento.type,elemento.ground_level,"mark");
 
@@ -272,7 +307,12 @@ return name;
 }
 
 function complement_name(nombre,raiz,tipo,valor,el_type){
-
+  if (raiz.length>=10){
+    name1 = raiz.slice(0,5)+random(VOCAL)
+    raiz = name1
+    if(random()<0.1){
+      raiz=raiz+random(["-"," "]) +raiz.slice(5,9)+random(VOCAL)}
+  }
   if(el_type=="epic"){
 
     if(tipo>0){
@@ -280,6 +320,7 @@ function complement_name(nombre,raiz,tipo,valor,el_type){
     }else{
       nombre = raiz + " " + random(POST_EPIC_LOW);
     }
+
 
     return {
           "NAME": nombre,
@@ -333,6 +374,7 @@ function complement_name(nombre,raiz,tipo,valor,el_type){
     }
 
   }
+
   return {
         "NAME": nombre,
         "RAIZ": raiz

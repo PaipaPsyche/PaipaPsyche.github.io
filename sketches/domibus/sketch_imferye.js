@@ -12,6 +12,7 @@ var CANALES=[];
 var BOTONES=[];
 var MARCAS =[];
 
+
 var effects = [];
 
 var scaleX=0.006;
@@ -46,9 +47,17 @@ var mult= 1;
 var buenas=1;
 var malas = 0;
 
+var savings = 0;
+var era = 0;
+var act_era = [""];
+var era_change = [];
+var d_era = 4000;
+
+var cap="";
+
+let active_disasters=[];
 
 var pintar_rec=0;
-
 var opc_but ="";
 var opc_elems = [];
 
@@ -77,6 +86,10 @@ if(key =='m'){
 if(key =='a'){
   activate_auto=1-activate_auto;
 }
+if(key =='d'){
+  gen_disaster(mouseX,mouseY);
+}
+
 if(key =='v'){
   activate_virus=1-activate_virus;
 }
@@ -202,60 +215,6 @@ function bar_profit(prof, xo, yo, w, h) {
 }
 
 
-
-
-//COLORBAR======================
-
-
-
-
-
-
-
-
-// function poll(){
-//   let classes_M = {"1":0,"2":0,"3":0,"4":0,"5":0,"-1":0};
-//   let classes_C = {1:0,2:0,3:0};
-//   let consume=0;
-//   let world_pop = 0;
-//   let fuel_prod= 0;
-//   let food_prod= 0;
-//   let maxage  = 0;
-//   let trace =0;
-//   let maxage_city= "";
-//
-//
-//
-//
-//
-//
-//   for(var i = 0;i<CENTROS.length;i++){
-//     let elected = CENTROS[i];
-//     classes_M[elected.T]++;
-//     world_pop+=elected.population;
-//     fuel_prod+=elected.genfuel;
-//     food_prod+=elected.genfood;
-//     consume+=elected.consumo;
-//     if(elected.give_age()>maxage & elected.T>0){
-//       maxage = elected.give_age();
-//       maxage_city = elected.nombre["NAME"].toUpperCase();
-//
-//     }
-//     if(elected.give_age()>trace){trace=elected.give_age()}
-//   }
-//
-//     for(var i = 0;i<CANALES.length;i++){
-//       classes_C[CANALES[i].T]++;
-//
-//     }
-//
-//     let ans  = {"POLL_CEN":classes_M,"POLL_CAN":classes_C,"WPOP":world_pop,
-//                 "WFUEL":fuel_prod,"WFOOD":food_prod,"WCONS":consume,"MAXAGE":[maxage,maxage_city,trace]};
-//
-//   return ans;
-//
-//
-// }
 
 
 function distancia(el1,el2){
@@ -433,11 +392,7 @@ function get_maxlvl(){
 
 }
 
-// function mousePressed(event) {
-//   if(event.button==2 & rango_mina()!=0){
-//     rango_mina().desconectar();
-//   }
-// }
+
 function parse_pop(n){
   let ans = "";
   let s = str(n);
@@ -454,7 +409,59 @@ function parse_pop(n){
 
   return trim(ans);
 
+
 }
+
+
+function gen_disaster(x=null,y=null){
+  let pos=[random(50,W-50),random(50,H-50)];
+  if(x && y){ pos =[x,y]}
+
+  let ddisaster = new Disaster(pos[0],pos[1])
+  active_disasters.push(ddisaster)
+}
+
+function affect_disasters(){
+  for(let dis of active_disasters){
+    if(dis.time>0){
+      for(let cen of CENTROS){
+        if(dist(dis.x,dis.y,cen.X,cen.Y)<dis.R){
+          cen.desconectar()
+          if(random()>0.1){
+            cen.desconectar();
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+
+function assign_era(){
+
+  act_era.push(name_era())
+  for(let cen of CENTROS){
+    cen.asignar_valores_mapa(m)
+    cen.evaluar_tipo()
+  }
+
+
+}
+
+function switch_era(){
+  if(era!=2){
+    mult = 0;
+    m.change_era()
+    era=era+1
+    assign_era()
+    mult= 1;
+  }
+
+}
+
+
 
 function get_rand_coords(xx,yy,sd){
    let x = max(min(floor(randomGaussian(xx,sd)),W-25),25);
@@ -470,6 +477,8 @@ function setup() {
   frameRate(5);
   add_silabas();
 
+  era_change=[d_era+int(randomGaussian(0,0.05*d_era))]
+  era_change.push(era_change[0]+d_era+int(randomGaussian(0,0.05*d_era)))
   // H=600;
   // W=600;
 
@@ -477,6 +486,7 @@ function setup() {
   pixelDensity(1);
   maxDistance = dist(W / 2,H/ 2, W,H);
   m = new mapa(W,H);
+
 background(0);
 }
 
@@ -486,8 +496,33 @@ background(0);
 
 function draw() {
 
+  if(act_era.length==1 && CENTROS.length>1){
+    assign_era()
+  }
 
 
+
+
+    if(mult==1){
+        let pers_dis = []
+      for(let dis of active_disasters){
+        dis.time--;
+        if(dis.time>0){
+          pers_dis.push(dis)
+        }
+      }
+      active_disasters=pers_dis
+
+
+      if(era>0 && random()<0.15*era && T%50==0){
+        gen_disaster()
+      }
+
+
+    }
+  if(random()<0.05){
+    affect_disasters()
+  }
 
 
   let five=0;
@@ -525,6 +560,7 @@ function draw() {
   let marine = 0;
   let sumal=0;
   let activas=0;
+  let act_index =[]
 
 
       for(var i = 0;i<CANALES.length;i++){
@@ -562,7 +598,7 @@ function draw() {
 
     }
       if(elected.give_age()>trace){trace=elected.give_age()}
-      if(elected.T>0){activas++};
+      if(elected.T>0){activas++;act_index.push(i)};
   }
 
     let meanl=sumal/(CENTROS.length+1);
@@ -571,6 +607,23 @@ function draw() {
 
     let profit =0.2*five+(resta/(abs(resta)+1))*log(max(abs(resta),1))+meanl;
     profit = profit*0.7-1.5;
+
+
+    if(profit < limit_FM & savings>0){
+      //savings = max(savings+profit/3,0)
+      profit = limit_FM +0.1;
+
+    }
+    if(mult==1){
+    let add_sav = profit/5 * (era+1)
+    if(add_sav<0){add_sav = add_sav*1.5;}
+    savings = max(savings+add_sav,0)
+    }
+
+
+
+
+
     if(profit>best_prof){
       best_prof=profit;
     }
@@ -606,6 +659,13 @@ function draw() {
       text("FINAL SCORE "+score+" / 100",W/2,H/2+30)
       pop()
 
+    }
+
+
+    for(let i = 0;i<era_change.length;i++){
+      if(era== i && polling["MAXAGE"][2]>era_change[i]){
+        switch_era()
+      }
     }
 
 
@@ -655,7 +715,7 @@ function draw() {
 
 
 
-  let cap ="";
+
   let max_score=0;
   for(var i = 0;i<cand.length;i++){
     if(cand[i][1]>max_score){
@@ -720,7 +780,23 @@ function draw() {
   text("~ ~ ~ ~ ________ ~ ~ ~ ~",xo+90,yo+70);
   pop();
 
+  push();
+  textSize(18)
+  fill(0)
+  let val_era = ["I","II","III"][era]
+  let textera = act_era[act_era.length-1];
+  text(`Era ${val_era}: ${textera}`,20,H-10);
+  if(act_era.length>2){
+    for(let i = act_era.length-2;i>=0;i--){
+    textSize(13)
+    text(act_era[i],1000-i*270,H-7);
+    }
+  }
+  textSize(15)
+  fill(0)
 
+  text("Savings: "+savings.toFixed(2),20,H-30);
+  pop();
 
   push();
   noStroke();
@@ -734,6 +810,7 @@ function draw() {
   text("Map: ",xo,yo+50);
   text("Difficulty: ",xo,yo+65);
   text("Growth: ",xo,yo+80);
+
 
 
   fill([255,255,255]);
@@ -804,6 +881,7 @@ if(CENTROS.length>0){
     fill([250,255,0]);
     text("GOLDEN TIMES",xo+105,yo+40);
     prosperity_years++;
+
   }
   if(activate_virus==1 ){
     fill([0,255,0]);
@@ -811,16 +889,19 @@ if(CENTROS.length>0){
     killrate =1;
     //console.log(killrate);
     if(random()<killrate & CENTROS.length>0 & mult!=0){
-      random(CENTROS).desconectar();
+
+      CENTROS[random(act_index)].desconectar();
+      CENTROS[random(act_index)].desconectar();
     }
   }
   if(profit<limit_FM){
     fill([255,155,30]);
     text("FAMINE",xo+55,yo+60);
-    killrate =0.1*log(-min(resta,-1));
+    killrate =0.12*log(-min(resta,-1));
     //console.log(killrate);
     if(random()<killrate & CENTROS.length>0 & mult!=0){
-      random(CENTROS).desconectar();
+      CENTROS[random(act_index)].desconectar();
+      CENTROS[random(act_index)].desconectar();
     }
 
   }
@@ -856,6 +937,9 @@ if(mult==0 & activas>0){
   textAlign(CENTER,CENTER)
   text(" PAUSE ",W/2,H/2);
   pop();
+}
+for(let dis of active_disasters){
+  dis.paint()
 }
 
 

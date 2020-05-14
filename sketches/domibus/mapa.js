@@ -14,6 +14,8 @@ class mapa{
     this.M_petro = [];
     this.M_food = [];
 
+    this.images = {}
+
     this.crear_mapas();
 
     this.asignar_mapas();
@@ -34,15 +36,13 @@ class mapa{
       this.M_tipos[x] = [];
       this.M_tierra[x] = [];
       this.M_montana[x] = [];
-      this.M_petro[x] = [];
-      this.M_food[x]=[];
+
       for (let y = 0; y < this.H; y++) {
         // let distance = dist(this.W / 2, this.H / 2, x, y);
         var value1 = noise(xoff,yoff);
         var value2 = noise(3*xoff+100,3*yoff+100);
         var value3 = noise(4*xoff+200,4*yoff+200);
-        this.M_petro[x][y] = value2>thresholdr?1:0;
-        this.M_food[x][y] = value3>thresholdf?1:0;
+
         this.MAPA[x][y] = value1;
         //this.PUNTOS_INTERES={};
         yoff+=scaleY;
@@ -51,8 +51,31 @@ class mapa{
 
 
     }
+    this.asignar_recursos()
 
 }
+
+  asignar_recursos(){
+    var xoff=int(random()*20);
+
+    for (let x = 0; x < this.W; x++) {
+      var yoff=0;
+      this.M_petro[x] = [];
+      this.M_food[x]=[];
+      for (let y = 0; y < this.H; y++) {
+        // let distance = dist(this.W / 2, this.H / 2, x, y);
+        var value2 = noise(3*xoff+100,3*yoff+100);
+        var value3 = noise(4*xoff+200,4*yoff+200);
+        this.M_petro[x][y] = value2>thresholdr?1:0;
+        this.M_food[x][y] = value3>thresholdf?1:0;
+        //this.PUNTOS_INTERES={};
+        yoff+=scaleY;
+      }
+      xoff+=scaleX;
+
+
+    }
+  }
 
   asignar_mapas(){
 
@@ -62,7 +85,7 @@ class mapa{
     let higher=[0,0,0];
 
     let add_marks=[];
-    let max_marks=1+random([1,2,3]);
+    let max_marks=(2+random([1,2,3]))-MARCAS.length;
 
     let beaches = [];
     let mountains = [];
@@ -93,7 +116,7 @@ class mapa{
           tipo=-3;
         }
 
-        if(random()<1E-5 && random()<0.12  && add_marks.length<max_marks && in_range_mark==1 && tipo!=0){
+        if(random()<2E-5 && random()<0.12  && add_marks.length<max_marks && in_range_mark==1 && tipo!=0){
           add_marks.push([x,y,value,tipo]);
         }
 
@@ -123,28 +146,48 @@ class mapa{
       }
     }
 
-    MARCAS.push(new markpoint(lower[0],lower[1],lower[2],lower[3]))
-    MARCAS.push(new markpoint(higher[0],higher[1],higher[2],higher[3]))
-    MARCAS[1].desc = "Highest point"
-    MARCAS[0].desc = "Lowest point"
-    for(let mark of add_marks){
-      MARCAS.push(new markpoint(mark[0],mark[1],mark[2],mark[3]))
+    if(MARCAS.length==0){
+      MARCAS.push(new markpoint(lower[0],lower[1],lower[2],lower[3]))
+      MARCAS.push(new markpoint(higher[0],higher[1],higher[2],higher[3]))
+      MARCAS[1].desc = "Highest point"
+      MARCAS[0].desc = "Lowest point"
+      for(let mark of add_marks){
+        MARCAS.push(new markpoint(mark[0],mark[1],mark[2],mark[3]))
+      }
     }
 
 
     //console.log(suma_tierra,(this.W*this.H),suma_tierra/(this.W*this.H));
     this.DIFF= suma_tierra/(this.W*this.H);
 
+    this.crear_imagenes()
 
 
+
+  }
+
+  change_era(){
+    if(era==0){
+      thresholdf = 0.66
+      thresholdr = 0.66
+
+    }
+    if(era==1){
+      thresholdf = 0.72
+      thresholdr = 0.72
+    }
+    console.log(thresholdf,thresholdr)
+    this.asignar_recursos()
+    this.asignar_mapas()
   }
 
 
 
 
-    pintar(){
-
-      loadPixels();
+  crear_imagenes(){
+    for(let pc = 0;pc<=3;pc++){
+      let img = createImage(this.W,this.H);
+      img.loadPixels();
 
       for(var y=0;y<this.H;y++){
         for(var x=0;x<this.W;x++){
@@ -177,29 +220,29 @@ class mapa{
 
 
 
-          if(pintar_rec == 1){
+          if(pc == 1){
             if(this.M_petro[x][y]>thresholdr){
 
               if(tipo>0){
-                rgba=[0,0,0,30*sin(T)+200];
+                rgba=[0,0,0,120];
               }
               else{
-                rgba=[10,180,120,50*sin(T)+200];
+                rgba=[10,180,120,120];
               }
             }
           }
-          if(pintar_rec == 2){
+          if(pc == 2){
             if(this.M_food[x][y]>thresholdf){
               if(tipo>0){
-                rgba=[150,20,100,50*sin(T)+200];
+                rgba=[150,20,100,120];
               }
               else{
-                rgba=[50,120,100,50*sin(T)+200];
+                rgba=[50,120,100,120];
               }
 
             }
           }
-          if(pintar_rec == 3){
+          if(pc == 3){
             let r,g,b;
 
               if(this.M_tipos[x][y]>0){
@@ -210,7 +253,7 @@ class mapa{
 
                 //console.log(r,g,b);
 
-} else {
+  } else {
                 r = 0;
                 g = int(10+150*this.MAPA[x][y]);
                 b = int(10+400*this.MAPA[x][y]);
@@ -222,16 +265,30 @@ class mapa{
 
           }
 
-
-          pixels[index+0]=rgba[0];
-          pixels[index+1]=rgba[1];
-          pixels[index+2]=rgba[2];
-          pixels[index+3]=rgba[3];
+          img.set(x, y, color(rgba[0], rgba[1], rgba[2],rgba[3]));
+          // pixels[index+0]=rgba[0];
+          // pixels[index+1]=rgba[1];
+          // pixels[index+2]=rgba[2];
+          // pixels[index+3]=rgba[3];
 
         }
 
       }
-      updatePixels();
+      img.updatePixels();
+      this.images[pc] = img;
+    }
+
+
+
+
+
+  }
+
+
+
+    pintar(){
+
+      image(this.images[pintar_rec],0,0);
     }
 
 

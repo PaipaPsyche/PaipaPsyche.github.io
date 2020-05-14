@@ -181,7 +181,12 @@ function create_image(){
   for(let i = 0;i<ATTS.n_side;i++){
     for(let j = 0;j<ATTS.n_side;j++){
       let c = CELLS[i][j].give_color()
-          img.set(i, j,[c[0],c[1],c[2],255]);
+      let new_c = color(0,0,0)
+      new_c.setRed(c[0])
+      new_c.setGreen(c[1])
+      new_c.setBlue(c[2])
+      new_c.setAlpha(255)
+          img.set(i, j,new_c);
 
     }
   }
@@ -189,7 +194,7 @@ function create_image(){
 
   let scale  = 4;
   img.resize(scale*ATTS.n_side,scale*ATTS.n_side)
-  save(img, 'my_genome.png');
+  save(img, 'my_genome.jpg');
 
 
 }

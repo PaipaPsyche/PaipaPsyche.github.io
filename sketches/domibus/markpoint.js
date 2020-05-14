@@ -55,6 +55,29 @@ class markpoint{
   }
 
 
+}
 
 
+let REASONS=["Earthquake","Meteor Impact","Super Storm","Unknown volcano erupts","Flood"]
+
+class Disaster{
+  constructor(x,y){
+    this.x = x;
+    this.y = y;
+    this.reason = random(REASONS)
+    this.R = random(10,100);
+    this.time = int(random(5,50))
+  }
+
+  paint(){
+    push()
+    fill([255,0,0,90])
+    strokeWeight(1.5)
+    circle(this.x,this.y,this.R)
+    textAlign(CENTER,CENTER)
+    noStroke()
+    fill([255,0,0,190])
+    text(this.reason,this.x,this.y+this.R+10)
+    pop()
+  }
 }
