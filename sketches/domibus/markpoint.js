@@ -67,6 +67,7 @@ class Disaster{
     this.reason = random(REASONS)
     this.R = random(10,100);
     this.time = int(random(5,50))
+    this.severity = random(0.2,0.8);
   }
 
   paint(){

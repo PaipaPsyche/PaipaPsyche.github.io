@@ -172,7 +172,7 @@ let PRE_ERA_C=["war","cold war","inquisition","infestation","fall","tremor","sil
 function name_era(){
   let n = era;
   let orig = CENTROS[0].origin_name;
-  let randcit = random(CENTROS).nombre["NAME"]
+  let randcit = active_cities.length==0?random(CENTROS).nombre["NAME"]:random(active_cities).nombre["NAME"];
   let capname = cap.nombre["NAME"]
   let att1 = random(PRE_ERA_A)
   let att2 = random(PRE_ERA_B)
@@ -184,6 +184,7 @@ function name_era(){
 
     }
     else if(n==1){
+
       pres = [`${orig} colonialism`,`${att1} fall of ${capname}`,
         `Pre industrial ${capname}`,`${orig} minning rush`,`${att2}-renaisance`,
       `${att2}-colonialism`,`${att2}-imperialism`,`${att2} - ${capname}`]
@@ -191,6 +192,7 @@ function name_era(){
 
 
     }else if (n==2) {
+
        pres = [`${orig} globalism`,`${capname} great depression`,
         `The order of ${randcit}`,`${orig} illumination`,`The ${att1} ${item}`,
       `${att1} industrialization`,`The ${randcit} minor ${item} `,`The ${capname}  ${item}`]
@@ -259,7 +261,7 @@ function gen_root(elemento){
   let nombre = "";
 
 
-  let long = int(random(3));
+  let long = int(random(4));
   for (let i = 0; i < (1 + long); i++) {
     raiz = raiz + random(SILABAS)
     if (random() > 0.8 && i<long/2 && i>2) {
@@ -307,11 +309,11 @@ return name;
 }
 
 function complement_name(nombre,raiz,tipo,valor,el_type){
-  if (raiz.length>=10){
+  if (raiz.length>=8){
     name1 = raiz.slice(0,5)+random(VOCAL)
     raiz = name1
     if(random()<0.1){
-      raiz=raiz+random(["-"," "]) +raiz.slice(5,9)+random(VOCAL)}
+      raiz=raiz+random(["-"," "]) +raiz.slice(5,7)+random(VOCAL)}
   }
   if(el_type=="epic"){
 
@@ -374,6 +376,18 @@ function complement_name(nombre,raiz,tipo,valor,el_type){
     }
 
   }
+
+
+
+  nombress = nombre.split(" ")
+  nombreA = nombress[0]
+  if(nombreA.length>10 & random()<0.5){
+    nombre = nombreA.slice(0,6);
+  }
+
+
+
+
 
   return {
         "NAME": nombre,

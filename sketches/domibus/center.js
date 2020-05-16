@@ -140,7 +140,8 @@ class centro {
   }
   desconectar() {
     this.connect--;
-    this.population = int(this.population * 0.4*(1+random()));
+    let lose = map(this.cost,-4,4,0.2,0.9);
+    this.population = int(this.population*lose);
     this.evaluar_tipo();
 
   }
@@ -337,7 +338,7 @@ class centro {
 
 
 
-      this.consumo = this.T <= 0 ? 0 : 0.1 * log(this.give_age() + 1) * (realt * 120 * log(this.population+1) * (1 + 0.7 * this.in_mountain));
+      this.consumo = this.T <= 0 ? 0 : 0.07 * log(this.give_age() + 1) * (realt * 120 * log(this.population+1) * (1 + 0.7 * this.in_mountain));
       this.consumo = this.consumo*(1+(log(this.population+2)*0.05))*(1/max(1,this.connect))
       if(this.T>10){
         let m_consumo = map(this.ground_level,0,0.5,1.5,1)

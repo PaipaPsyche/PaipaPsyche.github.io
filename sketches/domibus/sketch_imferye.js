@@ -15,6 +15,8 @@ var MARCAS =[];
 
 var effects = [];
 
+var active_cities=[]
+
 var scaleX=0.006;
 var scaleY=0.006;
 
@@ -72,7 +74,9 @@ var last_five=3;
 
 var last_profit = 0;
 var begin = 0;
-var killrate=1;
+var killrate=0.6;
+
+var nuke_cost = 200;
 
 var titulo = "אימפעריע";
 
@@ -87,7 +91,7 @@ if(key =='a'){
   activate_auto=1-activate_auto;
 }
 if(key =='d'){
-  gen_disaster(mouseX,mouseY);
+  nuke(mouseX,mouseY);
 }
 
 if(key =='v'){
@@ -421,13 +425,28 @@ function gen_disaster(x=null,y=null){
   active_disasters.push(ddisaster)
 }
 
+function nuke(x,y){
+  if(savings > nuke_cost){
+    let dis = new Disaster(x,y)
+    dis.reason = "Unexpected Explosion"
+    dis.severity = 1
+    dis.R = map(log(T+1),0,4,10,80) * random(0.5,1.5);
+    active_disasters.push(dis)
+    affect_disasters()
+    savings-=nuke_cost
+  }
+
+}
+
+
+
 function affect_disasters(){
   for(let dis of active_disasters){
     if(dis.time>0){
       for(let cen of CENTROS){
         if(dist(dis.x,dis.y,cen.X,cen.Y)<dis.R){
           cen.desconectar()
-          if(random()>0.1){
+          if(random()<dis.severity){
             cen.desconectar();
           }
         }
@@ -547,7 +566,7 @@ function draw() {
 
   let polling;
 
-
+  active_cities=[]
   let classes_M = {"1":0,"2":0,"3":0,"4":0,"5":0,"-1":0};
   let classes_C = {1:0,2:0,3:0};
   let consume=0;
@@ -586,6 +605,10 @@ function draw() {
     let score=elected.score_center();
     if(elected.T==mxlvl & elected.in_ocean==0){cand.push([elected,score])}
 
+    if(elected.T == 5 || elected.T == 13 || elected.T == 4){
+      active_cities.push(elected)
+    }
+
     if(elected.T<10){
     classes_M[str(elected.T)]++;}
     world_pop+=elected.population;
@@ -615,7 +638,7 @@ function draw() {
 
     }
     if(mult==1){
-    let add_sav = profit/5 * (era+1)
+    let add_sav = profit/10 * (era+1)**2
     if(add_sav<0){add_sav = add_sav*1.5;}
     savings = max(savings+add_sav,0)
     }
@@ -785,17 +808,19 @@ function draw() {
   fill(0)
   let val_era = ["I","II","III"][era]
   let textera = act_era[act_era.length-1];
-  text(`Era ${val_era}: ${textera}`,20,H-10);
+  text(`Era ${val_era}: ${textera}`,20,80);
   if(act_era.length>2){
-    for(let i = act_era.length-2;i>=0;i--){
+    let extratags = act_era.length-2
+    for(let i = 0;i<extratags;i++){
+    let ind = act_era.length-2-i
     textSize(13)
-    text(act_era[i],1000-i*270,H-7);
+    text(act_era[ind],180+200*(i+1),81);
     }
   }
   textSize(15)
   fill(0)
 
-  text("Savings: "+savings.toFixed(2),20,H-30);
+  text("Savings: "+savings.toFixed(2),20,100);
   pop();
 
   push();
@@ -891,17 +916,17 @@ if(CENTROS.length>0){
     if(random()<killrate & CENTROS.length>0 & mult!=0){
 
       CENTROS[random(act_index)].desconectar();
-      CENTROS[random(act_index)].desconectar();
+
     }
   }
   if(profit<limit_FM){
     fill([255,155,30]);
     text("FAMINE",xo+55,yo+60);
-    killrate =0.12*log(-min(resta,-1));
+    killrate =0.05*log(-min(resta,-1));
     //console.log(killrate);
     if(random()<killrate & CENTROS.length>0 & mult!=0){
       CENTROS[random(act_index)].desconectar();
-      CENTROS[random(act_index)].desconectar();
+
     }
 
   }
