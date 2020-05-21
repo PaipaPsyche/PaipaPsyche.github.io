@@ -76,7 +76,7 @@ var last_profit = 0;
 var begin = 0;
 var killrate=0.6;
 
-var nuke_cost = 200;
+var nuke_cost = 400;
 
 var titulo = "אימפעריע";
 
@@ -426,11 +426,11 @@ function gen_disaster(x=null,y=null){
 }
 
 function nuke(x,y){
-  if(savings > nuke_cost){
+  if(savings > nuke_cost*(era+1)){
     let dis = new Disaster(x,y)
-    dis.reason = "Unexpected Explosion"
+    dis.reason = random(NUKEREASONS[era])
     dis.severity = 1
-    dis.R = map(log(T+1),0,4,10,80) * random(0.5,1.5);
+    dis.R = map(log(T+1),0,10,10,60) * random(0.5,1.2);
     active_disasters.push(dis)
     affect_disasters()
     savings-=nuke_cost
@@ -470,7 +470,7 @@ function assign_era(){
 }
 
 function switch_era(){
-  if(era!=2){
+  if(era!=3){
     mult = 0;
     m.change_era()
     era=era+1
@@ -498,6 +498,7 @@ function setup() {
 
   era_change=[d_era+int(randomGaussian(0,0.05*d_era))]
   era_change.push(era_change[0]+d_era+int(randomGaussian(0,0.05*d_era)))
+  era_change.push(era_change[1]+2*d_era+int(randomGaussian(0,0.1*d_era)))
   // H=600;
   // W=600;
 
@@ -533,7 +534,7 @@ function draw() {
       active_disasters=pers_dis
 
 
-      if(era>0 && random()<0.15*era && T%50==0){
+      if(era>0 && random()<0.1*era && T%50==0){
         gen_disaster()
       }
 
@@ -638,9 +639,10 @@ function draw() {
 
     }
     if(mult==1){
-    let add_sav = profit/10 * (era+1)**2
+    let add_sav =(profit/10)*(era+1)**2
+    add_sav = add_sav*(1+active_cities.length/10)
     if(add_sav<0){add_sav = add_sav*1.5;}
-    savings = max(savings+add_sav,0)
+    savings = (max(savings+add_sav,0))
     }
 
 
@@ -669,9 +671,9 @@ function draw() {
       let score;
 
 
-      score = map(best_prof,-15,15,-1,1) + map(worst_prof,-15,15,-1,1) + map(last_lost_leg/age,0,1,1,-1) + log(age) +map(prosperity_years/age,0,1,0,2)
-      score = int(map(score,-3,5+log(20000),0,10000))
-      score  = min(max(0,int(score*map(log(polling["MAXAGE"][2]+1),0,1E4,0.2,1)/100)),100);
+      score = map(best_prof,-10,10,0,1) + map(worst_prof,-10,10,0,1) + map(last_lost_leg/(0.25*age),0,1,1,0) + log(age) +map(prosperity_years/age,0,1,0,5) + map((CENTROS.length/250),0,2,0,2)
+      score = int(map(score,0,20,0,100))
+      //score  = min(max(0,int(score*map(log(polling["MAXAGE"][2]+1),0,1E4,0.2,1)/100)),100);
 
       push()
       textAlign(CENTER);
@@ -806,7 +808,7 @@ function draw() {
   push();
   textSize(18)
   fill(0)
-  let val_era = ["I","II","III"][era]
+  let val_era = ["I","II","III","IV"][era]
   let textera = act_era[act_era.length-1];
   text(`Era ${val_era}: ${textera}`,20,80);
   if(act_era.length>2){
@@ -815,6 +817,13 @@ function draw() {
     let ind = act_era.length-2-i
     textSize(13)
     text(act_era[ind],180+200*(i+1),81);
+    push()
+    fill([255,0,0])
+    textSize(12)
+    fin_yr = era_change[ind-1]
+    prev_yr = era_change[ind-2]?era_change[ind-2]:0;
+    text(`${prev_yr} - ${fin_yr}`,180+200*(i+1),95);
+    pop()
     }
   }
   textSize(15)

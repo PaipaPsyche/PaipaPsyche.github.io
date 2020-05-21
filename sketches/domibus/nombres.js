@@ -164,11 +164,11 @@ let C_SILABAS = [
   ["fl", "r"]
 ]
 
-let PRE_ERA_A=["dark ","golden","thousand year","first great","imperial","cursed","blessed","cruel","slow",
-"glorious","terror","false","violent","long","short","silver","iron","fierce","nameless","fast"]
-let PRE_ERA_B=["Neo","traditional","late","pre","post","super","multi","mini","early"]
-let PRE_ERA_C=["war","cold war","inquisition","infestation","fall","tremor","silence","growth","rebelion","revolution",
-"inflation","empire","kingdom","state","regime","unification","consolidation","glory","globalization","depression","disintegration"]
+let PRE_ERA_A=["dark ","golden","thousand year","first great","imperial","cursed","blessed","cruel","slow","last","blessed",
+"glorious","dreadful","false","violent","long","short","silver","iron","fierce","nameless","fast","colorful","strong"]
+let PRE_ERA_B=["Neo","traditional","late","pre","post","super","multi","mini","early","broken","weak","inter","infra","ultra"]
+let PRE_ERA_C=["war","cold war","inquisition","infestation","fall","tremor","silence","growth","rebelion","revolution","cataclysm","sorrow","death","gods",
+"inflation","empire","kingdom","state","regime","unification","consolidation","glory","globalization","depression","disintegration","feudalism","Republic"]
 function name_era(){
   let n = era;
   let orig = CENTROS[0].origin_name;
@@ -179,25 +179,32 @@ function name_era(){
   let item =  random(PRE_ERA_C)
   let pres;
     if(n==0){
-       pres = [`Rise of the ${orig}`,`Arrival of the ${orig}`,`The first ${orig}`,`${orig} Prima`,
-       `Early ${orig} colonies`,`First songs of the ${orig}`]
+       pres = [`Rise of the ${orig}`,`Arrival of the ${orig}`,`The first ${orig}`,`${orig} Prima`,`The great ${orig} explorations`,
+       `Early ${orig} colonies`,`First songs of the ${orig}`,`${orig} origins`,`prehistorical ${orig}`,`${orig} tribes`]
 
     }
     else if(n==1){
 
-      pres = [`${orig} colonialism`,`${att1} fall of ${capname}`,
-        `Pre industrial ${capname}`,`${orig} minning rush`,`${att2}-renaisance`,
-      `${att2}-colonialism`,`${att2}-imperialism`,`${att2} - ${capname}`]
+      pres = [`${orig} colonialism`,`${att1} fall of ${capname}`,`The ${att1} abundance`,
+        `Pre industrial ${capname}`,`${orig} minning rush`,`${att2}-renaisance`,`${att2} expansion of the ${att1} ${item}`,
+      `${att2}-colonialism`,`${att2}-imperialism`,`${att2} - ${capname}`,`The ${item} of the ${att1} ${capname}`]
 
 
 
     }else if (n==2) {
 
-       pres = [`${orig} globalism`,`${capname} great depression`,
-        `The order of ${randcit}`,`${orig} illumination`,`The ${att1} ${item}`,
+       pres = [`${orig} globalism`,`${capname} great depression`,`The ${att1} bankruptcy`,
+        `The order of ${randcit}`,`${orig} illumination`,`The ${att1} ${item}`,`${capname} starvation`,
       `${att1} industrialization`,`The ${randcit} minor ${item} `,`The ${capname}  ${item}`]
 
-    }
+
+  }else if (n==3) {
+
+     pres = [`${orig} decay`,`${capname} solitude`,`The last stand of the ${orig}`,`echo of the ${orig}`,`The protectorate of ${capname}`,
+      `The order of ${capname}`,`The last ${orig}`,`The ${att1} ${item}`,`The rotten ${capname}`,`${capname} Ultima`,
+    `${item} of the ${att1} ${orig}`,`Eternal ${capname}`,`${att1} ${att2} ${item}`,`The ${att1} legacy of the ${orig}`]
+
+  }
     return (random(pres)).toLowerCase();
 }
 
@@ -282,7 +289,7 @@ function gen_root(elemento){
   if (raiz.length<4){
     raiz = mid_silaba(raiz);
     raiz = mid_vocal(raiz);
-    raiz = raiz+ random(VOCAL);
+    raiz = raiz+ random(SILABAS);
 
 
   }
@@ -408,6 +415,10 @@ function gen_nombre(elemento) {
   let raiz = name["RAIZ"];
   let tipo = m.M_tipos[elemento.X][elemento.Y];
   let valor = m.MAPA[elemento.X][elemento.Y];
+
+  if(raiz.length > 8){
+    raiz = raiz.slice(0,8)
+  }
 
   if (elemento.is_origin == 1) {
     raiz = random(ORIGIN_NAME) + raiz;

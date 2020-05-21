@@ -176,6 +176,10 @@ class mapa{
       thresholdf = 0.72
       thresholdr = 0.72
     }
+    if(era==2){
+      thresholdf = 0.69
+      thresholdr = 0.69
+    }
     console.log(thresholdf,thresholdr)
     this.asignar_recursos()
     this.asignar_mapas()

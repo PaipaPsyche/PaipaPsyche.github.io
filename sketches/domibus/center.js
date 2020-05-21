@@ -22,6 +22,7 @@ var DICT_C_M = {
 
 
 var DICT_P_MIN = {
+  0:0,
   1: 10**2,
   2: 10**3,
   3: 10**4,
@@ -54,6 +55,11 @@ var DICT_DESC = {
   13: "Sea Town"
 };
 
+var NUKEREASONS={
+  0:["Wildfire" , "Wild animal rage","Water poisoning","Food poisoning","Rat plague"],
+  1:["Water posoning","Accidental Fire","Unknown Explsoions","Mass rebelion","Extremist religious crusade"],
+  2:["Electromagnetic pulse","Food Poisoning","Nuclear Accident","Smog Saturation","Terrorist attacks"]
+}
 
 var DICT_NAME_RANGE = {
   0:"נול",
@@ -97,7 +103,7 @@ class centro {
   constructor(x, y, t) {
     this.X = x;
     this.Y = y;
-    this.T = t;
+
     this.connect = 0;
     this.pop = 2+int(random(100));
     this.prov = 0;
@@ -128,12 +134,15 @@ class centro {
     this.population = 1+floor(random(20));
 
     this.evaluar_tipo();
+    this.T = 1;
 
   }
   conectar() {
     this.connect++;
+    this.population = this.population*1.05
     if (random() < 0.2) {
       this.connect++;
+      this.population = this.population*1.05
     }
 
 
@@ -253,6 +262,8 @@ class centro {
         this.T = i;
       }
     }
+
+
     if(this.in_ocean==1){
       this.T=11
       for (var i = 12; i <= 13; i++) {
@@ -275,7 +286,7 @@ class centro {
 
 
 
-    if (this.connect < 0 | this.population==0) {
+    if (this.connect < 0 | this.population==0 | this.T == 0) {
       this.T = -1
     };
 
@@ -294,6 +305,7 @@ class centro {
     }
     this.maxdist = dists[1];
     this.mindist = dists[0];
+
 
     // this.maxdist= 50+4*(this.T**2);
     // this.mindist= 12+2*(this.T);
@@ -314,17 +326,17 @@ class centro {
         this.maxpop = int(DICT_P_MIN[abs(this.T)]*(1+random(0.4,0.65))*(1.001**this.give_age()))+3**min(this.connect,15);
         let popgrowth = map(abs(realt)*(this.genfuel+this.genfood),0,100000,0.5,1.2);
 
-        let dndt = int(0.25*popgrowth*((this.maxpop-this.population)/(this.maxpop+1))*this.population);
+        let dndt = int(0.11*popgrowth*((this.maxpop-this.population)/(this.maxpop+1))*this.population);
         if(this.T>10){
           dndt = 0.6*dndt
         }
         this.population=max(0,this.population+dndt);
-        if(random()<0.01*this.connect){
-          this.population++;
+        if(random()<0.05*this.connect){
+          this.population+=int(random(10));
         }
 
       }
-      else if(random()<0.1){
+      else if(random()<0.1){ //en caso de que ya este muerta la ciudad
         this.population=int(this.population*random());
       }
 
@@ -353,7 +365,7 @@ class centro {
       this.genfood = int(this.genfood);
       this.genfuel = int(this.genfuel);
       this.consumo = int(this.consumo);
-      this.population = floor(min(this.population,5*(10**8)));
+      this.population = floor(min(this.population,random(10**6)+5*(10**8)));
 
       this.cost = log((this.genfuel+this.genfood+1)/max(this.consumo,1));
     }
