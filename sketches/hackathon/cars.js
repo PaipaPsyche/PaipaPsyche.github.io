@@ -6,11 +6,11 @@ let brake  = 6;
 let accel  =1;
 
 let tolerance = 0.7;
-let change_rate  = 0.015;
+let change_rate  = 0.05;
 
 let dv  = 0.04;
 let freq_ranges=[250,520];
-let n_lanes = 6 ;
+let n_lanes = 7 ;
 let max_cars_per_lane =7;
 
 
@@ -111,7 +111,7 @@ class car{
     this.reset()
 
     this.actual_color = this.color;
-
+    this.mark = 0;
     this.active = 1;
     this.time_till_active=0;
 
@@ -211,16 +211,24 @@ class car{
 
     let posibilities = [this.lane]
     let avaliable=this.lane
-    let x1 = this.x + this.v-proximity_threshold/2
-    let x2 = this.x + this.v + this.long+proximity_threshold/2
-    if(lft && lft.slot_avaliable(x1,x2) && lft.cars.length< avaliable.cars.length){
-      avaliable=lft
-      posibilities.push(lft)
-    }
-    if(rgt && rgt.slot_avaliable(x1,x2) && rgt.cars.length< avaliable.cars.length){
+    let x1 = this.x + this.v-this.long/2
+    let x2 = this.x + this.v + this.long/2
+
+    if(rgt && rgt.slot_avaliable(x1,x2)){
+      if(rgt.mean_speed()> avaliable.mean_speed()){
       avaliable = rgt
+      }
+
       posibilities.push(rgt)
     }
+    if(lft && lft.slot_avaliable(x1,x2)){
+      if(lft.mean_speed()> avaliable.mean_speed()){
+        avaliable=lft
+      }
+
+      posibilities.push(lft)
+    }
+
     if(random()<0.5){
       return avaliable
     }else{
@@ -233,12 +241,15 @@ class car{
   try_change_lane(){
 
     let instruction  = this.evaluate_lane_change()
-    if(this.tentative != this.lane && instruction==this.tentative){
-
+    if(this.tentative != this.lane){
+      if(instruction==this.tentative){
         this.lane.delete_car(this)
         instruction.cars.push(this)
         this.lane = instruction;
-        this.tentative =this.lane
+        this.run()
+
+      }
+      this.tentative =this.lane
 
 
     }
@@ -291,6 +302,20 @@ class car{
     this.step(dfront);
 
   }
+  evaluate_click(){
+    if(mouseY>(this.lane.y-0.8*this.lane.h/2) && mouseY<(this.lane.y+0.8*this.lane.h/2) && mouseX<this.x+this.long/2 && mouseX>this.x-this.long/2){
+
+      this.toogle_mark()
+      return true;
+
+    }
+    return false;
+  }
+
+  toogle_mark(){
+    this.mark = 1-this.mark;
+  }
+
 
   paint(){
     push()
@@ -315,14 +340,26 @@ class car{
 
 
     fill(this.actual_color)
+    if(this.mark==1){
 
+      stroke(255);
+    }else{
+      stroke(0);
+    }
     rect(0,0,this.long,h);
+    noStroke()
     if(dir!=0){
       fill([255,255,0,120*(1+sin(10*frameCount))])
-      noStroke()
+
       rect(-this.long/2+5,dir,5,5);
     }
-    fill(0);
+    if(this.mark==1){
+
+      fill(255);
+    }else{
+      fill(0);
+    }
+
     textAlign(CENTER,CENTER)
     textStyle(BOLD)
     text(this.plate,0,0)
@@ -365,6 +402,23 @@ class lane{
     this.cars.push(c);
 
   }
+  add_block(x){
+    let c  = new block(this);
+    c.x=x;
+    this.cars.push(c);
+
+  }
+  mean_speed(){
+    if(this.cars.length==0){
+      return this.max_v
+    }else{
+      let s  = 0;
+      for(let c of this.cars){
+        s = s + c.v
+      }
+      return s/this.cars.length
+    }
+  }
   delete_car(d_car){
     let new_cars = []
     for(let c of this.cars){
@@ -376,9 +430,16 @@ class lane{
   }
   run(){
     for(let  i =0;i<this.cars.length;i++){
-      this.cars[i].run()
+      if(this.cars[i].delete == true){
+        this.delete_car(this.cars[i])
+      }else{
+        this.cars[i].run()
+      }
+
+
     }
   }
+
   slot_avaliable(x1,x2){
     let is_obstructed = true; //is free
     for(let  i =0;i<this.cars.length;i++){
@@ -396,11 +457,29 @@ class lane{
   }
   evaluate_click(){
     if(mouseY>(this.y-this.h/2) && mouseY<(this.y+this.h/2)){
+      for(let c  of this.cars){
+        if(c.evaluate_click()){
+          return false;
+        }
+      }
       return true;
     }
     return false;
-
   }
+
+  evaluate_block(){
+    if(mouseY>(this.y-this.h/2) && mouseY<(this.y+this.h/2)){
+      for(let c  of this.cars){
+        if(c.evaluate_click()){
+          c.delete = true;
+          return false;
+        }
+      }
+      return true;
+    }
+    return false;
+  }
+
 
 
 
@@ -419,21 +498,20 @@ class lane{
 }
 
 
-class highway{
-  constructor(n_lanes){
-    this.lanes = []
-    this.make_lanes(n_lanes)
+class block extends car{
+  constructor(slane){
+    super(slane);
+    this.v = 0;
+    this.plate = "BLOCK"
 
+    this.long=50;
   }
-
-  make_lanes(n_lanes){
-    for(let i = 0;i<n_lanes;i++){
-      this.lanes.push(new lane(this))
-    }
-  }
-
   run(){
-
+    this.v = 0;
+    this.change_color([120,120,120]);
+    if(this.mark==1){
+      this.delete=true;
+    }
   }
 }
 
@@ -463,6 +541,14 @@ function mouseClicked(){
 function keyPressed(){
   if(key=='p'){
     advance = 1-advance
+  }
+  if(key=='k'){
+    for(let L of lanes_high){
+      if(L.evaluate_block()){
+        L.add_block(mouseX)
+        break;
+      }
+    }
   }
 }
 function sliders(){
