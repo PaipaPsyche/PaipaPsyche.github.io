@@ -138,6 +138,10 @@ abbr{
   text-decoration: none;
   border-bottom: 1px solid orange;
   padding-bottom: 1px;
+  font-size: 15px;
+}
+li{
+  margin: 10px;
 }
 
 
