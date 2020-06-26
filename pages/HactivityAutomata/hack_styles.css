@@ -41,7 +41,7 @@ body {
   opacity: 0.9;
 
   /* Full height */
-  height: 50%;
+  height: 200px;
 
   /* Center and scale the image nicely */
   background-position: center;
@@ -52,7 +52,7 @@ body {
 
 /* Header/Blog Title */
 .header {
-  padding: 30px;
+  padding: 20px;
   text-align: center;
 
 
