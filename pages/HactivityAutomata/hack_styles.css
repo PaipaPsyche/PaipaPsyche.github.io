@@ -1,0 +1,267 @@
+
+* {
+  box-sizing: border-box;
+}
+body, html {
+  height: 100%;
+  margin: 0;
+  /* background: black; */
+  background-image: url('imgs/automata.gif');
+}
+
+body {
+  font-family: monospace;
+  padding: 10px;
+  color: white;
+
+}
+
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 40%;
+}
+
+.headtxt{
+  font-size: 25px;
+
+}
+.headsubtxt{
+  font-size: 13px;
+  color: white;
+}
+
+
+.bg {
+  /* The image used */
+  background-image: url("imgs/BGid.jpeg");
+
+  /* Full height */
+  height: 50%;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+
+/* Header/Blog Title */
+.header {
+  padding: 30px;
+  text-align: center;
+
+
+}
+
+.header h1 {
+  font-family: monospace;
+  font-size: 45px;
+  color: white;
+}
+.header p {
+  font-family: monospace;
+  font-size: 18px;
+  color: white;
+  font-style: italic;
+}
+
+
+
+/* Style the top navigation bar */
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+}
+
+/* Style the topnav links */
+.topnav a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* Change color on hover */
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Create two unequal columns that floats next to each other */
+/* Left column */
+.leftcolumn {
+  float: left;
+  width: 75%;
+  /* background-color: black; */
+}
+
+/* Right column */
+.rightcolumn {
+  float: left;
+  width: 25%;
+  /* background-color: black; */
+  padding-left: 20px;
+}
+.leftcolumnsite {
+  float: left;
+  width: 35%;
+  background-color: transparent;
+}
+
+/* Right column */
+.rightcolumnsite {
+  float: left;
+  width: 65%;
+  height: 100%;
+  background-color: transparent;
+  padding-left: 20px;
+}
+
+
+table,th,td{
+
+  border-collapse: collapse;
+}
+th,td{
+  padding: 5px;
+}
+
+abbr{
+  text-decoration: none;
+  border-bottom: 1px solid orange;
+  padding-bottom: 1px;
+}
+
+
+.imgwho{
+  width: 100%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.pimg{
+  width: 70%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 5px;
+}
+.wimg{
+  padding: 5px;
+  width: 90%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+/* Fake image */
+.fakeimg {
+  background-color: #aaa;
+  width: 100%;
+  padding: 20px;
+}
+
+/* Add a card effect for articles */
+.card {
+  background-color: rgba(0,0,0,0.9);
+  padding: 20px;
+  margin-top: 20px;
+}
+.card p {
+	text-align : justify;
+	font-family: monospace;
+	color:white;
+  font-size: 16px;
+
+}
+
+.pcard{
+
+}
+.pcard h1{
+  color: orange;
+}
+.pcard h2{
+  color:orange;
+}
+
+.pcard a{
+  text-decoration: none;
+  color:orange;
+}
+
+
+.titlecard{
+  background-color:rgba(0,0,20,0.9); */
+  padding: 3px;
+  /* background-image: url('imgs/bogota.jpg'); */
+  /* background-position:center;
+  background-repeat:repeat;
+  background-size:auto; */
+}
+.titlecard .desc{
+font-size: 18px;
+text-align: center;
+/* background-color: rgba(0,0,0,0.5); */
+padding: 5px;
+}
+
+.title{
+	font-style: bold;
+	font-size: 40px;
+	text-align: center;
+  /* background-color: rgba(0,0,0,0.5); */
+  height: 60px;
+  padding: 5px;
+}
+
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+
+
+.butt {
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+}
+
+
+/* Footer */
+.footer {
+  padding: 20px;
+  text-align: center;
+  background: black;
+  margin-top: 20px;
+}
+
+/* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 800px) {
+  .leftcolumn, .rightcolumn {
+    width: 100%;
+    padding: 0;
+  }
+}
+
+/* Responsive layout - when the screen is less than 400px wide, make the navigation links stack on top of each other instead of next to each other */
+@media screen and (max-width: 400px) {
+  .topnav a {
+    float: none;
+    width: 100%;
+  }
+}

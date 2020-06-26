@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html leng="ea">
+<head>
+  <meta charset="utf-8"/>
+  <title>ITERANTES</title>
+  <!-- <link  rel="icon"   href="imgs/logo.png" type="image/png" /> -->
+
+
+<link rel="stylesheet" href="hack_styles.css">
+
+</head>
+<body>
+
+<div class="header bg">
+
+
+ <!-- <img src="images/galaxy.jpg" height="400px" width="1350px"> -->
+   <h1 class="headtxt"><a href="#" style="color: white;text-decoration: none;">RECONSTRUCCIÓN DE <b style="color:orange">BOGOTÁ</b> A PARTIR DE 0 <b style="color:orange">||</b> 1</a></h1>
+
+  <p class="headsubtxt">&quot;Partiendo de la memoria digital de un tejido urbano que ha surgido de procesos múltiples entre la planeación y la contingencia, proponemos otras formas de observar algunos de los fenómenos iterativos que le componen. &quot;</p>
+</div>
+
+<!-- <div class="topnav">
+  <a href="../index.html"><b>HOME</b></a>
+  <a href="music.html#title_musica">Música</a>
+  <a href="videos.html#title_videos">Videos</a>
+  <a href="tryme.html#title_tryme">Try me</a>
+  <a href="#ftr" style="float:right">info</a>
+</div> -->
+
+<div class="row">
+  <div class="leftcolumn">
+    <div id="title_" class="card titlecard">
+      <h3 class="title">LAS MUCHAS FACETAS DE <b style="color:orange;">BOGOTÁ</b></h3>
+      <p class="desc">Proponemos formas de estudiar fenomenos iterativos presentes en la cotidianidad de Bogotá, su historia y su infraestructura.</p>
+    </div>
+
+
+
+    <div id="alejo" class="card pcard">
+    <h1>Mapas binarios de Bogotá</h1>
+    <h3>Alejandro Nieves</h3>
+    <hr class="hrcard"/>
+
+    <h2>Objetivos</h2>
+    <p>Recrear diferentes tejidos urbanos de Bogotá a partir de autómatas celulares y observar cómo evolucionan dadas reglas modificadas del juego de la vida.</p>
+
+    <h2>Insumos</h2>
+    <p>Diferentes tejidos que componen a Bogotá (cuerpos de agua, calzadas, relieve, puentes).</p>
+    <img src="imgs/alejo3.png" class="pimg"/>
+
+    <h2>Procesos</h2>
+    <p>Presentación en blanco y negro de los mapas, representación de las imágenes como arreglos bidimensionales y binarios. Aplicación del juego de la vida a esos resultados.</p>
+    <img src="imgs/alejo1.png" class="pimg"/>
+    <h2>Resultados</h2>
+
+    <p>Representación gráfica de los arreglos como autómatas celulares. En las primeras iteraciones se resalta el croquis de los mapas y posteriormente, se desdibujan las formas a medida que se presentan formas aleatorias y desordenadas.</p>
+    <img src="imgs/alejo2.gif" class="pimg"/>
+    <h2>Vinculos</h2>
+    <ul>
+      <li>
+        <a href="#leon">
+          Planos superpuestos
+        </a>
+      </li>
+
+      <li>
+        <a href="#ruth">
+          Pasado - Futuro
+        </a>
+      </li>
+
+      <li>
+        <a href="#restrepo">
+          Cocnentración del tejido urbano
+        </a>
+      </li>
+
+      <li>
+        <a href="#paipa">
+          Calzadas
+        </a>
+      </li>
+    </ul>
+
+    </div>
+
+
+
+    <div id="ruth" class="card pcard">
+    <h1>420 metros y sus árboles</h1>
+    <h3>Ruth Martinez</h3>
+    <hr class="hrcard"/>
+    <h2>Objetivos</h2>
+    <p>¿Se puede descubrir un patrón ejecutando en reversa el algoritmo de un autómata celular y con esto hacer una proyección del pasado de los árboles de un espacio determinado?</p>
+
+    <h2>Insumos</h2>
+    <p>Mapa de Bogotá, árboles, papel, crayón.</p>
+    <h2>Procesos</h2>
+    <p>
+      <ul>
+        <li>
+          <p>1. Tomé el <a href="https://mapas.bogota.gov.co/" target="_blank">mapa disponible</a>  y en la opción de Medir obtuve el perímetro y la magnitud de cada lado de mi cuadra. Perímetro: 420 Metros
+          </p>
+        </li>
+
+        <li>
+            <p>2. Armé una cuadrícula correspondiente a los 420 metros del perímetro: 5 metros x 84 casillas.  </p>
+        </li>
+
+        <li>
+            <p>3. Llené la cuadrícula de la siguiente manera:  </p>
+
+            <p>Cada cinco metros a partir del primer árbol:</p>
+
+          <p>- Ver si hay árboles dentro de esa área.</p>
+
+          <p>- Si los hay, entonces hacer frottage de la corteza de un árbol sobre la casilla que corresponda según la cantidad de observados antes de este momento; luego avanzar a los siguientes 5 metros. Si no hay árboles, dejar vacío esa casilla y avanzar a los siguientes 5 metros.</p>
+
+          <p>- Repetir hasta que ya no hayan posiciones disponibles en la cuadrícula.  </p>
+        </li>
+
+        <li>
+            <p> 4. Después de llenar la cuadrícula, y aplicando el concepto de vecindad de von Neumann con las reglas del Juego de la Vida, reconstruí las cuadrículas anteriores en cuanto fue posible.</p>
+        </li>
+      </ul>
+
+</p>
+    <h2>Resultados</h2>
+
+    <img src="imgs/R1.jpg" class="wimg"/>
+
+
+
+    <img src="imgs/R2.jpg" class="wimg"/>
+
+
+
+    <img src="imgs/R3.jpg" class="wimg"/>
+
+    <h2>Vinculos</h2>
+    <ul>
+      <li>
+        <a href="#leon">
+          Territorio
+        </a>
+      </li>
+
+      <li>
+        <a href="#paipa">
+          Flujo
+        </a>
+      </li>
+
+      <li>
+        <a href="#alejo">
+          Tejido
+        </a>
+      </li>
+
+      <li>
+        <a href="#restrepo">
+          Comportamientos
+        </a>
+      </li>
+    </ul>
+
+    </div>
+
+
+
+    <div id="leon" class="card pcard">
+    <h1>Formas ambulantes</h1>
+    <h3>Juan camilo León</h3>
+    <hr class="hrcard"/>
+
+    <h2>Objetivos</h2>
+      <p>¿Como generar formas desde la ubicación de los puestos ambulantes?</p>
+
+      <h2>Insumos</h2>
+      <p>Imágenes satelitales y computador</p>
+      <h2>Procesos</h2>
+      <p>Identifique cuatro lugares donde los vendedores ambulantes ubican sus puestos con cierta particularidad espacial, después de eso busco esos lugares desde un visor de mapas y tomó una imagen de los siguientes lugares:</p>
+      <p>- 134 con Av Suba</p>
+      <p>- 127 con Av Suba</p>
+      <p>- 116 con Av Suba</p>
+      <p>- 100 con Av Suba</p>
+<p> Estas imágenes las inserto en el programa de modelado (RhinoCeros) y dibujó una silueta de las vías vehiculares, las cuales utilizó como límite del territorio donde los autómatas pueden vivir, así mismo sobre los puestos de trabajo dibujo una silueta del área donde está ubicado y esta capa funciona como el sector que está vivo en la interacción 0.</p>
+      <img src="imgs/leon4.jpg" class="pimg"/>
+      <h2>Resultados</h2>
+      <img src="imgs/leon5.gif" class="pimg"/>
+      <p>Formas y expansión de las geometrías teniendo en cuenta el territorio donde se le permite vivir por un ciclo de 50 repeticiones en los cuatro lugares tomados como referencia.</p>
+      <img src="imgs/leon1.png" class="pimg"/>
+      <img src="imgs/leon2.png" class="pimg"/>
+      <img src="imgs/leon3.png" class="pimg"/>
+
+
+
+
+
+      <h2>Vinculos</h2>
+      <ul>
+        <li>
+          <a href="#alejo">
+            Territorio
+          </a>
+        </li>
+
+        <li>
+          <a href="#ruth">
+            Tiempo
+          </a>
+        </li>
+
+        <li>
+          <a href="#restrepo">
+            Relaciones
+          </a>
+        </li>
+
+        <li>
+          <a href="#paipa">
+            Movimiento
+          </a>
+        </li>
+      </ul>
+      <p>para mas <a href="https://juanleonsarmiento.com/portfolio/formas-ambulantes/" target="_blank">información</a> sobre el trabajo de Juan Camilo.</p>
+    </div>
+
+
+    <div id="restrepo" class="card pcard">
+    <h1>Movilidad local y tiempo libre</h1>
+    <h3>Juan Restrepo</h3>
+    <hr class="hrcard"/>
+    <h2>Objetivos</h2>
+    <p>Esta exploración busca señalar la ambivalencia que se da en el uso de procesos
+      de modelado y simulación de dinámicas sociales. Por un lado el distanciamiento de
+       lo que pensamos como humano al realizar la abstracción, y por el otro la posibilidad
+        de considerar a los otros, sus espacios y realidades.
+        Se parte parte de datos sobre la movilidad en Bogotá para problematizar el efecto
+        de determinaciones espaciales locales sobre aspectos de la experiencia personal como el tiempo libre.</p>
+    <!-- <h2>Insumos</h2>
+    <p></p>
+    <h2>Procesos</h2>
+    <p></p> -->
+    <h2>Resultados</h2>
+    <p></p>
+    <h2>Vinculos</h2>
+    <ul>
+      <li>
+        <a href="#ruth">
+          Representación
+        </a>
+      </li>
+
+      <li>
+        <a href="#leon">
+          Actividad económica
+        </a>
+      </li>
+
+      <li>
+        <a href="#alejo">
+          Distribución territorial
+        </a>
+      </li>
+
+      <li>
+        <a href="#paipa">
+          Movilidad
+        </a>
+      </li>
+    </ul>
+    </div>
+
+
+
+    <div id="paipa" class="card pcard">
+    <h1>Turismo con Automatas</h1>
+    <h3>David Paipa</h3>
+    <hr class="hrcard"/>
+    <h2>Objetivos</h2>
+    <p>Representar el desplazmiento por la ciudad como un fenomeno basado en automatas, anexando elementos como el azar y la producción de sonidos.
+    Asi mismo, analizar como las indiciaciones para llegar a otro lugar a su forma son sets de reglas para automatas que se pueden mover libremente por la ciudad.
+    </p>
+    <h2>Insumos</h2>
+    <p>P5.js (Libreria de javascript)</p>
+    <h2>Procesos</h2>
+    <h4>Cómo suena llegar?</h4>
+    <p>Modelaje de un autómata celular para simular el tráfico, con la ventaja de que cada automóvil puede tocar la bocina (usando su propia frecuencia)
+       o no de acuerdo con un índice de tolerancia definido en los parámetros de simulación. Este escenario es sobre autos en una carretera de varios
+       carriles, siempre que tengan la necesidad de frenar, pueden o no tocar sus bocinas. También pueden cambiar de carril, lo que modifica la dinámica de
+       la carretera y agrega interacción entre los carriles. Si dos autos chocan, dejan de moverse por unos segundos.</p>
+
+
+       <h4>GPS Automata</h4>
+    <p>
+      Por otra parte, definí un automata pseudoaleatorio que fija una intersección arbitraria en Bogotá y genera un set de indicciones para moverse a partir de dicho punto.
+      A pesar de que no siempre la dirección inicial existe y no siempre los recorridos sugeridos son posibles, en la mayoria de los casos ofrece recorridos extrañamente interesantes.
+    </p>
+
+    <h2>Resultados</h2>
+
+
+    <h4>Cómo suena llegar?</h4>
+    <p>
+    Un simulador de tráfico musical con reglas basadas en automatas celulares.
+    </p>
+
+    <p>
+    <a href="../../sketches/hackathon/soundLab.html" target="_blank"> [IR AL SKETCH]</a>
+    </p>
+
+    <b>CONTROLES:</b> HAGA CLICK en un carril para crear un automóvil en ese lugar. Si presiona K en el teclado mientras apunta un automóvil, se eliminará.
+     presionar K mientras señala un punto vacío en el carril creará una barricada que puede eliminar haciendo clic en ella.
+
+     <h4>GPS Automata</h4>
+
+     <p>Un generador de indicaciones pseudoaleatorio para dar recorridos en Bogotá.</p>
+     <p><a href="../../sketches/hackathon/automataGPS.html" target="_blank">[IR AL SKETCH]</a></p>
+
+
+    <h2>Vinculos</h2>
+
+
+    <ul>
+      <li>
+        <a href="#alejo">
+          Calzadas
+        </a>
+      </li>
+
+      <li>
+        <a href="#ruth">
+          Modularidad
+        </a>
+      </li>
+
+      <li>
+        <a href="#leon">
+          Exteriores
+        </a>
+      </li>
+
+      <li>
+        <a href="#restrepo">
+          Movilidad
+        </a>
+      </li>
+    </ul>
+    </div>
+
+
+
+
+
+
+  </div>
+  <div class="rightcolumn">
+    <div class="card" style="italign-items: center;">
+      <h1 style="color:orange;width: 100%; text-align: center">¿Quienes somos?</h1>
+      <!-- <div class="fakeimg" style="height:100px;">Image</div> -->
+      <abbr title="Style transfer del frottage de Ruth aplicado a un mapa publico de localidades de Bogotá"><img src="imgs/bogota.jpg" class="imgwho"/></abbr>
+      <p style="font-size: 15px;line-height: 20px;">Como participantes de la Hactividad de <b>Automatas celulares</b>, llevada a cabo por plataforma Bogotá, decidimos
+      trabajar juntos con el objetivo de analizar diferentes puntos de vista que el tejido urbano de Bogotá en todo su esplendor ofrece a quienes desean prestar atención.
+      Somos <abbr title="Físico">David Paipa</abbr>, <abbr title="">Ruth Martinez</abbr>, <abbr title="Diseñador industrial">Juan Camilo León</abbr>, <abbr title="">Juan Restepo</abbr> y <abbr title="Economista">Alejandro nieves</abbr>.</p>
+    </div>
+
+
+    <!-- <div class="card">
+      <video width="100%" autoplay>
+     <source src="imgs/huella.mp4" type="video/mp4">
+
+    Your browser does not support the video tag.
+    </video>
+
+
+    </div> -->
+
+
+  </div>
+</div>
+
+<div id="ftr" class="footer" style="font-size: xx-small; line-height: 1">
+  <hr style="color: white;">
+  <h4>Información y disclaimers</h4>
+  <p>La totalidad de esta pagina y el material desarrollado por el grupo ITERANTES es creado como actividad de la Hactividad de plataforma Bogotá  sobre automatas celulares. Cualquier uso de material ajeno esta debidamente
+     referenciado y bajo ninguna circunstancia se desea el plagio o alguna otra actividad moralmente cuestionable.</p>
+  <p style="font-size: 7px;">ITERANTES 2020</p>
+</div>
+
+</body>
+</html>
