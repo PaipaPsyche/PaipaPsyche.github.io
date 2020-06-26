@@ -38,6 +38,8 @@ body {
   /* The image used */
   background-image: url("imgs/BGid.jpeg");
 
+  opacity: 0.9;
+
   /* Full height */
   height: 50%;
 
@@ -64,6 +66,7 @@ body {
 .header p {
   font-family: monospace;
   font-size: 18px;
+  font-weight: 700;
   color: white;
   font-style: italic;
 }
