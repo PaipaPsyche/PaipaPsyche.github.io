@@ -58,7 +58,7 @@ list-style-type: none;
 
 }
 .bsq h3{
-  font-size: 25px;
+  font-size: 28px;
   padding: 0;
   margin: 5px;
 
@@ -66,11 +66,11 @@ list-style-type: none;
 .bsq h3 a{
   text-decoration: none;
   color: black;
-  transition-duration: .3s;
+  transition-duration: .4s;
 }
 
 .bsq h3 a:hover{
-  color: grey;
+  color: purple;
 }
 
 .linkli{
@@ -78,7 +78,7 @@ list-style-type: none;
   color: white;
   display: block;
   height: 100%;
-  transition-duration: 0.3s;
+  transition-duration: 0.4s;
 }
 
 
