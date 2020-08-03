@@ -1,22 +1,156 @@
 
+
+
+
+
 * {
   box-sizing: border-box;
 }
 body, html {
   height: 100%;
   margin: 0;
-  background: black;
+
 }
 
 body {
   font-family: monospace;
   padding: 10px;
-  color: white;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 
+}
+
+.bsq{
+
+height: 100%;
+padding-top: 15%;
+text-align: center;
+align-items: center;
+}
+
+.bsq ul{
+list-style-type: none;
+}
+
+.listelem{
+  text-align: center;
+  align-items: center;
+  height: 100px;
+  margin-left: -40px;
+  padding-left: 0;
+  width: 110%;
+  text-align: center;
+  transition-duration: 0.5s;
+}
+
+
+.bsq h1{
+  font-size: 90px;
+  padding: 0;
+  margin: 5px;
+}
+.bsq h2{
+  font-size: 50px;
+  padding: 0;
+  margin: 5px;
+
+
+}
+.bsq h3{
+  font-size: 25px;
+  padding: 0;
+  margin: 5px;
+
+}
+.bsq h3 a{
+  text-decoration: none;
+  color: black;
+  transition-duration: .3s;
+}
+
+.bsq h3 a:hover{
+  color: grey;
+}
+
+.linkli{
+  text-decoration: none;
+  color: white;
+  display: block;
+  height: 100%;
+  transition-duration: 0.3s;
 }
 
 
 
+/* .listelem:hover{
+  background-color: white;
+} */
+.listelem:hover .linkli{
+  color:black;
+}
+
+.orange:hover .linkli{
+  color:orange;
+}
+.blue:hover .linkli{
+  color:blue;
+}
+
+
+
+
+.wht{
+  width: 60%;
+  display: block;
+  background-color: white;
+}
+.blk{
+  width: 40%;
+  display: block;
+  background-color: black;
+}
+
+
+@media screen and (max-width: 800px) {
+  body {
+    display: flex;
+    flex-wrap: wrap;
+
+  }
+  .bsq{
+
+  width: 100%;
+  padding: 0;
+  text-align: center;
+  align-items: center;
+  }
+
+  .bsq h3{
+    font-size: 45px;
+  }
+  .bsq h2{
+    font-size: 65px;
+  }
+  .wht{
+    padding-top: 50px;
+    height: 30%;
+    /* display: none; */
+  }
+  .blk{
+    padding-top: 25%;
+
+    /* height: 80%; */
+  }
+  .listelem{
+    height: 250px;
+    width: 100%;
+    text-align: center;
+    transition-duration: 0.5s;
+  }
+
+
+}
 
 .bg {
   /* The image used */
