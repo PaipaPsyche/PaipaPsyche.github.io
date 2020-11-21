@@ -115,7 +115,7 @@ list-style-type: none;
 }
 
 
-@media screen and (max-width: 800px) {
+@media only screen and (min-width: 100px) {
   body {
     display: flex;
     flex-wrap: wrap;
@@ -130,23 +130,24 @@ list-style-type: none;
   }
 
   .bsq h3{
-    font-size: 45px;
+    font-size: 35px;
   }
   .bsq h2{
-    font-size: 65px;
+    font-size: 45px;
   }
   .wht{
-    padding-top: 50px;
-    height: 30%;
+    padding-top: 5px;
+    height: 40%;
     /* display: none; */
   }
   .blk{
-    padding-top: 25%;
+    max-height: 60%;
+    padding-top: 5%;
 
     /* height: 80%; */
   }
   .listelem{
-    height: 250px;
+    height: 100px;
     width: 100%;
     text-align: center;
     transition-duration: 0.5s;
