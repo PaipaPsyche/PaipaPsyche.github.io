@@ -97,6 +97,9 @@ list-style-type: none;
   color:blue;
 }
 
+.green:hover .linkli{
+  color:green;
+}
 
 
 
