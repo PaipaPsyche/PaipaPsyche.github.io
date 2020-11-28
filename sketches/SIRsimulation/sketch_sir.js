@@ -155,7 +155,7 @@ function unpause() {
 
 function keyPressed() {
   if (key == "p") {
-    if (atts_sim["active"]=1) {
+    if (atts_sim["active"]==1) {
       pause();
     } else {
       unpause();
